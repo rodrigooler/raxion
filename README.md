@@ -11,10 +11,17 @@ RAXION replaces subjective human consensus (Bittensor model) with **Proof of Inf
 ## Quick Start (PoC)
 
 ```bash
-# Requirements: Python 3.11+, ollama
+# Requirements: Python 3.11+
+python3 -m venv .venv
+source .venv/bin/activate
 pip install -r poc/requirements.txt
-ollama pull llama3.1:8b
-python poc/run_poc.py --query "Explain the Oracle Problem in blockchain"
+
+# Option A (recommended for Phase 0 tests): OpenRouter free models
+export OPENROUTER_API_KEY="..."
+python poc/run_poc.py --provider openrouter --query "Explain the Oracle Problem in blockchain"
+
+# Option B: deterministic local smoke tests
+python poc/run_poc.py --provider mock --n 10 --output poc/benchmarks/results_q1.json
 ```
 
 ## Documentation
