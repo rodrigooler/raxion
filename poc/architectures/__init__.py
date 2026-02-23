@@ -1,4 +1,5 @@
 from .base import BaseArchitecture, InferenceOutput
+from .neurosymbolic import NeuroSymbolicArchitecture
 from .ssm_proxy import SSMProxyArchitecture
 from .transformer import (
     TransformerArchitecture,
@@ -9,6 +10,7 @@ from .transformer import (
 __all__ = [
     "BaseArchitecture",
     "InferenceOutput",
+    "NeuroSymbolicArchitecture",
     "SSMProxyArchitecture",
     "TransformerArchitecture",
     "check_ollama_available",
