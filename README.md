@@ -79,7 +79,7 @@ python poc/run_poc.py --provider openrouter --query "Explain the Oracle Problem 
 
 - `poc/`: Phase 0 Python validation code
 - `proofs/`: RISC Zero guest/host scaffolding
-- `WHITEPAPER.md`: protocol whitepaper (v1.0 source at repository root)
+- `WHITEPAPER.md`: protocol whitepaper (v0.4 source at repository root)
 - `docs/whitepaper/`: auxiliary whitepaper assets
 - `docs/yellowpaper/`: formal protocol proofs (work in progress)
 - `AGENTS.md`: core protocol context for contributors and agents
@@ -87,7 +87,7 @@ python poc/run_poc.py --provider openrouter --query "Explain the Oracle Problem 
 
 ## Documentation
 
-- [Whitepaper v1.0](WHITEPAPER.md)
+- [Whitepaper v0.4](WHITEPAPER.md)
 - [Project Context](AGENTS.md)
 - [Persistent Decisions](MEMORY.md)
 - [Claude Context](CLAUDE.md)
