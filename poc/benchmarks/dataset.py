@@ -103,9 +103,9 @@ def load_mmlu_queries(n: int = 100, seed: int = 42) -> list[BenchmarkQuery]:
                 ground_truth=["A", "B", "C", "D"][answer_idx]
             ))
         return _deterministic_sample(queries, n=n, seed=seed)
-    except Exception as e:
+    except (ImportError, OSError, ValueError, KeyError, IndexError) as e:
         print(f"[WARN] MMLU unavailable ({e}), using sample queries")
-        return load_sample_queries(min(n, len(SAMPLE_QUERIES)))
+        return load_sample_queries(min(n, len(SAMPLE_QUERIES)), seed=seed)
 
 
 def _deterministic_sample(

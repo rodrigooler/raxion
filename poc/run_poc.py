@@ -170,7 +170,7 @@ def run_benchmark(
     return stats
 
 
-def _validate_provider(provider: str, transformer_model: str) -> None:
+def _validate_provider(provider: str, transformer_model: str, ssm_model: str) -> None:
     if provider == "openrouter":
         if not check_openrouter_configured():
             print("[ERROR] OPENROUTER_API_KEY is not configured.")
@@ -180,6 +180,10 @@ def _validate_provider(provider: str, transformer_model: str) -> None:
         if not check_ollama_available(transformer_model):
             print(f"[ERROR] Model {transformer_model} not found in Ollama.")
             print(f"Run: ollama pull {transformer_model}")
+            sys.exit(1)
+        if not check_ollama_available(ssm_model):
+            print(f"[ERROR] Model {ssm_model} not found in Ollama.")
+            print(f"Run: ollama pull {ssm_model}")
             sys.exit(1)
     elif provider == "mock":
         return
@@ -199,7 +203,7 @@ def main() -> None:
     parser.add_argument("--ssm-model", default="z-ai/glm-4.5-air:free")
     args = parser.parse_args()
 
-    _validate_provider(args.provider, args.transformer_model)
+    _validate_provider(args.provider, args.transformer_model, args.ssm_model)
 
     transformer = TransformerArchitecture(
         model=args.transformer_model,
