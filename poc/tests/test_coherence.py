@@ -139,9 +139,8 @@ class TestProtocolInvariants:
             ("", "something"),
         ]
         for a, b in pairs:
-            if a and b:
-                result = compute_coherence_score(a, b)
-                assert 0.0 <= result.score <= 1.0, f"Score {result.score} out of bounds"
+            result = compute_coherence_score(a, b)
+            assert 0.0 <= result.score <= 1.0, f"Score {result.score} out of bounds"
 
     def test_rejection_threshold_is_0_30(self):
         """Protocol spec: THRESHOLD_REJECT = 0.30"""

@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 """
 Load benchmark queries for PoC convergence validation.
 
@@ -8,6 +6,8 @@ Selected domains: STEM, reasoning, logic - where convergence is most meaningful.
 
 Fallback: Hardcoded sample queries if MMLU unavailable.
 """
+from __future__ import annotations
+
 from dataclasses import dataclass
 import hashlib
 
@@ -82,16 +82,25 @@ def load_mmlu_queries(n: int = 100, seed: int = 42) -> list[BenchmarkQuery]:
         for item in ds:
             if len(queries) >= n * 3:
                 break
+
+            question = item.get("question")
+            choices = item.get("choices", [])
+            answer_idx = item.get("answer")
+            if not isinstance(question, str) or len(choices) < 4:
+                continue
+            if not isinstance(answer_idx, int) or answer_idx not in range(4):
+                continue
+
             q = (
-                f"{item['question']}\nChoices: "
-                f"A) {item['choices'][0]} B) {item['choices'][1]} "
-                f"C) {item['choices'][2]} D) {item['choices'][3]}"
+                f"{question}\nChoices: "
+                f"A) {choices[0]} B) {choices[1]} "
+                f"C) {choices[2]} D) {choices[3]}"
             )
             queries.append(BenchmarkQuery(
                 query=q,
                 domain=item.get("subject", "unknown"),
                 has_ground_truth=True,
-                ground_truth=["A", "B", "C", "D"][item["answer"]]
+                ground_truth=["A", "B", "C", "D"][answer_idx]
             ))
         return _deterministic_sample(queries, n=n, seed=seed)
     except Exception as e:

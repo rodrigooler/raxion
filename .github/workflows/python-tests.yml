@@ -17,12 +17,14 @@ jobs:
         with:
           python-version: '3.11'
           cache: 'pip'
-          cache-dependency-path: 'poc/requirements.txt'
+          cache-dependency-path: |
+            poc/requirements.txt
+            poc/requirements-dev.txt
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r poc/requirements.txt
+          pip install -r poc/requirements-dev.txt
 
       - name: Run test suite
         run: pytest poc/tests/ -v

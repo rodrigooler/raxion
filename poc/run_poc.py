@@ -122,6 +122,9 @@ def run_benchmark(
         result["has_ground_truth"] = q.has_ground_truth
         results.append(result)
 
+    if not results:
+        raise ValueError("run_benchmark requires at least one query result.")
+
     scores = [r["coherence_score"] for r in results]
     categories = [r["category"] for r in results]
 

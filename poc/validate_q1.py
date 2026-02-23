@@ -6,11 +6,13 @@ Checks all success criteria defined in the whitepaper for Phase 0.
 Run this before declaring Q1 complete.
 """
 import os
+import shutil
 import subprocess
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+_REPO_ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(_REPO_ROOT))
 
 
 def check_convergence_rate() -> bool:
@@ -42,11 +44,16 @@ def check_convergence_rate() -> bool:
 
 def check_risc_zero_proof() -> bool:
     """Check RISC Zero host builds successfully."""
+    cargo = shutil.which("cargo")
+    if not cargo:
+        print("  [FAIL] cargo executable not found in PATH")
+        return False
+
     env = dict(os.environ)
     env.setdefault("RISC0_SKIP_BUILD_KERNELS", "1")
     result = subprocess.run(
-        ["cargo", "build", "--release", "-p", "risc0-host"],
-        cwd="proofs",
+        [cargo, "build", "--release", "-p", "risc0-host"],
+        cwd=str(_REPO_ROOT / "proofs"),
         capture_output=True,
         text=True,
         env=env,

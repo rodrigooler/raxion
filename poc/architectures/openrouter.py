@@ -1,11 +1,36 @@
 import json
 import os
+import ipaddress
 import urllib.error
+import urllib.parse
 import urllib.request
 from typing import Any, Optional
 
 
-OPENROUTER_BASE_URL = os.getenv("OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1")
+def _validated_openrouter_base_url() -> str:
+    """Validate and return the OpenRouter base URL to prevent SSRF misuse."""
+    base_url = os.getenv("OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1")
+    parsed = urllib.parse.urlparse(base_url)
+
+    if parsed.scheme != "https":
+        raise RuntimeError("OPENROUTER_BASE_URL must use https.")
+    if not parsed.hostname:
+        raise RuntimeError("OPENROUTER_BASE_URL is missing hostname.")
+
+    hostname = parsed.hostname.lower()
+    if hostname in {"localhost", "127.0.0.1", "::1"}:
+        raise RuntimeError("OPENROUTER_BASE_URL must not target localhost.")
+    try:
+        host_ip = ipaddress.ip_address(hostname)
+        if host_ip.is_private or host_ip.is_loopback or host_ip.is_link_local:
+            raise RuntimeError("OPENROUTER_BASE_URL must not target private/link-local IPs.")
+    except ValueError:
+        pass
+
+    return base_url
+
+
+OPENROUTER_BASE_URL = _validated_openrouter_base_url()
 
 
 def check_openrouter_available() -> bool:
@@ -25,9 +50,9 @@ def chat_openrouter(
 ) -> dict[str, Any]:
     """Call OpenRouter chat completion endpoint and return normalized fields."""
     api_key = os.getenv("OPENROUTER_API_KEY")
-    if not api_key:
+    if not api_key or not api_key.startswith("sk-or-"):
         raise RuntimeError(
-            "OPENROUTER_API_KEY is not set. Export it before running inference."
+            "OPENROUTER_API_KEY must be set and start with 'sk-or-'."
         )
 
     system_content = system_prompt

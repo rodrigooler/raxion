@@ -114,7 +114,7 @@ def check_ollama_available(model: str = "llama3.1:8b") -> bool:
         models = ollama.list()
         available = [m.get("model", "") for m in models.get("models", [])]
         return any(model in available_model for available_model in available)
-    except (ImportError, KeyError, TypeError):
+    except (ImportError, KeyError, TypeError, ConnectionError):
         return False
 
 
