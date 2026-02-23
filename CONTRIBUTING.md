@@ -162,7 +162,7 @@ test(cross-validation): add convergence test cases
 
 ## License
 
-By contributing to RAXION, you agree that your contributions will be licensed under the [Business Source License 1.1](./LICENSE.md).
+By contributing to RAXION, you agree that your contributions will be licensed under the [Business Source License 1.1](./LICENSE).
 
 ---
 
