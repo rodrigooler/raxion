@@ -9,13 +9,25 @@
 ## Project Status
 
 ```
-Last updated: 2026-02-22
+Last updated: 2026-02-23
 Current phase: Phase 0 — Genesis (Q1 2026)
 Next milestone: Devnet launch (Q2 2026)
-Whitepaper version: v1.0 (complete)
+Whitepaper version: v0.4 (complete)
 GitHub: https://github.com/raxion-network/raxion
 License: BUSL 1.1 → MIT 2030-02-20
 ```
+
+### Q1 Execution Notes (2026-02-23)
+
+- Issue #3 (Rust Coherence mirror) implemented in `proofs/risc0-types/src/coherence.rs` with protocol constants and threshold categories mirrored from Python.
+- Added fixture-based Rust tests at `proofs/risc0-types/tests/coherence.rs` using `proofs/risc0-types/tests/fixtures/coherence_python_fixtures.json`.
+- `cargo test -p risc0-types` passed (5 tests).
+- Issue #4 benchmark executed with deterministic setup:
+  - command: `python poc/run_poc.py --provider mock --mmlu --n 100 --seed 42 --output poc/benchmarks/mmlu_100_mock_seed42.json`
+  - average coherence: `0.9076`
+  - cognitive finality rate: `100.0%`
+  - H1 status in this run: `PASSED` (mock-provider baseline, not a live-model conclusion)
+- Issue #2 benchmark harness added (`proofs/bench_risc0_latency.py`) plus report templates, but local execution is currently blocked by RISC Zero proving toolchain constraints on macOS arm64.
 
 ### Q1 Execution Notes (2026-02-22)
 
