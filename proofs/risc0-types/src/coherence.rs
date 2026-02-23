@@ -19,6 +19,12 @@ pub struct CoherenceResult {
     pub sim_sn: f64,
 }
 
+impl CoherenceResult {
+    pub fn is_final(&self) -> bool {
+        self.score >= THRESHOLD_STANDARD
+    }
+}
+
 pub const ALPHA: f64 = 0.4;
 pub const BETA: f64 = 0.6;
 pub const W_PREMISE: f64 = 0.3;
@@ -48,6 +54,10 @@ pub fn geometric_mean(values: &[f64]) -> f64 {
 /// Approximate CC from a normalized agreement signal in [0, 1].
 pub fn approximate_cc_from_agreement(conclusion_agreement: f64) -> f64 {
     let agreement = clamp01(conclusion_agreement);
+    // PoC approximation: weights sum to 1.0, so this expression equals `agreement`.
+    // Since `agreement` is already clamped to [0, 1], the outer clamp is redundant.
+    // Keep this explicit form to mirror the protocol formula; if weights change,
+    // this behavior and comment must be updated together.
     clamp01(W_PREMISE * agreement + W_CONCLUSION * agreement + W_ENTAILMENT * agreement)
 }
 

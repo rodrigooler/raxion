@@ -94,6 +94,11 @@ def run_case(input_bytes: int, output_bytes: int) -> dict[str, Any]:
             f"Command failed ({proc.returncode}): {' '.join(cmd)}\n{proc.stderr}"
         )
     lines = [line.strip() for line in proc.stdout.splitlines() if line.strip()]
+    if not lines:
+        raise RuntimeError(
+            "Command produced no parsable output lines for JSON payload. "
+            f"returncode={proc.returncode}\nstdout={proc.stdout}\nstderr={proc.stderr}"
+        )
     payload = json.loads(lines[-1])
     return payload
 
@@ -101,10 +106,10 @@ def run_case(input_bytes: int, output_bytes: int) -> dict[str, Any]:
 def recommendation(avg_prove_time: float) -> str:
     if avg_prove_time > 10.0:
         return (
-            "Priorizar batching e pré-compilação de métodos no Q2 para reduzir custo de prova em CPU."
+            "Prioritize batching and method pre-compilation in Q2 to reduce CPU proving cost."
         )
     return (
-        "Executar benchmark adicional em modo não-dev com payloads reais e comparar com instância GPU no Q2."
+        "Run additional non-dev benchmarks with real payloads and compare against a GPU instance in Q2."
     )
 
 

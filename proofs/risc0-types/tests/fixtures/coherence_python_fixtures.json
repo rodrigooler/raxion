@@ -20,6 +20,16 @@
     "category": "STANDARD"
   },
   {
+    "name": "low_confidence_two_arch",
+    "sim_ts": 0.35,
+    "sim_tn": 0.35,
+    "sim_sn": 0.35,
+    "cc_approximate": 0.4,
+    "cs_semantic": 0.35,
+    "score": 0.38,
+    "category": "LOW_CONFIDENCE"
+  },
+  {
     "name": "divergent_two_arch",
     "sim_ts": 0.0,
     "sim_tn": 0.0,

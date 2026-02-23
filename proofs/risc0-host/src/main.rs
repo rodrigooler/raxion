@@ -82,13 +82,13 @@ fn payload(prefix: &str, target_bytes: usize) -> String {
     if target_bytes == 0 {
         return String::new();
     }
-    let mut s = String::from(prefix);
-    let filler = "0123456789abcdef";
-    while s.len() < target_bytes {
-        s.push_str(filler);
+    let mut bytes = prefix.as_bytes().to_vec();
+    let filler = b"0123456789abcdef";
+    while bytes.len() < target_bytes {
+        bytes.extend_from_slice(filler);
     }
-    s.truncate(target_bytes);
-    s
+    bytes.truncate(target_bytes);
+    String::from_utf8(bytes).expect("payload bytes must remain valid ASCII/UTF-8")
 }
 
 fn generate_proof(

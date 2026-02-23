@@ -1,6 +1,7 @@
 use risc0_types::coherence::{
-    category_for_score, compute_coherence_from_components, geometric_mean, ConvergenceCategory,
-    ALPHA, BETA, THRESHOLD_HIGH, THRESHOLD_REJECT, THRESHOLD_STANDARD,
+    approximate_cc_from_agreement, category_for_score, compute_coherence_from_components,
+    geometric_mean, ConvergenceCategory, ALPHA, BETA, THRESHOLD_HIGH, THRESHOLD_REJECT,
+    THRESHOLD_STANDARD, W_CONCLUSION, W_ENTAILMENT, W_PREMISE,
 };
 use serde::Deserialize;
 
@@ -33,6 +34,9 @@ fn protocol_constants_are_stable() {
     assert!((ALPHA - 0.4).abs() < EPS);
     assert!((BETA - 0.6).abs() < EPS);
     assert!((ALPHA + BETA - 1.0).abs() < EPS);
+    assert!((W_PREMISE - 0.3).abs() < EPS);
+    assert!((W_CONCLUSION - 0.5).abs() < EPS);
+    assert!((W_ENTAILMENT - 0.2).abs() < EPS);
     assert!((THRESHOLD_REJECT - 0.30).abs() < EPS);
     assert!((THRESHOLD_STANDARD - 0.60).abs() < EPS);
     assert!((THRESHOLD_HIGH - 0.85).abs() < EPS);
@@ -40,6 +44,7 @@ fn protocol_constants_are_stable() {
 
 #[test]
 fn geometric_mean_matches_reference_behavior() {
+    assert!((geometric_mean(&[]) - 0.0).abs() < EPS);
     assert!((geometric_mean(&[0.5, 0.5, 0.5]) - 0.5).abs() < EPS);
     assert!((geometric_mean(&[1.0, 1.0, 1.0]) - 1.0).abs() < EPS);
     assert!((geometric_mean(&[0.0, 0.8, 0.8]) - 0.0).abs() < EPS);
@@ -47,6 +52,14 @@ fn geometric_mean_matches_reference_behavior() {
     let geo = geometric_mean(&[0.9, 0.9, 0.1]);
     let arith = (0.9 + 0.9 + 0.1) / 3.0;
     assert!(geo < arith);
+}
+
+#[test]
+fn approximate_cc_from_agreement_is_identity_like() {
+    assert!((approximate_cc_from_agreement(0.0) - 0.0).abs() < EPS);
+    assert!((approximate_cc_from_agreement(0.25) - 0.25).abs() < EPS);
+    assert!((approximate_cc_from_agreement(0.5) - 0.5).abs() < EPS);
+    assert!((approximate_cc_from_agreement(1.0) - 1.0).abs() < EPS);
 }
 
 #[test]
