@@ -4,6 +4,7 @@ use anyhow::Result;
 use risc0_types::InferenceCommitment;
 use risc0_zkvm::{default_prover, ExecutorEnv, Receipt};
 use serde::Serialize;
+use tokio::task;
 
 mod methods {
     include!(concat!(env!("OUT_DIR"), "/methods.rs"));
@@ -59,9 +60,20 @@ fn parse_args() -> Result<CliArgs> {
                 args.output_bytes = value.parse::<usize>()?;
             }
             "--architecture" => {
-                args.architecture = iter
+                let value = iter
                     .next()
                     .ok_or_else(|| anyhow::anyhow!("Missing value for --architecture"))?;
+                match value.as_str() {
+                    "transformer" | "ssm" | "neuro-symbolic" => {
+                        args.architecture = value;
+                    }
+                    _ => {
+                        return Err(anyhow::anyhow!(
+                            "Invalid architecture '{}'. Allowed: transformer, ssm, neuro-symbolic",
+                            value
+                        ));
+                    }
+                }
             }
             "--json" => {
                 args.json = true;
@@ -78,9 +90,9 @@ fn parse_args() -> Result<CliArgs> {
     Ok(args)
 }
 
-fn payload(prefix: &str, target_bytes: usize) -> String {
+fn payload(prefix: &str, target_bytes: usize) -> Result<String, std::string::FromUtf8Error> {
     if target_bytes == 0 {
-        return String::new();
+        return Ok(String::new());
     }
     let mut bytes = prefix.as_bytes().to_vec();
     let filler = b"0123456789abcdef";
@@ -88,49 +100,60 @@ fn payload(prefix: &str, target_bytes: usize) -> String {
         bytes.extend_from_slice(filler);
     }
     bytes.truncate(target_bytes);
-    String::from_utf8(bytes).expect("payload bytes must remain valid ASCII/UTF-8")
+    Ok(String::from_utf8(bytes)?)
 }
 
-fn generate_proof(
+async fn generate_proof(
     input: &str,
     output: &str,
     architecture: &str,
 ) -> Result<(Receipt, InferenceCommitment, f64)> {
-    let env = ExecutorEnv::builder()
-        .write(&input.as_bytes())?
-        .write(&output.as_bytes())?
-        .write(&architecture)?
-        .build()?;
+    let input_owned = input.to_owned();
+    let output_owned = output.to_owned();
+    let architecture_owned = architecture.to_owned();
 
-    let start = Instant::now();
+    task::spawn_blocking(move || -> Result<(Receipt, InferenceCommitment, f64)> {
+        let env = ExecutorEnv::builder()
+            .write(&input_owned.as_bytes())?
+            .write(&output_owned.as_bytes())?
+            .write(&architecture_owned)?
+            .build()?;
 
-    let prover = default_prover();
-    let receipt = prover
-        .prove(env, methods::RAXION_INFERENCE_PROOF_ELF)?
-        .receipt;
-    let prove_time_s = start.elapsed().as_secs_f64();
+        let start = Instant::now();
+        let prover = default_prover();
+        let receipt = prover
+            .prove(env, methods::RAXION_INFERENCE_PROOF_ELF)?
+            .receipt;
+        let prove_time_s = start.elapsed().as_secs_f64();
+        let commitment: InferenceCommitment = receipt.journal.decode()?;
 
-    let commitment: InferenceCommitment = receipt.journal.decode()?;
-
-    Ok((receipt, commitment, prove_time_s))
+        Ok((receipt, commitment, prove_time_s))
+    })
+    .await
+    .map_err(|err| anyhow::anyhow!("proof task join error: {err}"))?
 }
 
-fn verify_proof(receipt: &Receipt) -> Result<f64> {
-    let start = Instant::now();
-    receipt.verify(methods::RAXION_INFERENCE_PROOF_ID)?;
-    Ok(start.elapsed().as_secs_f64())
+async fn verify_proof(receipt: Receipt) -> Result<f64> {
+    task::spawn_blocking(move || -> Result<f64> {
+        let start = Instant::now();
+        receipt.verify(methods::RAXION_INFERENCE_PROOF_ID)?;
+        Ok(start.elapsed().as_secs_f64())
+    })
+    .await
+    .map_err(|err| anyhow::anyhow!("verification task join error: {err}"))?
 }
 
-fn main() -> Result<()> {
+#[tokio::main]
+async fn main() -> Result<()> {
     let args = parse_args()?;
     let input = payload(
         "Explain the Oracle Problem in decentralized AI systems. ",
         args.input_bytes,
-    );
+    )?;
     let output = payload(
         "The Oracle Problem is the challenge of importing external truth into deterministic consensus. ",
         args.output_bytes,
-    );
+    )?;
 
     if !args.json {
         println!("RAXION Phase 0 - Proof of Execution (pi_exec)");
@@ -141,8 +164,9 @@ fn main() -> Result<()> {
     }
 
     let total_start = Instant::now();
-    let (receipt, commitment, prove_time_s) = generate_proof(&input, &output, &args.architecture)?;
-    let verify_time_s = verify_proof(&receipt)?;
+    let (receipt, commitment, prove_time_s) =
+        generate_proof(&input, &output, &args.architecture).await?;
+    let verify_time_s = verify_proof(receipt).await?;
     let total_time_s = total_start.elapsed().as_secs_f64();
 
     let metrics = RunMetrics {

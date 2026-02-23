@@ -32,6 +32,20 @@ SIZES = [
     {"name": "l", "input_bytes": 512, "output_bytes": 2048},
     {"name": "xl", "input_bytes": 1024, "output_bytes": 4096},
 ]
+QUIET_CMD_TIMEOUT_S = 20
+BENCH_CMD_TIMEOUT_S = 1800
+
+
+class CommandError(RuntimeError):
+    def __init__(self, message: str, details: str | None = None) -> None:
+        super().__init__(message)
+        self.details = details
+
+    def __str__(self) -> str:
+        base = super().__str__()
+        if not self.details:
+            return base
+        return f"{base}\n{self.details}"
 
 
 def hardware_profile() -> dict[str, Any]:
@@ -50,12 +64,16 @@ def _run_quiet(cmd: list[str]) -> str:
     path = shutil.which(cmd[0])
     if not path:
         return "not-found"
-    out = subprocess.run(
-        cmd,
-        capture_output=True,
-        text=True,
-        check=False,
-    )
+    try:
+        out = subprocess.run(
+            cmd,
+            capture_output=True,
+            text=True,
+            check=False,
+            timeout=QUIET_CMD_TIMEOUT_S,
+        )
+    except subprocess.TimeoutExpired:
+        return "timeout"
     if out.returncode != 0:
         return f"error({out.returncode})"
     return out.stdout.strip()
@@ -81,23 +99,43 @@ def run_case(input_bytes: int, output_bytes: int) -> dict[str, Any]:
     env.setdefault("RISC0_DEV_MODE", "1")
     env.setdefault("RISC0_SKIP_BUILD_KERNELS", "1")
 
-    proc = subprocess.run(
-        cmd,
-        cwd=PROOFS_DIR,
-        capture_output=True,
-        text=True,
-        env=env,
-        check=False,
-    )
+    try:
+        proc = subprocess.run(
+            cmd,
+            cwd=PROOFS_DIR,
+            capture_output=True,
+            text=True,
+            env=env,
+            check=False,
+            timeout=BENCH_CMD_TIMEOUT_S,
+        )
+    except subprocess.TimeoutExpired as err:
+        detail = (
+            f"Command timed out after {BENCH_CMD_TIMEOUT_S}s.\n"
+            f"cmd={' '.join(cmd)}\nstdout={err.stdout}\nstderr={err.stderr}"
+        )
+        raise CommandError(
+            f"Benchmark case timed out for input={input_bytes}, output={output_bytes}",
+            detail,
+        ) from err
     if proc.returncode != 0:
-        raise RuntimeError(
-            f"Command failed ({proc.returncode}): {' '.join(cmd)}\n{proc.stderr}"
+        detail = (
+            f"returncode={proc.returncode}\n"
+            f"cmd={' '.join(cmd)}\nstdout={proc.stdout}\nstderr={proc.stderr}"
+        )
+        raise CommandError(
+            f"Benchmark command failed for input={input_bytes}, output={output_bytes}",
+            detail,
         )
     lines = [line.strip() for line in proc.stdout.splitlines() if line.strip()]
     if not lines:
-        raise RuntimeError(
-            "Command produced no parsable output lines for JSON payload. "
-            f"returncode={proc.returncode}\nstdout={proc.stdout}\nstderr={proc.stderr}"
+        detail = (
+            f"returncode={proc.returncode}\n"
+            f"cmd={' '.join(cmd)}\nstdout={proc.stdout}\nstderr={proc.stderr}"
+        )
+        raise CommandError(
+            "Benchmark command produced no parsable JSON output",
+            detail,
         )
     payload = json.loads(lines[-1])
     return payload
@@ -173,9 +211,12 @@ def main() -> None:
         item["name"] = case["name"]
         results.append(item)
 
-    replay_case = SIZES[0]
-    replay_a = run_case(replay_case["input_bytes"], replay_case["output_bytes"])
-    replay_b = run_case(replay_case["input_bytes"], replay_case["output_bytes"])
+    replay_small = SIZES[0]
+    replay_mid = SIZES[2]
+    replay_small_a = run_case(replay_small["input_bytes"], replay_small["output_bytes"])
+    replay_small_b = run_case(replay_small["input_bytes"], replay_small["output_bytes"])
+    replay_mid_a = run_case(replay_mid["input_bytes"], replay_mid["output_bytes"])
+    replay_mid_b = run_case(replay_mid["input_bytes"], replay_mid["output_bytes"])
     avg_prove = sum(item["prove_time_s"] for item in results) / len(results)
     avg_verify = sum(item["verify_time_s"] for item in results) / len(results)
 
@@ -191,7 +232,10 @@ def main() -> None:
         "summary": {
             "avg_prove_time_s": avg_prove,
             "avg_verify_time_s": avg_verify,
-            "deterministic_commitments": replay_a["joint_commitment"] == replay_b["joint_commitment"],
+            "deterministic_commitments": (
+                replay_small_a["joint_commitment"] == replay_small_b["joint_commitment"]
+                and replay_mid_a["joint_commitment"] == replay_mid_b["joint_commitment"]
+            ),
             "q2_recommendation": recommendation(avg_prove),
         },
     }

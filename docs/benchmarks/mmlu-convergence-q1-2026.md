@@ -38,4 +38,4 @@ python poc/run_poc.py \
 
 ## Raw artifact
 
-- `poc/benchmarks/mmlu_100_mock_seed42.json`
+- [`poc/benchmarks/mmlu_100_mock_seed42.json`](poc/benchmarks/mmlu_100_mock_seed42.json)

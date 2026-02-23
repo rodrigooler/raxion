@@ -29,6 +29,10 @@ fn parse_category(value: &str) -> ConvergenceCategory {
     }
 }
 
+fn clamp01(value: f64) -> f64 {
+    value.clamp(0.0, 1.0)
+}
+
 #[test]
 fn protocol_constants_are_stable() {
     assert!((ALPHA - 0.4).abs() < EPS);
@@ -64,8 +68,22 @@ fn approximate_cc_from_agreement_is_identity_like() {
 
 #[test]
 fn score_component_formula_is_exact() {
-    let result = compute_coherence_from_components(0.7, 0.8, 0.9, 0.75);
-    let expected = ALPHA * result.cs_semantic + BETA * result.cc_approximate;
+    let sim_ts_raw = 0.7;
+    let sim_tn_raw = 0.8;
+    let sim_sn_raw = 0.9;
+    let cc_raw = 0.75;
+    let result = compute_coherence_from_components(sim_ts_raw, sim_tn_raw, sim_sn_raw, cc_raw);
+
+    let recomputed_cs_semantic = geometric_mean(&[
+        clamp01(sim_ts_raw),
+        clamp01(sim_tn_raw),
+        clamp01(sim_sn_raw),
+    ]);
+    let recomputed_cc_approximate = clamp01(cc_raw);
+    let expected = ALPHA * recomputed_cs_semantic + BETA * recomputed_cc_approximate;
+
+    assert!((result.cs_semantic - recomputed_cs_semantic).abs() < EPS);
+    assert!((result.cc_approximate - recomputed_cc_approximate).abs() < EPS);
     assert!((result.score - expected).abs() < EPS);
 }
 
@@ -80,10 +98,27 @@ fn threshold_categories_match_spec() {
 }
 
 #[test]
+fn coherence_result_is_final_matches_threshold_gate() {
+    let low = compute_coherence_from_components(0.2, 0.2, 0.2, 0.2);
+    assert!(!low.is_final());
+
+    let high = compute_coherence_from_components(1.0, 1.0, 1.0, 1.0);
+    assert!(high.is_final());
+
+    let boundary = compute_coherence_from_components(0.0, 0.0, 0.0, THRESHOLD_STANDARD / BETA);
+    assert!((boundary.score - THRESHOLD_STANDARD).abs() < EPS);
+    assert!(boundary.is_final());
+}
+
+#[test]
 fn rust_matches_python_fixtures_within_tolerance() {
     let fixture_text = include_str!("fixtures/coherence_python_fixtures.json");
     let fixtures: Vec<FixtureCase> =
         serde_json::from_str(fixture_text).expect("fixture JSON should parse");
+    assert!(
+        !fixtures.is_empty(),
+        "fixture file tests/fixtures/coherence_python_fixtures.json is empty"
+    );
 
     for fixture in fixtures {
         let result = compute_coherence_from_components(
