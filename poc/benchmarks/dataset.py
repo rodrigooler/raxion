@@ -9,7 +9,7 @@ Selected domains: STEM, reasoning, logic - where convergence is most meaningful.
 Fallback: Hardcoded sample queries if MMLU unavailable.
 """
 from dataclasses import dataclass
-import random
+import hashlib
 
 
 @dataclass
@@ -66,10 +66,8 @@ SAMPLE_QUERIES = [
 
 def load_sample_queries(n: int = 10, seed: int = 42) -> list[BenchmarkQuery]:
     """Return a shuffled sample of benchmark queries."""
-    rng = random.Random(seed)
     queries = SAMPLE_QUERIES.copy()
-    rng.shuffle(queries)
-    return queries[:n]
+    return _deterministic_sample(queries, n=n, seed=seed)
 
 
 def load_mmlu_queries(n: int = 100, seed: int = 42) -> list[BenchmarkQuery]:
@@ -81,7 +79,6 @@ def load_mmlu_queries(n: int = 100, seed: int = 42) -> list[BenchmarkQuery]:
         from datasets import load_dataset
         ds = load_dataset("cais/mmlu", "all", split="test", streaming=True)
         queries = []
-        rng = random.Random(seed)
         for item in ds:
             if len(queries) >= n * 3:
                 break
@@ -96,8 +93,23 @@ def load_mmlu_queries(n: int = 100, seed: int = 42) -> list[BenchmarkQuery]:
                 has_ground_truth=True,
                 ground_truth=["A", "B", "C", "D"][item["answer"]]
             ))
-        rng.shuffle(queries)
-        return queries[:n]
+        return _deterministic_sample(queries, n=n, seed=seed)
     except Exception as e:
         print(f"[WARN] MMLU unavailable ({e}), using sample queries")
         return load_sample_queries(min(n, len(SAMPLE_QUERIES)))
+
+
+def _deterministic_sample(
+    queries: list[BenchmarkQuery],
+    n: int,
+    seed: int,
+) -> list[BenchmarkQuery]:
+    """
+    Deterministically pseudo-shuffle queries without using random module APIs.
+    """
+    keyed = []
+    for q in queries:
+        digest = hashlib.sha256(f"{seed}:{q.domain}:{q.query}".encode("utf-8")).hexdigest()
+        keyed.append((digest, q))
+    keyed.sort(key=lambda item: item[0])
+    return [item[1] for item in keyed[:n]]

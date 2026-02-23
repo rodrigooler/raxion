@@ -26,7 +26,7 @@ class TestGeometricMean:
 
     def test_zero_input(self):
         """Geometric mean with zero returns zero (not undefined)."""
-        assert _geometric_mean([0.0, 0.8, 0.8]) == 0.0
+        assert _geometric_mean([0.0, 0.8, 0.8]) == pytest.approx(0.0, abs=1e-12)
 
     def test_penalizes_outlier_more_than_arithmetic(self):
         """Geometric mean is lower than arithmetic for uneven values."""
@@ -145,15 +145,21 @@ class TestProtocolInvariants:
 
     def test_rejection_threshold_is_0_30(self):
         """Protocol spec: THRESHOLD_REJECT = 0.30"""
-        assert THRESHOLD_REJECT == 0.30, "Rejection threshold changed - requires whitepaper update"
+        assert THRESHOLD_REJECT == pytest.approx(0.30, abs=1e-12), (
+            "Rejection threshold changed - requires whitepaper update"
+        )
 
     def test_standard_threshold_is_0_60(self):
         """Protocol spec: THRESHOLD_STANDARD = 0.60"""
-        assert THRESHOLD_STANDARD == 0.60, "Standard threshold changed - requires whitepaper update"
+        assert THRESHOLD_STANDARD == pytest.approx(0.60, abs=1e-12), (
+            "Standard threshold changed - requires whitepaper update"
+        )
 
     def test_high_threshold_is_0_85(self):
         """Protocol spec: THRESHOLD_HIGH = 0.85"""
-        assert THRESHOLD_HIGH == 0.85, "High threshold changed - requires whitepaper update"
+        assert THRESHOLD_HIGH == pytest.approx(0.85, abs=1e-12), (
+            "High threshold changed - requires whitepaper update"
+        )
 
     def test_alpha_beta_sum_to_1(self):
         """Protocol spec: alpha + beta = 1.0"""
@@ -162,8 +168,8 @@ class TestProtocolInvariants:
 
     def test_alpha_is_0_4(self):
         from poc.convergence.coherence import ALPHA
-        assert ALPHA == 0.4, "alpha changed - requires whitepaper update"
+        assert ALPHA == pytest.approx(0.4, abs=1e-12), "alpha changed - requires whitepaper update"
 
     def test_beta_is_0_6(self):
         from poc.convergence.coherence import BETA
-        assert BETA == 0.6, "beta changed - requires whitepaper update"
+        assert BETA == pytest.approx(0.6, abs=1e-12), "beta changed - requires whitepaper update"

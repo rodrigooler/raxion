@@ -76,7 +76,7 @@ def run_single_query(
     result = compute_coherence_score(out_t.output, out_s.output)
 
     if verbose:
-        print(f"\n[CoherenceScore]")
+        print("\n[CoherenceScore]")
         print(f"  Score:       {result.score:.3f}")
         print(f"  Category:    {result.category.value}")
         print(f"  CS_semantic: {result.cs_semantic:.3f}")
