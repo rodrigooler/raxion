@@ -57,7 +57,7 @@ class TestCosineSimilarity:
         assert abs(cosine_similarity(a, b) - (-1.0)) < 1e-6
 
     def test_requires_normalized_input(self):
-        with pytest.raises(AssertionError):
+        with pytest.raises(ValueError):
             cosine_similarity(np.array([2.0, 0.0]), np.array([1.0, 0.0]))
 
 

@@ -44,9 +44,13 @@ class BaseArchitecture(ABC):
         """
         ...
 
-    def _timed_infer(self, query: str, context: Optional[str] = None) -> InferenceOutput:
+    def timed_infer(self, query: str, context: Optional[str] = None) -> InferenceOutput:
         """Wrapper that measures latency."""
         start = time.perf_counter()
         result = self.infer(query, context)
         result.latency_ms = (time.perf_counter() - start) * 1000
         return result
+
+    def _timed_infer(self, query: str, context: Optional[str] = None) -> InferenceOutput:
+        """Backward-compatible alias for timed_infer."""
+        return self.timed_infer(query, context)

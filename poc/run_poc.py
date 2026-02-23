@@ -44,7 +44,7 @@ def run_single_query(
         print(f"QUERY: {query[:80]}{'...' if len(query) > 80 else ''}")
 
     try:
-        out_t = transformer._timed_infer(query)
+        out_t = transformer.timed_infer(query)
     except Exception as err:
         out_t = InferenceOutput(
             architecture="transformer",
@@ -56,7 +56,7 @@ def run_single_query(
         )
 
     try:
-        out_s = ssm._timed_infer(query)
+        out_s = ssm.timed_infer(query)
     except Exception as err:
         out_s = InferenceOutput(
             architecture="ssm",

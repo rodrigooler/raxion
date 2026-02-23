@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 """
 Load benchmark queries for PoC convergence validation.
 

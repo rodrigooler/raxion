@@ -21,7 +21,7 @@ def check_convergence_rate() -> bool:
 
     provider = "openrouter" if check_openrouter_configured() else "mock"
     if provider == "mock":
-        print("  [INFO] OPENROUTER_API_KEY not set - using mock provider for automated check")
+        print("  [WARN] OPENROUTER_API_KEY not set - using mock provider for automated check")
 
     transformer = TransformerArchitecture(provider=provider)
     ssm = SSMProxyArchitecture(provider=provider)
@@ -42,11 +42,14 @@ def check_convergence_rate() -> bool:
 
 def check_risc_zero_proof() -> bool:
     """Check RISC Zero host builds successfully."""
+    env = dict(os.environ)
+    env.setdefault("RISC0_SKIP_BUILD_KERNELS", "1")
     result = subprocess.run(
         ["cargo", "build", "--release", "-p", "risc0-host"],
         cwd="proofs",
         capture_output=True,
         text=True,
+        env=env,
     )
     if result.returncode != 0:
         print(f"  [FAIL] cargo build failed:\n{result.stderr[:500]}")
@@ -57,7 +60,7 @@ def check_risc_zero_proof() -> bool:
 def check_unit_tests() -> bool:
     """Run all unit tests."""
     result = subprocess.run(
-        [".venv/bin/pytest", "poc/tests/", "-v", "--tb=short"],
+        [sys.executable, "-m", "pytest", "poc/tests/", "-v", "--tb=short"],
         capture_output=True,
         text=True,
     )

@@ -52,7 +52,7 @@ class TransformerArchitecture(BaseArchitecture):
                 architecture=self.architecture_type,
                 query=query,
                 output=response["content"],
-                latency_ms=0.0,  # filled by _timed_infer
+                latency_ms=0.0,  # filled by timed_infer
                 model_id=self.model_id,
                 metadata={
                     "provider": "openrouter",
@@ -86,7 +86,7 @@ class TransformerArchitecture(BaseArchitecture):
                 architecture=self.architecture_type,
                 query=query,
                 output=response["message"]["content"].strip(),
-                latency_ms=0.0,  # filled by _timed_infer
+                latency_ms=0.0,  # filled by timed_infer
                 model_id=self.model_id,
                 metadata={"provider": "ollama", "tokens": response.get("eval_count", 0)},
             )
@@ -112,9 +112,9 @@ def check_ollama_available(model: str = "llama3.1:8b") -> bool:
         import ollama
 
         models = ollama.list()
-        available = [m["name"] for m in models.get("models", [])]
-        return any(model in m for m in available)
-    except Exception:
+        available = [m.get("model", "") for m in models.get("models", [])]
+        return any(model in available_model for available_model in available)
+    except (ImportError, KeyError, TypeError):
         return False
 
 

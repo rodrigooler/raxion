@@ -1,18 +1,11 @@
 use std::time::Instant;
 
 use anyhow::Result;
+use risc0_types::InferenceCommitment;
 use risc0_zkvm::{default_prover, ExecutorEnv, Receipt};
 
 mod methods {
     include!(concat!(env!("OUT_DIR"), "/methods.rs"));
-}
-
-#[derive(serde::Serialize, serde::Deserialize, Debug)]
-pub struct InferenceCommitment {
-    pub input_hash: [u8; 32],
-    pub output_hash: [u8; 32],
-    pub joint_commitment: [u8; 32],
-    pub architecture: String,
 }
 
 fn generate_proof(
@@ -23,9 +16,9 @@ fn generate_proof(
     println!("[RAXION] Preparing zkVM environment...");
 
     let env = ExecutorEnv::builder()
-        .write(&input.as_bytes().to_vec())?
-        .write(&output.as_bytes().to_vec())?
-        .write(&architecture.to_string())?
+        .write(&input.as_bytes())?
+        .write(&output.as_bytes())?
+        .write(&architecture)?
         .build()?;
 
     println!("[RAXION] Generating proof (this takes 15-40s on CPU)...");
@@ -45,7 +38,7 @@ fn generate_proof(
 fn verify_proof(receipt: &Receipt) -> Result<()> {
     println!("[RAXION] Verifying proof...");
     receipt.verify(methods::RAXION_INFERENCE_PROOF_ID)?;
-    println!("[RAXION] Proof verified successfully");
+    println!("[RAXION] ✅ Proof verified successfully");
     Ok(())
 }
 

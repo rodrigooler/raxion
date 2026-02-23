@@ -743,12 +743,20 @@ dependencies = [
 ]
 
 [[package]]
-name = "risc0-host-guest"
+name = "risc0-guest-adapter"
 version = "0.1.0"
 dependencies = [
+ "risc0-types",
  "risc0-zkvm",
  "serde",
  "sha2",
+]
+
+[[package]]
+name = "risc0-types"
+version = "0.1.0"
+dependencies = [
+ "serde",
 ]
 
 [[package]]

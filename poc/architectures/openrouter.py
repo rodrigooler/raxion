@@ -65,16 +65,25 @@ def chat_openrouter(
     except urllib.error.URLError as err:
         raise RuntimeError(f"OpenRouter connection error: {err}") from err
 
-    choices = data.get("choices", [])
-    if not choices:
+    choices = data.get("choices")
+    if not isinstance(choices, list) or not choices:
         raise RuntimeError(f"OpenRouter returned no choices: {data}")
 
-    message = choices[0].get("message", {})
-    content = message.get("content", "").strip()
+    first_choice = choices[0]
+    if not isinstance(first_choice, dict):
+        raise RuntimeError(f"OpenRouter returned malformed choice entry: {data}")
+
+    message = first_choice.get("message")
+    if not isinstance(message, dict):
+        raise RuntimeError(f"OpenRouter returned malformed message payload: {data}")
+
+    content = message.get("content")
+    if not isinstance(content, str) or not content.strip():
+        raise RuntimeError(f"OpenRouter returned empty content payload: {data}")
 
     usage = data.get("usage", {})
     return {
-        "content": content,
+        "content": content.strip(),
         "usage": usage,
         "provider": data.get("provider"),
     }

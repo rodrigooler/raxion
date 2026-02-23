@@ -2,21 +2,14 @@
 #![no_std]
 
 extern crate alloc;
-use alloc::string::String;
 use alloc::vec::Vec;
 
+use alloc::string::String;
+use risc0_types::InferenceCommitment;
 use risc0_zkvm::guest::env;
 use sha2::{Digest, Sha256};
 
 risc0_zkvm::guest::entry!(main);
-
-#[derive(serde::Serialize, serde::Deserialize)]
-pub struct InferenceCommitment {
-    pub input_hash: [u8; 32],
-    pub output_hash: [u8; 32],
-    pub joint_commitment: [u8; 32],
-    pub architecture: String,
-}
 
 fn main() {
     let input_bytes: Vec<u8> = env::read();
@@ -39,6 +32,7 @@ fn main() {
         let mut hasher = Sha256::new();
         hasher.update(input_hash);
         hasher.update(output_hash);
+        hasher.update(architecture.as_bytes());
         hasher.finalize().into()
     };
 

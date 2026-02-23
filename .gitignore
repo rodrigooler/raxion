@@ -10,7 +10,6 @@ dist/
 
 # Rust
 target/
-Cargo.lock   # keep for binaries, gitignore for libs
 
 # Data
 poc/data/*.jsonl
@@ -21,3 +20,8 @@ poc/benchmarks/results/
 .idea/
 .vscode/
 *.swp
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini

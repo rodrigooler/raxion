@@ -36,7 +36,14 @@ def cosine_similarity(a: np.ndarray, b: np.ndarray) -> float:
 
     Returns: float in [-1, 1]
     """
-    assert a.ndim == 1 and b.ndim == 1, "Inputs must be 1D vectors"
-    assert abs(np.linalg.norm(a) - 1.0) < 1e-5, "Vector a must be L2-normalized"
-    assert abs(np.linalg.norm(b) - 1.0) < 1e-5, "Vector b must be L2-normalized"
+    if a.ndim != 1 or b.ndim != 1:
+        raise ValueError("Inputs must be 1D vectors")
+
+    norm_a = float(np.linalg.norm(a))
+    norm_b = float(np.linalg.norm(b))
+    if abs(norm_a - 1.0) >= 1e-5:
+        raise ValueError(f"Vector a must be L2-normalized (got norm={norm_a:.6f})")
+    if abs(norm_b - 1.0) >= 1e-5:
+        raise ValueError(f"Vector b must be L2-normalized (got norm={norm_b:.6f})")
+
     return float(np.dot(a, b))
