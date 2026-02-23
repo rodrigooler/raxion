@@ -17,6 +17,21 @@ GitHub: https://github.com/raxion-network/raxion
 License: BUSL 1.1 → MIT 2030-02-20
 ```
 
+### Q1 Execution Notes (2026-02-22)
+
+- PoC benchmark runner completed with `--n 10` using the `mock` provider:
+  - average coherence: `0.841`
+  - cognitive finality rate: `100.0%`
+  - H1 status in this run: `PASSED` (simulation-only signal)
+- Live OpenRouter single-query runs validated wrapper integration for:
+  - `arcee-ai/trinity-large-preview:free`
+  - `z-ai/glm-4.5-air:free`
+- RISC Zero scaffold validated in `RISC0_DEV_MODE=1`:
+  - proof generation observed: `~0.13s` on local machine
+  - proof verification succeeded
+  - joint commitment deterministic across repeated runs
+- Caveat: non-dev proof mode depends on local `r0vm` runtime stability and remains under tuning.
+
 ---
 
 ## Validated Hypotheses

@@ -1,0 +1,10 @@
+[workspace]
+members = [
+    "risc0-host",
+    "risc0-guest",
+    "risc0-types",
+]
+resolver = "2"
+
+[patch.crates-io]
+sha2 = { git = "https://github.com/risc0/RustCrypto-hashes", branch = "risczero", package = "sha2" }
