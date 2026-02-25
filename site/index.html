@@ -3,21 +3,21 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        
+
         <title>RAXION | The Blockchain That Thinks</title>
-        
+
         <meta name="description" content="RAXION is the first sovereign blockchain that transforms intelligence from a service into a verifiable state. Zero human subjectivity. Mathematical proof. Cognitive Finality." />
         <meta name="keywords" content="blockchain, AI, decentralized intelligence, zk-ML, sovereign rollup, Solana, neural network, cognitive finality, proof of inference, RAXION" />
         <meta name="author" content="RAXION Protocol" />
         <meta name="robots" content="index, follow" />
         <meta name="theme-color" content="#050505" />
-        
+
         <link rel="canonical" href="https://raxion.network/" />
-        
+
         <link rel="icon" href="assets/favicon.ico" sizes="any" />
         <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
         <link rel="apple-touch-icon" href="assets/favicon.ico" />
-        
+
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://raxion.network/" />
         <meta property="og:title" content="RAXION | The Blockchain That Thinks" />
@@ -28,13 +28,13 @@
         <meta property="og:image:height" content="630" />
         <meta property="og:site_name" content="RAXION Protocol" />
         <meta property="og:locale" content="en_US" />
-        
+
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:url" content="https://raxion.network/" />
         <meta name="twitter:title" content="RAXION | The Blockchain That Thinks" />
         <meta name="twitter:description" content="The first sovereign blockchain that transforms intelligence from a service into a verifiable state. Zero human subjectivity. Mathematical proof." />
         <meta name="twitter:image" content="https://raxion.network/assets/og.webp" />
-        
+
         <link rel="dns-prefetch" href="https://cdn.tailwindcss.com" />
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
         <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
@@ -44,7 +44,7 @@
             href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=JetBrains+Mono:wght@300;400;500&family=Inter:wght@300;400&display=swap"
             rel="stylesheet"
         />
-        
+
         <script type="application/ld+json">
         {
             "@context": "https://schema.org",
@@ -57,7 +57,7 @@
             ]
         }
         </script>
-        
+
         <script src="https://cdn.tailwindcss.com"></script>
         <script>
             tailwind.config = {
@@ -77,8 +77,7 @@
                             },
                         },
                         animation: {
-                            "pulse-slow":
-                                "pulse 8s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+                            "pulse-slow": "pulse 8s cubic-bezier(0.4, 0, 0.6, 1) infinite",
                             float: "float 10s ease-in-out infinite",
                             "spin-slow": "spin 20s linear infinite",
                             "spin-slow-rev": "spin 15s linear infinite reverse",
@@ -90,63 +89,41 @@
         </script>
         <style>
             @keyframes float {
-                0%,
-                100% {
-                    transform: translate(0, 0) rotate(0deg);
-                }
-                33% {
-                    transform: translate(10px, -20px) rotate(1deg);
-                }
-                66% {
-                    transform: translate(-15px, 10px) rotate(-1deg);
-                }
+                0%, 100% { transform: translate(0, 0) rotate(0deg); }
+                33% { transform: translate(10px, -20px) rotate(1deg); }
+                66% { transform: translate(-15px, 10px) rotate(-1deg); }
             }
-
             @keyframes marquee {
-                0% {
-                    transform: translateX(0);
-                }
-                100% {
-                    transform: translateX(-50%);
-                }
+                0% { transform: translateX(0); }
+                100% { transform: translateX(-50%); }
             }
-
             @keyframes fadeUp {
-                from {
-                    opacity: 0;
-                    transform: translateY(30px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
+                from { opacity: 0; transform: translateY(30px); }
+                to { opacity: 1; transform: translateY(0); }
             }
-
-            @keyframes glitch {
-                0% {
-                    clip-path: inset(40% 0 61% 0);
-                    transform: translate(-2px, 0);
-                }
-                20% {
-                    clip-path: inset(92% 0 1% 0);
-                    transform: translate(2px, 0);
-                }
-                40% {
-                    clip-path: inset(43% 0 1% 0);
-                    transform: translate(0, 0);
-                }
-                60% {
-                    clip-path: inset(25% 0 58% 0);
-                    transform: translate(-2px, 0);
-                }
-                80% {
-                    clip-path: inset(54% 0 7% 0);
-                    transform: translate(2px, 0);
-                }
-                100% {
-                    clip-path: inset(58% 0 43% 0);
-                    transform: translate(0, 0);
-                }
+            @keyframes shimmer {
+                0% { transform: translateX(-100%) rotate(45deg); }
+                100% { transform: translateX(100%) rotate(45deg); }
+            }
+            @keyframes scan {
+                0% { top: 0; opacity: 1; }
+                100% { top: 100%; opacity: 0; }
+            }
+            @keyframes progress {
+                from { width: 0; }
+                to { width: 66.67%; }
+            }
+            @keyframes blink {
+                0%, 100% { opacity: 1; }
+                50% { opacity: 0; }
+            }
+            @keyframes countup {
+                from { opacity: 0; transform: translateY(8px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            @keyframes lineGrow {
+                from { transform: scaleX(0); }
+                to { transform: scaleX(1); }
             }
 
             .grain {
@@ -160,34 +137,19 @@
                 pointer-events: none;
                 z-index: 999;
             }
-
             .lens-flare {
-                background: radial-gradient(
-                    circle at center,
-                    var(--tw-gradient-from) 0%,
-                    transparent 70%
-                );
+                background: radial-gradient(circle at center, var(--tw-gradient-from) 0%, transparent 70%);
                 filter: blur(60px);
                 mix-blend-mode: screen;
             }
-
-            .text-outline {
-                -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
-                color: transparent;
-            }
-
-            .text-outline-dark {
-                -webkit-text-stroke: 2px rgba(0, 0, 0, 0.7);
-                color: transparent;
-            }
-
+            .text-outline { -webkit-text-stroke: 1px rgba(255,255,255,0.2); color: transparent; }
+            .text-outline-dark { -webkit-text-stroke: 2px rgba(0,0,0,0.7); color: transparent; }
             .shimmer-border {
                 position: relative;
-                background: rgba(255, 255, 255, 0.03);
-                border: 1px solid rgba(255, 255, 255, 0.1);
+                background: rgba(255,255,255,0.03);
+                border: 1px solid rgba(255,255,255,0.1);
                 overflow: hidden;
             }
-
             .shimmer-border::after {
                 content: "";
                 position: absolute;
@@ -195,25 +157,10 @@
                 left: -50%;
                 width: 200%;
                 height: 200%;
-                background: linear-gradient(
-                    45deg,
-                    transparent,
-                    rgba(0, 240, 255, 0.08),
-                    transparent
-                );
+                background: linear-gradient(45deg, transparent, rgba(0,240,255,0.08), transparent);
                 transform: rotate(45deg);
                 animation: shimmer 6s linear infinite;
             }
-
-            @keyframes shimmer {
-                0% {
-                    transform: translateX(-100%) rotate(45deg);
-                }
-                100% {
-                    transform: translateX(100%) rotate(45deg);
-                }
-            }
-
             .cursor {
                 width: 20px;
                 height: 20px;
@@ -223,357 +170,184 @@
                 pointer-events: none;
                 z-index: 10000;
                 transform: translate(-50%, -50%);
-                transition:
-                    width 0.2s,
-                    height 0.2s,
-                    border-color 0.2s;
+                transition: width 0.2s, height 0.2s, border-color 0.2s;
                 mix-blend-mode: difference;
             }
-
-            .cursor.hover {
-                width: 40px;
-                height: 40px;
-                border-color: #ff003c;
-            }
-
+            .cursor.hover { width: 40px; height: 40px; border-color: #ff003c; }
             .reveal {
                 opacity: 0;
                 transform: translateY(28px);
-                transition:
-                    opacity 0.9s cubic-bezier(0.23, 1, 0.32, 1),
-                    transform 0.9s cubic-bezier(0.23, 1, 0.32, 1);
+                transition: opacity 0.9s cubic-bezier(0.23,1,0.32,1), transform 0.9s cubic-bezier(0.23,1,0.32,1);
             }
-
-            .reveal.visible {
-                opacity: 1;
-                transform: translateY(0);
-            }
-
-            .reveal-delay-1 {
-                transition-delay: 0.1s;
-            }
-            .reveal-delay-2 {
-                transition-delay: 0.2s;
-            }
-            .reveal-delay-3 {
-                transition-delay: 0.35s;
-            }
-            .reveal-delay-4 {
-                transition-delay: 0.5s;
-            }
-
-            .hero-word {
-                display: inline-block;
-                animation: fadeUp 0.8s cubic-bezier(0.23, 1, 0.32, 1) both;
-            }
-
-            .hero-word:nth-child(1) {
-                animation-delay: 0.1s;
-            }
-            .hero-word:nth-child(2) {
-                animation-delay: 0.25s;
-            }
-            .hero-word:nth-child(3) {
-                animation-delay: 0.4s;
-            }
-            .hero-word:nth-child(4) {
-                animation-delay: 0.55s;
-            }
-
+            .reveal.visible { opacity: 1; transform: translateY(0); }
+            .reveal-delay-1 { transition-delay: 0.1s; }
+            .reveal-delay-2 { transition-delay: 0.2s; }
+            .reveal-delay-3 { transition-delay: 0.35s; }
+            .reveal-delay-4 { transition-delay: 0.5s; }
+            .hero-word { display: inline-block; animation: fadeUp 0.8s cubic-bezier(0.23,1,0.32,1) both; }
+            .hero-word:nth-child(1) { animation-delay: 0.1s; }
+            .hero-word:nth-child(2) { animation-delay: 0.25s; }
+            .hero-word:nth-child(3) { animation-delay: 0.4s; }
+            .hero-word:nth-child(4) { animation-delay: 0.55s; }
             .scanline::before {
                 content: "";
                 position: absolute;
-                top: 0;
-                left: 0;
-                right: 0;
+                top: 0; left: 0; right: 0;
                 height: 1px;
-                background: linear-gradient(
-                    90deg,
-                    transparent,
-                    rgba(0, 240, 255, 0.4),
-                    transparent
-                );
+                background: linear-gradient(90deg, transparent, rgba(0,240,255,0.4), transparent);
                 animation: scan 3s linear infinite;
             }
-
-            @keyframes scan {
-                0% {
-                    top: 0;
-                    opacity: 1;
-                }
-                100% {
-                    top: 100%;
-                    opacity: 0;
-                }
-            }
-
             .progress-bar {
                 animation: progress 3s ease-out both;
                 animation-delay: 0.5s;
             }
+            .blink::after { content: "_"; animation: blink 1s step-end infinite; }
+            .ticker-number { font-variant-numeric: tabular-nums; }
 
-            @keyframes progress {
-                from {
-                    width: 0;
-                }
-                to {
-                    width: 66.67%;
-                }
+            /* Problem/Solution section */
+            .problem-card {
+                border: 1px solid rgba(255,0,60,0.15);
+                background: rgba(255,0,60,0.03);
+                transition: border-color 0.3s, background 0.3s;
+            }
+            .problem-card:hover {
+                border-color: rgba(255,0,60,0.3);
+                background: rgba(255,0,60,0.06);
+            }
+            .solution-card {
+                border: 1px solid rgba(0,240,255,0.15);
+                background: rgba(0,240,255,0.03);
+                transition: border-color 0.3s, background 0.3s;
+            }
+            .solution-card:hover {
+                border-color: rgba(0,240,255,0.3);
+                background: rgba(0,240,255,0.06);
             }
 
-            .blink::after {
-                content: "_";
-                animation: blink 1s step-end infinite;
+            /* Timeline */
+            .timeline-line {
+                transform-origin: left;
+                animation: lineGrow 1.2s cubic-bezier(0.23,1,0.32,1) both;
+                animation-delay: 0.3s;
+            }
+            .phase-active { position: relative; }
+            .phase-active::before {
+                content: '';
+                position: absolute;
+                left: -1px;
+                top: 0; bottom: 0;
+                width: 2px;
+                background: linear-gradient(to bottom, #00F0FF, transparent);
             }
 
-            @keyframes blink {
-                0%,
-                100% {
-                    opacity: 1;
-                }
-                50% {
-                    opacity: 0;
-                }
+            /* Coherence meter animation */
+            .meter-fill {
+                animation: meterFill 2s cubic-bezier(0.23,1,0.32,1) both;
+                animation-delay: 0.8s;
             }
-
-            .ticker-number {
-                font-variant-numeric: tabular-nums;
+            @keyframes meterFill {
+                from { width: 0; }
+                to { width: var(--target-width); }
             }
         </style>
     </head>
-    <body
-        class="bg-black text-white selection:bg-brand-blue selection:text-black overflow-x-hidden"
-    >
+    <body class="bg-black text-white selection:bg-brand-blue selection:text-black overflow-x-hidden">
         <div class="grain" aria-hidden="true"></div>
         <div id="cursor" class="cursor hidden md:block" aria-hidden="true"></div>
 
+        <!-- Background flares -->
         <div class="fixed inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
-            <div
-                id="flare-1"
-                class="lens-flare absolute -top-1/4 -left-1/4 w-[700px] h-[700px] from-brand-red/10 opacity-25 transition-transform duration-300"
-            ></div>
-            <div
-                id="flare-2"
-                class="lens-flare absolute -bottom-1/4 -right-1/4 w-[700px] h-[700px] from-brand-blue/10 opacity-25 transition-transform duration-300"
-            ></div>
-            <div
-                class="lens-flare absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] from-brand-purple/5 opacity-20"
-            ></div>
+            <div id="flare-1" class="lens-flare absolute -top-1/4 -left-1/4 w-[700px] h-[700px] from-brand-red/10 opacity-25 transition-transform duration-300"></div>
+            <div id="flare-2" class="lens-flare absolute -bottom-1/4 -right-1/4 w-[700px] h-[700px] from-brand-blue/10 opacity-25 transition-transform duration-300"></div>
+            <div class="lens-flare absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] from-brand-purple/5 opacity-20"></div>
         </div>
 
+        <!-- Header -->
         <header class="fixed top-0 w-full z-50 p-6">
-            <div
-                class="max-w-[1800px] mx-auto flex justify-between items-center"
-            >
-                <h1
-                    class="font-display text-3xl tracking-tighter font-black mix-blend-difference"
-                >
-                    RAXION.
-                </h1>
-                <nav
-                    class="hidden lg:flex gap-12 font-mono text-[10px] uppercase tracking-[0.3em] text-gray-400"
-                >
-                    <a
-                        href="#arch"
-                        class="hover:text-brand-blue transition-colors duration-300"
-                        >Architecture</a
-                    >
-                    <a
-                        href="#logic"
-                        class="hover:text-brand-blue transition-colors duration-300"
-                        >Logic</a
-                    >
-                    <a
-                        href="#whitepaper"
-                        class="hover:text-brand-blue transition-colors duration-300"
-                        >Whitepaper</a
-                    >
+            <div class="max-w-[1800px] mx-auto flex justify-between items-center">
+                <h1 class="font-display text-3xl tracking-tighter font-black mix-blend-difference">RAXION.</h1>
+                <nav class="hidden lg:flex gap-12 font-mono text-[10px] uppercase tracking-[0.3em] text-gray-400">
+                    <a href="#problem" class="hover:text-brand-red transition-colors duration-300">Problem</a>
+                    <a href="#arch" class="hover:text-brand-blue transition-colors duration-300">Architecture</a>
+                    <a href="#logic" class="hover:text-brand-blue transition-colors duration-300">Logic</a>
+                    <a href="#roadmap" class="hover:text-brand-blue transition-colors duration-300">Roadmap</a>
+                    <a href="#whitepaper" class="hover:text-brand-blue transition-colors duration-300">Whitepaper</a>
                 </nav>
-
-                <div
-                    class="lg:hidden font-mono text-[10px] uppercase tracking-widest text-gray-500"
-                >
-                    v0.3
-                </div>
+                <div class="lg:hidden font-mono text-[10px] uppercase tracking-widest text-gray-500">v1.0</div>
             </div>
         </header>
 
         <main class="relative z-10">
-            <section
-                class="min-h-screen flex items-center justify-center p-6 pt-32"
-            >
-                <div
-                    class="max-w-[1400px] w-full grid lg:grid-cols-12 gap-12 items-center"
-                >
+
+            <!-- ══════════════════════════════════
+                 HERO
+            ══════════════════════════════════ -->
+            <section class="min-h-screen flex items-center justify-center p-6 pt-32">
+                <div class="max-w-[1400px] w-full grid lg:grid-cols-12 gap-12 items-center">
                     <div class="lg:col-span-7 relative z-20">
-                        <div
-                            class="inline-block px-3 py-1 border border-brand-red text-brand-red font-mono text-[10px] tracking-widest uppercase mb-8 animate-pulse"
-                        >
-                            System Status: Sovereign
+                        <div class="inline-block px-3 py-1 border border-brand-red text-brand-red font-mono text-[10px] tracking-widest uppercase mb-8 animate-pulse">
+                            Phase 0 — Genesis Active
                         </div>
 
-                        <h2
-                            class="font-display text-7xl lg:text-[108px] leading-[0.85] font-black tracking-tighter mb-10"
-                        >
+                        <h2 class="font-display text-7xl lg:text-[108px] leading-[0.85] font-black tracking-tighter mb-10">
                             <span class="hero-word block">THE</span>
-                            <span class="hero-word block text-outline"
-                                >BLOCK</span
-                            >
+                            <span class="hero-word block text-outline">BLOCK</span>
                             <span class="hero-word block">CHAIN</span>
-                            <span class="hero-word block text-brand-blue"
-                                >THAT THINKS.</span
-                            >
+                            <span class="hero-word block text-brand-blue">THAT THINKS.</span>
                         </h2>
 
-                        <div
-                            class="flex flex-col md:flex-row gap-8 items-start mt-10"
-                        >
-                            <div
-                                class="font-mono text-sm text-gray-500 max-w-sm leading-relaxed"
-                            >
-                                <p class="mb-4">
-                                    [01] Moving intelligence from a service into
-                                    a sovereign, verifiable state.
-                                </p>
-                                <p>
-                                    [02] Real-time mathematical proof. Zero
-                                    human subjectivity.
-                                </p>
+                        <div class="flex flex-col md:flex-row gap-8 items-start mt-10">
+                            <div class="font-mono text-sm text-gray-500 max-w-sm leading-relaxed">
+                                <p class="mb-4">[01] AI inference quality — mathematically proven, not voted.</p>
+                                <p>[02] No human validators. No cartels. No oracle problem.</p>
                             </div>
-                            <div
-                                class="flex flex-col gap-3 w-full md:w-auto md:min-w-[220px]"
-                            >
-                                <a
-                                    href="#arch"
-                                    class="px-8 py-4 bg-white text-black font-display font-black text-base hover:bg-brand-blue transition-all duration-300 text-center tracking-wide"
-                                >
-                                    ENTER THE CORE
+                            <div class="flex flex-col gap-3 w-full md:w-auto md:min-w-[220px]">
+                                <a href="#problem" class="px-8 py-4 bg-white text-black font-display font-black text-base hover:bg-brand-blue transition-all duration-300 text-center tracking-wide">
+                                    SEE THE PROBLEM
                                 </a>
-                                <a
-                                    href="https://github.com/rodrigooler/raxion"
-                                    target="_blank"
-                                    class="px-8 py-4 border border-white/20 font-display font-black text-base hover:bg-white/10 hover:border-white/40 transition-all duration-300 text-center tracking-wide"
-                                >
+                                <a href="https://github.com/rodrigooler/raxion" target="_blank" class="px-8 py-4 border border-white/20 font-display font-black text-base hover:bg-white/10 hover:border-white/40 transition-all duration-300 text-center tracking-wide">
                                     GITHUB_REPO
                                 </a>
                             </div>
                         </div>
 
-                        <div
-                            class="mt-14 grid grid-cols-3 gap-4 border-t border-white/10 pt-8"
-                        >
+                        <div class="mt-14 grid grid-cols-3 gap-4 border-t border-white/10 pt-8">
                             <div>
-                                <div
-                                    class="font-display text-3xl font-black text-brand-blue ticker-number"
-                                >
-                                    &lt;1<span class="text-white/40 text-xl"
-                                        >s</span
-                                    >
-                                </div>
-                                <div
-                                    class="font-mono text-[9px] uppercase tracking-widest text-gray-600 mt-1"
-                                >
-                                    Cognitive Finality
-                                </div>
-                                <div
-                                    class="font-mono text-[8px] text-gray-700 mt-0.5"
-                                >
-                                    Mainnet target w/ ZK hw
-                                </div>
+                                <div class="font-display text-3xl font-black text-brand-blue ticker-number">&lt;2<span class="text-white/40 text-xl">s</span></div>
+                                <div class="font-mono text-[9px] uppercase tracking-widest text-gray-600 mt-1">Cognitive Finality</div>
+                                <div class="font-mono text-[8px] text-gray-700 mt-0.5">Mainnet v1 target</div>
                             </div>
                             <div>
-                                <div
-                                    class="font-display text-3xl font-black ticker-number"
-                                >
-                                    ∞<span class="text-white/40 text-xl">
-                                        th</span
-                                    >
-                                </div>
-                                <div
-                                    class="font-mono text-[9px] uppercase tracking-widest text-gray-600 mt-1"
-                                >
-                                    Parallel Threads
-                                </div>
+                                <div class="font-display text-3xl font-black ticker-number">3<span class="text-white/40 text-xl"> arch</span></div>
+                                <div class="font-mono text-[9px] uppercase tracking-widest text-gray-600 mt-1">Cross-Validation</div>
+                                <div class="font-mono text-[8px] text-gray-700 mt-0.5">Transformer + SSM + NeuroSym</div>
                             </div>
                             <div>
-                                <div
-                                    class="font-display text-3xl font-black text-brand-red ticker-number"
-                                >
-                                    0<span class="text-white/40 text-xl">
-                                        votes</span
-                                    >
-                                </div>
-                                <div
-                                    class="font-mono text-[9px] uppercase tracking-widest text-gray-600 mt-1"
-                                >
-                                    Human Judges
-                                </div>
+                                <div class="font-display text-3xl font-black text-brand-red ticker-number">0<span class="text-white/40 text-xl"> votes</span></div>
+                                <div class="font-mono text-[9px] uppercase tracking-widest text-gray-600 mt-1">Human Judges</div>
+                                <div class="font-mono text-[8px] text-gray-700 mt-0.5">Math replaces opinion</div>
                             </div>
                         </div>
                     </div>
 
-                    <div
-                        class="lg:col-span-5 relative flex justify-center py-16 lg:py-0"
-                    >
-                        <div
-                            class="relative w-64 h-64 lg:w-[360px] lg:h-[360px]"
-                        >
-                            <div
-                                class="absolute inset-0 bg-black rounded-full shadow-[0_0_120px_30px_rgba(255,255,255,0.08)] z-10"
-                            ></div>
-                            <div
-                                class="absolute -inset-16 border border-white/5 rounded-full"
-                                style="animation: spin 20s linear infinite"
-                            ></div>
-                            <div
-                                class="absolute -inset-8 border border-brand-blue/15 rounded-full"
-                                style="
-                                    animation: spin 15s linear infinite reverse;
-                                "
-                            ></div>
-                            <div
-                                class="absolute -inset-24 border border-brand-red/10 rounded-full"
-                                style="animation: spin 30s linear infinite"
-                            ></div>
-                            <div
-                                class="absolute -inset-32 bg-gradient-to-tr from-brand-red/15 via-transparent to-brand-blue/15 rounded-full blur-3xl opacity-60"
-                                style="animation: pulse 8s ease-in-out infinite"
-                            ></div>
-
-                            <div
-                                class="absolute inset-0"
-                                style="
-                                    animation: float 10s ease-in-out infinite;
-                                "
-                            >
-                                <div
-                                    class="absolute top-0 left-1/2 w-1.5 h-1.5 bg-white rounded-full shadow-[0_0_6px_#fff]"
-                                ></div>
-                                <div
-                                    class="absolute bottom-1/4 right-0 w-2 h-2 bg-brand-blue rounded-full blur-sm shadow-[0_0_8px_#00F0FF]"
-                                ></div>
-                                <div
-                                    class="absolute top-1/2 -left-8 w-1 h-1 bg-brand-red rounded-full shadow-[0_0_6px_#FF003C]"
-                                ></div>
-                                <div
-                                    class="absolute top-1/4 right-1/4 w-1 h-1 bg-brand-purple rounded-full"
-                                ></div>
+                    <!-- Orb -->
+                    <div class="lg:col-span-5 relative flex justify-center py-16 lg:py-0">
+                        <div class="relative w-64 h-64 lg:w-[360px] lg:h-[360px]">
+                            <div class="absolute inset-0 bg-black rounded-full shadow-[0_0_120px_30px_rgba(255,255,255,0.08)] z-10"></div>
+                            <div class="absolute -inset-16 border border-white/5 rounded-full" style="animation: spin 20s linear infinite"></div>
+                            <div class="absolute -inset-8 border border-brand-blue/15 rounded-full" style="animation: spin 15s linear infinite reverse"></div>
+                            <div class="absolute -inset-24 border border-brand-red/10 rounded-full" style="animation: spin 30s linear infinite"></div>
+                            <div class="absolute -inset-32 bg-gradient-to-tr from-brand-red/15 via-transparent to-brand-blue/15 rounded-full blur-3xl opacity-60" style="animation: pulse 8s ease-in-out infinite"></div>
+                            <div class="absolute inset-0" style="animation: float 10s ease-in-out infinite">
+                                <div class="absolute top-0 left-1/2 w-1.5 h-1.5 bg-white rounded-full shadow-[0_0_6px_#fff]"></div>
+                                <div class="absolute bottom-1/4 right-0 w-2 h-2 bg-brand-blue rounded-full blur-sm shadow-[0_0_8px_#00F0FF]"></div>
+                                <div class="absolute top-1/2 -left-8 w-1 h-1 bg-brand-red rounded-full shadow-[0_0_6px_#FF003C]"></div>
+                                <div class="absolute top-1/4 right-1/4 w-1 h-1 bg-brand-purple rounded-full"></div>
                             </div>
-
-                            <div
-                                class="absolute inset-0 flex items-center justify-center z-20"
-                            >
+                            <div class="absolute inset-0 flex items-center justify-center z-20">
                                 <div class="text-center">
-                                    <div
-                                        class="font-mono text-[7px] text-brand-blue/60 uppercase tracking-widest blink"
-                                    >
-                                        Sovereign SVM
-                                    </div>
-                                    <div
-                                        class="font-mono text-[6px] text-white/20 uppercase tracking-widest mt-1"
-                                    >
-                                        Rollup
-                                    </div>
+                                    <div class="font-mono text-[7px] text-brand-blue/60 uppercase tracking-widest blink">Sovereign SVM</div>
+                                    <div class="font-mono text-[6px] text-white/20 uppercase tracking-widest mt-1">Rollup on Solana</div>
                                 </div>
                             </div>
                         </div>
@@ -581,16 +355,10 @@
                 </div>
             </section>
 
-            <div
-                class="py-4 border-y border-white/5 overflow-hidden bg-white/[0.02]"
-            >
-                <div
-                    class="flex whitespace-nowrap"
-                    style="animation: marquee 22s linear infinite"
-                >
-                    <span
-                        class="font-mono text-[10px] uppercase tracking-[0.3em] text-gray-600 flex items-center"
-                    >
+            <!-- Marquee -->
+            <div class="py-4 border-y border-white/5 overflow-hidden bg-white/[0.02]">
+                <div class="flex whitespace-nowrap" style="animation: marquee 22s linear infinite">
+                    <span class="font-mono text-[10px] uppercase tracking-[0.3em] text-gray-600 flex items-center">
                         <span class="mx-8">Proof of Inference Quality</span>
                         <span class="text-brand-blue mx-2">◆</span>
                         <span class="mx-8">Cognitive Finality</span>
@@ -601,7 +369,7 @@
                         <span class="text-brand-blue mx-2">◆</span>
                         <span class="mx-8">zk-ML Verification</span>
                         <span class="text-brand-red mx-2">◆</span>
-                        <span class="mx-8">Swarm Intelligence</span>
+                        <span class="mx-8">CoherenceScore</span>
                         <span class="text-brand-purple mx-2">◆</span>
                         <span class="mx-8">Cross-Validation Neural</span>
                         <span class="text-brand-blue mx-2">◆</span>
@@ -615,7 +383,7 @@
                         <span class="text-brand-red mx-2">◆</span>
                         <span class="mx-8">zk-ML Verification</span>
                         <span class="text-brand-purple mx-2">◆</span>
-                        <span class="mx-8">Swarm Intelligence</span>
+                        <span class="mx-8">CoherenceScore</span>
                         <span class="text-brand-blue mx-2">◆</span>
                         <span class="mx-8">Cross-Validation Neural</span>
                         <span class="text-brand-purple mx-2">◆</span>
@@ -623,360 +391,345 @@
                 </div>
             </div>
 
+            <!-- ══════════════════════════════════
+                 PROBLEM SECTION (new)
+            ══════════════════════════════════ -->
+            <section id="problem" class="py-32 px-6">
+                <div class="max-w-[1400px] mx-auto">
+                    <div class="reveal mb-16">
+                        <div class="font-mono text-[10px] uppercase tracking-[0.3em] text-gray-600 mb-4">The Root Problem</div>
+                        <h3 class="font-display text-5xl lg:text-7xl font-black tracking-tighter">
+                            WHO JUDGES<br /><span class="text-brand-red">THE JUDGE?</span>
+                        </h3>
+                    </div>
+
+                    <!-- Problem statement -->
+                    <div class="reveal reveal-delay-1 mb-16 max-w-3xl">
+                        <p class="font-mono text-sm text-gray-400 leading-relaxed">
+                            Every decentralized AI network today — including Bittensor — solves the same problem the same wrong way:
+                            <span class="text-white">they pay humans to judge AI quality.</span>
+                            But humans with money on the line don't evaluate honestly. They form cartels, copy each other, and reward whichever model makes them look correct —
+                            not whichever model is actually right.
+                        </p>
+                    </div>
+
+                    <!-- Before/After use case grid -->
+                    <div class="grid lg:grid-cols-3 gap-6 mb-20">
+
+                        <!-- Use Case 1 -->
+                        <div class="reveal reveal-delay-1 group">
+                            <div class="font-mono text-[9px] uppercase tracking-widest text-gray-700 mb-4">Use Case 01 — Smart Contract Security</div>
+                            <div class="problem-card p-6 mb-3">
+                                <div class="font-mono text-[9px] text-brand-red uppercase tracking-widest mb-3">Without RAXION</div>
+                                <p class="text-xs text-gray-500 leading-relaxed">You deploy a $10M DeFi protocol. You pay a security firm $50K to audit it. The firm is incentivized to say it's fine — conflict of interest baked in. You ship. You get hacked.</p>
+                            </div>
+                            <div class="solution-card p-6">
+                                <div class="font-mono text-[9px] text-brand-blue uppercase tracking-widest mb-3">With RAXION</div>
+                                <p class="text-xs text-gray-400 leading-relaxed">Three heterogeneous AI agents independently analyze the contract. If all three converge on "critical reentrancy in line 247" — that result is cryptographically proven on-chain. No auditor. No conflict. Math.</p>
+                            </div>
+                        </div>
+
+                        <!-- Use Case 2 -->
+                        <div class="reveal reveal-delay-2 group">
+                            <div class="font-mono text-[9px] uppercase tracking-widest text-gray-700 mb-4">Use Case 02 — Medical Research</div>
+                            <div class="problem-card p-6 mb-3">
+                                <div class="font-mono text-[9px] text-brand-red uppercase tracking-widest mb-3">Without RAXION</div>
+                                <p class="text-xs text-gray-500 leading-relaxed">A research team asks 5 different LLMs the same drug interaction question. Gets 5 different answers. No way to know which one to trust. Falls back on a slow, expensive human specialist.</p>
+                            </div>
+                            <div class="solution-card p-6">
+                                <div class="font-mono text-[9px] text-brand-blue uppercase tracking-widest mb-3">With RAXION</div>
+                                <p class="text-xs text-gray-400 leading-relaxed">The network runs three architectures with complementary failure modes. Convergence produces a CoherenceScore. If the score exceeds 0.85, the answer is HIGH_CONFIDENCE — and that confidence is provably computed, not claimed.</p>
+                            </div>
+                        </div>
+
+                        <!-- Use Case 3 -->
+                        <div class="reveal reveal-delay-3 group">
+                            <div class="font-mono text-[9px] uppercase tracking-widest text-gray-700 mb-4">Use Case 03 — Decentralized AI Marketplace</div>
+                            <div class="problem-card p-6 mb-3">
+                                <div class="font-mono text-[9px] text-brand-red uppercase tracking-widest mb-3">Without RAXION (Bittensor)</div>
+                                <p class="text-xs text-gray-500 leading-relaxed">Miners earn $TAO by making validators happy. Top validators form cartels. Miners just proxy GPT-4 and pretend it's their model. Network pays millions in rewards for zero original intelligence.</p>
+                            </div>
+                            <div class="solution-card p-6">
+                                <div class="font-mono text-[9px] text-brand-blue uppercase tracking-widest mb-3">With RAXION</div>
+                                <p class="text-xs text-gray-400 leading-relaxed">$RAX rewards are tied to CoherenceScore — not to validator opinion. If you proxy another model, convergence still works, but stochastic verification (1.5% challenge rate) will catch you. Slashing is automatic. Math is the judge.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- The oracle problem visualization -->
+                    <div class="reveal shimmer-border p-10 lg:p-14">
+                        <div class="grid lg:grid-cols-2 gap-12 items-center">
+                            <div>
+                                <div class="font-mono text-[10px] uppercase tracking-widest text-brand-red mb-4">The Structural Failure</div>
+                                <h4 class="font-display text-3xl lg:text-4xl font-black tracking-tighter mb-6">
+                                    The Oracle Problem.<br /><span class="text-white/40">Tokenized.</span>
+                                </h4>
+                                <p class="font-mono text-xs text-gray-500 leading-relaxed mb-6">
+                                    Bittensor did not solve the Oracle Problem. It <span class="text-white">tokenized it</span>.
+                                    The oracle is now the validators, and the oracle has millions of dollars at stake —
+                                    creating the exact misalignment it was supposed to prevent.
+                                </p>
+                                <p class="font-mono text-xs text-gray-500 leading-relaxed">
+                                    RAXION eliminates the oracle entirely. No one votes on quality.
+                                    <span class="text-brand-blue"> The math votes.</span>
+                                </p>
+                            </div>
+                            <!-- Chain diagram -->
+                            <div class="font-mono text-[9px] space-y-3">
+                                <div class="text-gray-700 uppercase tracking-widest mb-4">Bittensor chain of trust</div>
+                                <div class="flex items-center gap-3">
+                                    <div class="w-2 h-2 rounded-full bg-brand-red flex-shrink-0"></div>
+                                    <div class="px-4 py-2 border border-brand-red/30 text-brand-red/80 flex-1">Miner output</div>
+                                </div>
+                                <div class="ml-1 w-px h-4 bg-white/10"></div>
+                                <div class="flex items-center gap-3">
+                                    <div class="w-2 h-2 rounded-full bg-yellow-500/60 flex-shrink-0"></div>
+                                    <div class="px-4 py-2 border border-yellow-500/20 text-yellow-500/60 flex-1">Human validator judgment <span class="text-red-500">← single point of failure</span></div>
+                                </div>
+                                <div class="ml-1 w-px h-4 bg-white/10"></div>
+                                <div class="flex items-center gap-3">
+                                    <div class="w-2 h-2 rounded-full bg-white/20 flex-shrink-0"></div>
+                                    <div class="px-4 py-2 border border-white/10 text-gray-600 flex-1">Yuma consensus (weights correlated validators)</div>
+                                </div>
+                                <div class="ml-1 w-px h-4 bg-white/10"></div>
+                                <div class="flex items-center gap-3">
+                                    <div class="w-2 h-2 rounded-full bg-white/20 flex-shrink-0"></div>
+                                    <div class="px-4 py-2 border border-white/10 text-gray-600 flex-1">$TAO emission → cartel capture</div>
+                                </div>
+
+                                <div class="mt-8 text-gray-700 uppercase tracking-widest mb-4">RAXION chain of trust</div>
+                                <div class="flex items-center gap-3">
+                                    <div class="w-2 h-2 rounded-full bg-brand-blue flex-shrink-0"></div>
+                                    <div class="px-4 py-2 border border-brand-blue/30 text-brand-blue/80 flex-1">3× parallel inference (Transformer + SSM + NeuroSym)</div>
+                                </div>
+                                <div class="ml-1 w-px h-4 bg-white/10"></div>
+                                <div class="flex items-center gap-3">
+                                    <div class="w-2 h-2 rounded-full bg-brand-blue flex-shrink-0"></div>
+                                    <div class="px-4 py-2 border border-brand-blue/30 text-brand-blue/80 flex-1">CoherenceScore = 0.4×CS_semantic + 0.6×CC</div>
+                                </div>
+                                <div class="ml-1 w-px h-4 bg-white/10"></div>
+                                <div class="flex items-center gap-3">
+                                    <div class="w-2 h-2 rounded-full bg-brand-blue flex-shrink-0"></div>
+                                    <div class="px-4 py-2 border border-brand-blue/30 text-brand-blue/80 flex-1">zk-ML proof generated → committed to Solana L1</div>
+                                </div>
+                                <div class="ml-1 w-px h-4 bg-white/10"></div>
+                                <div class="flex items-center gap-3">
+                                    <div class="w-2 h-2 rounded-full bg-brand-blue shadow-[0_0_8px_#00F0FF] flex-shrink-0"></div>
+                                    <div class="px-4 py-2 border border-brand-blue/50 text-brand-blue flex-1 font-bold">Cognitive Finality ✓</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ══════════════════════════════════
+                 ARCHITECTURE
+            ══════════════════════════════════ -->
             <section id="arch" class="py-32 px-6">
                 <div class="max-w-[1400px] mx-auto">
-                    <div
-                        class="flex flex-col lg:flex-row justify-between items-end mb-16 gap-8 reveal"
-                    >
-                        <h3
-                            class="font-display text-5xl lg:text-7xl font-black tracking-tighter"
-                        >
+                    <div class="flex flex-col lg:flex-row justify-between items-end mb-16 gap-8 reveal">
+                        <h3 class="font-display text-5xl lg:text-7xl font-black tracking-tighter">
                             NEURAL <span class="text-outline">SHARDS.</span>
                         </h3>
-                        <p
-                            class="font-mono text-[10px] text-gray-500 max-w-xs uppercase tracking-widest text-right"
-                        >
-                            Sovereign SVM Rollup | inherits<br />Solana's
-                            security. Executes its<br />own cognitive scheduler.
+                        <p class="font-mono text-[10px] text-gray-500 max-w-xs uppercase tracking-widest text-right">
+                            Sovereign SVM Rollup | inherits<br />Solana's security. Executes its<br />own cognitive scheduler.
                         </p>
                     </div>
 
                     <div class="grid md:grid-cols-12 gap-4 auto-rows-auto">
-                        <div
-                            class="md:col-span-8 shimmer-border scanline relative p-10 group min-h-[280px] flex flex-col justify-between reveal reveal-delay-1"
-                        >
+                        <!-- Parallel Cognition -->
+                        <div class="md:col-span-8 shimmer-border scanline relative p-10 group min-h-[280px] flex flex-col justify-between reveal reveal-delay-1">
                             <div>
-                                <div
-                                    class="font-mono text-brand-blue text-[10px] mb-4 uppercase tracking-widest"
-                                >
-                                    01 // PARALLEL_COGNITION
-                                </div>
-                                <h4
-                                    class="font-display text-4xl font-black mb-4"
-                                >
-                                    Cognitive Threads.
-                                </h4>
-                                <p
-                                    class="text-gray-400 text-sm max-w-md leading-relaxed"
-                                >
-                                    Queries are fragmented into Cognition
-                                    Threads that run in parallel across the
-                                    validator network, converging in seconds on
-                                    Testnet, evolving to sub-second on Mainnet
-                                    with dedicated ZK hardware.
+                                <div class="font-mono text-brand-blue text-[10px] mb-4 uppercase tracking-widest">01 // PARALLEL_COGNITION</div>
+                                <h4 class="font-display text-4xl font-black mb-4">Cognitive Threads.</h4>
+                                <p class="text-gray-400 text-sm max-w-md leading-relaxed">
+                                    Queries are fragmented into Cognition Threads that run in parallel across three heterogeneous architectures simultaneously.
+                                    Thread count scales logarithmically with $RAX stake:
+                                    <span class="text-white font-mono text-xs">floor(log₂(stake/1000) × 8) + 1</span>
                                 </p>
                             </div>
                             <div class="mt-8">
-                                <div
-                                    class="flex justify-between font-mono text-[9px] text-gray-600 mb-2 uppercase"
-                                >
-                                    <span>Throughput</span
-                                    ><span class="text-brand-blue"
-                                        >50k+ TPS</span
-                                    >
+                                <div class="flex justify-between font-mono text-[9px] text-gray-600 mb-2 uppercase">
+                                    <span>Solana base throughput</span><span class="text-brand-blue">50k+ TPS</span>
                                 </div>
                                 <div class="h-px w-full bg-white/5 relative">
-                                    <div
-                                        class="absolute inset-y-0 left-0 bg-brand-blue progress-bar shadow-[0_0_12px_#00F0FF]"
-                                        style="width: 66.67%"
-                                    ></div>
+                                    <div class="absolute inset-y-0 left-0 bg-brand-blue progress-bar shadow-[0_0_12px_#00F0FF]" style="width:66.67%"></div>
                                 </div>
                             </div>
                         </div>
 
-                        <div
-                            class="md:col-span-4 border border-white/10 p-10 bg-white/[0.03] flex flex-col justify-between group hover:border-brand-red transition-colors duration-300 min-h-[280px] reveal reveal-delay-2"
-                        >
-                            <div
-                                class="font-mono text-brand-red text-[10px] uppercase tracking-widest"
-                            >
-                                02 // ZK_ML
-                            </div>
+                        <!-- ZK-ML -->
+                        <div class="md:col-span-4 border border-white/10 p-10 bg-white/[0.03] flex flex-col justify-between group hover:border-brand-red transition-colors duration-300 min-h-[280px] reveal reveal-delay-2">
+                            <div class="font-mono text-brand-red text-[10px] uppercase tracking-widest">02 // ZK_ML</div>
                             <div>
-                                <h4
-                                    class="font-display text-3xl font-black mt-6 mb-4"
-                                >
-                                    Verifiable<br />Reasoning.
-                                </h4>
-                                <p
-                                    class="text-xs text-gray-500 leading-relaxed"
-                                >
-                                    Every inference generates a ZK-proof. Truth
-                                    is objective, mathematical, and immutable.
+                                <h4 class="font-display text-3xl font-black mt-6 mb-4">Verifiable<br />Reasoning.</h4>
+                                <p class="text-xs text-gray-500 leading-relaxed">
+                                    RISC Zero proves execution integrity (π_exec). Jolt proves CoherenceScore computation (π_quality). Together: π_poiq = the final immutable proof.
                                 </p>
                             </div>
                             <div class="mt-6 flex gap-2">
-                                <div
-                                    class="w-2 h-2 rounded-full bg-brand-red animate-pulse"
-                                ></div>
-                                <span
-                                    class="font-mono text-[9px] text-gray-600 uppercase tracking-widest"
-                                    >Proof active</span
-                                >
+                                <div class="w-2 h-2 rounded-full bg-brand-red animate-pulse"></div>
+                                <span class="font-mono text-[9px] text-gray-600 uppercase tracking-widest">Proof active</span>
                             </div>
                         </div>
 
-                        <div
-                            class="md:col-span-4 border border-white/10 p-10 flex flex-col items-center justify-center text-center min-h-[220px] bg-gradient-to-b from-brand-blue/5 to-transparent reveal reveal-delay-1"
-                        >
-                            <div
-                                class="font-display text-6xl font-black mb-2 ticker-number"
-                            >
-                                &lt;1<span class="text-brand-blue">s</span>
-                            </div>
-                            <div
-                                class="font-mono text-[9px] uppercase tracking-widest text-gray-500"
-                            >
-                                Cognitive Finality
-                            </div>
-                            <div
-                                class="mt-3 font-mono text-[8px] text-gray-700"
-                            >
-                                Mainnet target w/ ZK hw
-                            </div>
-                            <div
-                                class="mt-1 font-mono text-[8px] text-gray-800"
-                            >
-                                Testnet: seconds scale
-                            </div>
+                        <!-- Finality metric -->
+                        <div class="md:col-span-4 border border-white/10 p-10 flex flex-col items-center justify-center text-center min-h-[220px] bg-gradient-to-b from-brand-blue/5 to-transparent reveal reveal-delay-1">
+                            <div class="font-display text-6xl font-black mb-2 ticker-number">&lt;2<span class="text-brand-blue">s</span></div>
+                            <div class="font-mono text-[9px] uppercase tracking-widest text-gray-500">Cognitive Finality</div>
+                            <div class="mt-3 font-mono text-[8px] text-gray-700">Mainnet v1 — ZK ASIC first-gen</div>
+                            <div class="mt-1 font-mono text-[8px] text-gray-800">Testnet: 4–10s (GPU proofs)</div>
+                            <div class="mt-1 font-mono text-[8px] text-gray-800">Devnet: 20–55s (CPU)</div>
                         </div>
 
-                        <div
-                            class="md:col-span-8 border border-white/10 p-10 bg-gradient-to-br from-brand-purple/10 to-transparent min-h-[220px] flex flex-col justify-between reveal reveal-delay-2"
-                        >
+                        <!-- Native Memory -->
+                        <div class="md:col-span-8 border border-white/10 p-10 bg-gradient-to-br from-brand-purple/10 to-transparent min-h-[220px] flex flex-col justify-between reveal reveal-delay-2">
                             <div>
-                                <div
-                                    class="font-mono text-brand-purple text-[10px] mb-4 uppercase tracking-widest"
-                                >
-                                    03 // NATIVE_MEMORY
-                                </div>
-                                <h4
-                                    class="font-display text-4xl font-black mb-4"
-                                >
-                                    Persistence of Self.
-                                </h4>
-                                <p
-                                    class="text-gray-400 text-sm max-w-xl leading-relaxed"
-                                >
-                                    Blockchains were amnesic. RAXION agents have
-                                     Native Memory Accounts: persistent,
-                                    versionable context that evolves with every
-                                    query. Intelligence that remembers.
+                                <div class="font-mono text-brand-purple text-[10px] mb-4 uppercase tracking-widest">03 // NATIVE_MEMORY</div>
+                                <h4 class="font-display text-4xl font-black mb-4">Persistence of Self.</h4>
+                                <p class="text-gray-400 text-sm max-w-xl leading-relaxed">
+                                    Blockchains were amnesic. RAXION agents have Native Memory Accounts: persistent, Merkle-versioned context on-chain (hot state ~3MB) with full reasoning history in Arweave (cold state). Intelligence that remembers across every query.
                                 </p>
                             </div>
                             <div class="mt-6 flex gap-3 flex-wrap">
-                                <span
-                                    class="px-3 py-1 border border-brand-purple/30 text-brand-purple font-mono text-[9px] uppercase tracking-widest"
-                                    >RAG on-chain</span
-                                >
-                                <span
-                                    class="px-3 py-1 border border-white/10 text-gray-600 font-mono text-[9px] uppercase tracking-widest"
-                                    >Merkle versioned</span
-                                >
-                                <span
-                                    class="px-3 py-1 border border-white/10 text-gray-600 font-mono text-[9px] uppercase tracking-widest"
-                                    >Stake-gated</span
-                                >
+                                <span class="px-3 py-1 border border-brand-purple/30 text-brand-purple font-mono text-[9px] uppercase tracking-widest">RAG on-chain (HNSW)</span>
+                                <span class="px-3 py-1 border border-white/10 text-gray-600 font-mono text-[9px] uppercase tracking-widest">Merkle versioned</span>
+                                <span class="px-3 py-1 border border-white/10 text-gray-600 font-mono text-[9px] uppercase tracking-widest">Arweave cold state</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <section
-                id="logic"
-                class="py-24 bg-white text-black overflow-hidden relative"
-            >
-                <div
-                    class="absolute top-0 left-0 w-full h-full opacity-[0.04] pointer-events-none"
-                >
-                    <div
-                        class="absolute inset-0"
-                        style="
-                            background-image: radial-gradient(
-                                #000 1px,
-                                transparent 1px
-                            );
-                            background-size: 20px 20px;
-                        "
-                    ></div>
+            <!-- ══════════════════════════════════
+                 LOGIC / THE CROSS
+            ══════════════════════════════════ -->
+            <section id="logic" class="py-24 bg-white text-black overflow-hidden relative">
+                <div class="absolute top-0 left-0 w-full h-full opacity-[0.04] pointer-events-none">
+                    <div class="absolute inset-0" style="background-image: radial-gradient(#000 1px, transparent 1px); background-size: 20px 20px;"></div>
                 </div>
 
                 <div class="max-w-[1400px] mx-auto px-6 relative z-10">
                     <div class="mb-16 reveal">
-                        <div
-                            class="font-mono text-[10px] uppercase tracking-[0.3em] text-black/40 mb-4"
-                        >
-                            Core Mechanism
-                        </div>
-                        <h3
-                            class="font-display font-black tracking-tighter leading-none"
-                        >
-                            <span
-                                class="block text-[clamp(3rem,12vw,9rem)] text-black"
-                                >THE</span
-                            >
-                            <span
-                                class="block text-[clamp(3rem,12vw,9rem)] text-outline-dark"
-                                >CROSS.</span
-                            >
+                        <div class="font-mono text-[10px] uppercase tracking-[0.3em] text-black/40 mb-4">Core Mechanism</div>
+                        <h3 class="font-display font-black tracking-tighter leading-none">
+                            <span class="block text-[clamp(3rem,12vw,9rem)] text-black">THE</span>
+                            <span class="block text-[clamp(3rem,12vw,9rem)] text-outline-dark">CROSS.</span>
                         </h3>
-                        <p
-                            class="font-mono text-xs font-bold uppercase tracking-widest mt-4 text-black/50"
-                        >
-                            Where raw compute meets cryptographic truth.
-                        </p>
+                        <p class="font-mono text-xs font-bold uppercase tracking-widest mt-4 text-black/50">Where raw compute meets cryptographic truth.</p>
                     </div>
 
                     <div class="grid lg:grid-cols-3 gap-px bg-black/10">
+                        <!-- Convergent Inference -->
                         <div class="bg-white p-10 reveal reveal-delay-1">
-                            <span
-                                class="font-mono text-[9px] uppercase tracking-widest text-black/40"
-                                >Validation Method</span
-                            >
-                            <h5
-                                class="font-display text-3xl font-black mt-3 mb-4"
-                            >
-                                Convergent<br />Inference
-                            </h5>
+                            <span class="font-mono text-[9px] uppercase tracking-widest text-black/40">Validation Method</span>
+                            <h5 class="font-display text-3xl font-black mt-3 mb-4">Convergent<br />Inference</h5>
                             <p class="text-sm text-black/60 leading-relaxed">
-                                Cross-checking heterogeneous architectures
-                                (Transformer + State-Space + Neuro-Symbolic) to
-                                force <em>epistemic coherence</em>, not blind
-                                conformity. Controlled divergence with high
-                                internal confidence is rewarded. Only chaotic
-                                and chronic divergence triggers slashing.
+                                Three heterogeneous architectures (Transformer + State-Space + Neuro-Symbolic) process every query independently. Their outputs are compared for <em>epistemic coherence</em> — not blind conformity. An agent that disagrees with high internal confidence enters a Dissent Queue instead of being slashed.
                             </p>
-                            <div class="mt-6 flex gap-1">
-                                <div
-                                    class="h-1 flex-1 bg-black/10 rounded-full"
-                                >
-                                    <div
-                                        class="h-full w-full bg-black rounded-full"
-                                        style="
-                                            animation: progress 2s ease-out both;
-                                        "
-                                    ></div>
+                            <div class="mt-6">
+                                <div class="flex gap-1 mb-1">
+                                    <div class="h-1 flex-1 bg-black/10 rounded-full"><div class="h-full w-full bg-black rounded-full" style="animation: progress 2s ease-out both;"></div></div>
+                                    <div class="h-1 flex-1 bg-black/10 rounded-full"><div class="h-full w-4/5 bg-black/60 rounded-full" style="animation: progress 2.2s ease-out both;"></div></div>
+                                    <div class="h-1 flex-1 bg-black/10 rounded-full"><div class="h-full w-3/4 bg-black/40 rounded-full" style="animation: progress 2.4s ease-out both;"></div></div>
                                 </div>
-                                <div
-                                    class="h-1 flex-1 bg-black/10 rounded-full"
-                                >
-                                    <div
-                                        class="h-full w-4/5 bg-black/60 rounded-full"
-                                        style="
-                                            animation: progress 2.2s ease-out
-                                                both;
-                                        "
-                                    ></div>
-                                </div>
-                                <div
-                                    class="h-1 flex-1 bg-black/10 rounded-full"
-                                >
-                                    <div
-                                        class="h-full w-3/4 bg-black/40 rounded-full"
-                                        style="
-                                            animation: progress 2.4s ease-out
-                                                both;
-                                        "
-                                    ></div>
+                                <div class="flex justify-between font-mono text-[8px] uppercase text-black/30 mt-1">
+                                    <span>Transformer</span><span>State-Space</span><span>Neuro-Sym</span>
                                 </div>
                             </div>
-                            <div
-                                class="flex justify-between font-mono text-[8px] uppercase text-black/30 mt-1"
-                            >
-                                <span>Transformer</span><span>State-Space</span
-                                ><span>Neuro-Sym</span>
+
+                            <!-- CoherenceScore visual -->
+                            <div class="mt-6 p-4 bg-black/5">
+                                <div class="font-mono text-[8px] text-black/40 mb-3 uppercase">CoherenceScore thresholds</div>
+                                <div class="space-y-2">
+                                    <div>
+                                        <div class="flex justify-between font-mono text-[8px] text-black/40 mb-1">
+                                            <span class="text-red-600">REJECTED</span><span>&lt;0.30</span>
+                                        </div>
+                                        <div class="h-1 bg-black/10 rounded"><div class="h-full bg-red-500/60 rounded" style="--target-width:30%; width:30%;"></div></div>
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between font-mono text-[8px] text-black/40 mb-1">
+                                            <span>LOW_CONFIDENCE</span><span>0.30–0.60</span>
+                                        </div>
+                                        <div class="h-1 bg-black/10 rounded"><div class="h-full bg-yellow-500/50 rounded" style="width:60%;"></div></div>
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between font-mono text-[8px] text-black/40 mb-1">
+                                            <span>STANDARD</span><span>0.60–0.85</span>
+                                        </div>
+                                        <div class="h-1 bg-black/10 rounded"><div class="h-full bg-black/50 rounded" style="width:85%;"></div></div>
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between font-mono text-[8px] text-black/40 mb-1">
+                                            <span class="text-blue-600">HIGH_COHERENCE ×1.5 reward</span><span>&gt;0.85</span>
+                                        </div>
+                                        <div class="h-1 bg-black/10 rounded"><div class="h-full bg-blue-500/80 rounded" style="width:100%;"></div></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
+                        <!-- PoIQ -->
                         <div class="bg-white p-10 reveal reveal-delay-2">
-                            <span
-                                class="font-mono text-[9px] uppercase tracking-widest text-black/40"
-                                >Economic Energy</span
-                            >
-                            <h5
-                                class="font-display text-3xl font-black mt-3 mb-4"
-                            >
-                                Proof of<br />Inference Quality
-                            </h5>
+                            <span class="font-mono text-[9px] uppercase tracking-widest text-black/40">Economic Energy</span>
+                            <h5 class="font-display text-3xl font-black mt-3 mb-4">Proof of<br />Inference Quality</h5>
                             <p class="text-sm text-black/60 leading-relaxed">
-                                Rewards are proportional to the reduction of
-                                entropy in the network. Replaces PoW/PoS with
-                                cryptographic proof of reasoning integrity. If
-                                the swarm solves with convergence, the swarm
-                                earns.
+                                Rewards are proportional to the reduction of entropy in the network. $RAX replaces PoW/PoS with cryptographic proof of reasoning integrity. Stake determines parallel thread count — not voting power.
                             </p>
-                            <div
-                                class="mt-6 p-4 bg-black text-white font-mono text-[9px] leading-relaxed"
-                            >
-                                <span class="text-brand-blue">reward</span> =
-                                f(convergence, quality, stake)<br />
-                                <span class="text-brand-red">slash</span> =
-                                chronic_divergence × penalty_score
+                            <div class="mt-6 p-4 bg-black text-white font-mono text-[9px] leading-relaxed">
+                                <span class="text-brand-blue">reward</span> = f(CoherenceScore, RS, stake)<br />
+                                <span class="text-brand-red">slash</span> = chronic_divergence × penalty<br />
+                                <span class="text-brand-purple">threads</span> = log₂(stake/1000) × 8 + 1
+                            </div>
+                            <div class="mt-6 space-y-3">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-mono text-[9px] text-black/50">Slash on rejection</span>
+                                    <span class="font-mono text-[9px] text-red-600">1–5% of stake</span>
+                                </div>
+                                <div class="h-px bg-black/5"></div>
+                                <div class="flex justify-between items-center">
+                                    <span class="font-mono text-[9px] text-black/50">Slash on challenge fail</span>
+                                    <span class="font-mono text-[9px] text-red-600">2% + escalation</span>
+                                </div>
+                                <div class="h-px bg-black/5"></div>
+                                <div class="flex justify-between items-center">
+                                    <span class="font-mono text-[9px] text-black/50">Premium reward (CS &gt; 0.85)</span>
+                                    <span class="font-mono text-[9px] text-blue-600">×1.5 base reward</span>
+                                </div>
+                                <div class="h-px bg-black/5"></div>
+                                <div class="flex justify-between items-center">
+                                    <span class="font-mono text-[9px] text-black/50">Slashed stake → burn</span>
+                                    <span class="font-mono text-[9px] text-black/70">30% deflation</span>
+                                </div>
                             </div>
                         </div>
 
-                        <div
-                            class="bg-black text-white p-10 reveal reveal-delay-3"
-                        >
-                            <span
-                                class="font-mono text-[9px] uppercase tracking-widest text-white/30"
-                                >Stochastic Verification</span
-                            >
-                            <h5
-                                class="font-display text-3xl font-black mt-3 mb-4 text-brand-blue"
-                            >
-                                1-2%<br />Challenge Rate
-                            </h5>
+                        <!-- Stochastic Verification -->
+                        <div class="bg-black text-white p-10 reveal reveal-delay-3">
+                            <span class="font-mono text-[9px] uppercase tracking-widest text-white/30">Stochastic Verification</span>
+                            <h5 class="font-display text-3xl font-black mt-3 mb-4 text-brand-blue">1.5%<br />Challenge Rate</h5>
                             <p class="text-sm text-white/60 leading-relaxed">
-                                Challenges are generated
-                                <em>deterministically</em> from the blockchain's
-                                own state: slot hash + stake seed. No human
-                                curation. No external oracle. Truth is
-                                self-contained.
+                                Challenges are generated <em>deterministically</em> from the blockchain's own state: <span class="font-mono text-[10px] text-brand-blue">HASH(slot_hash || inf_id || stake_seed)</span>. No human curation. No external oracle. Any node can verify any challenge independently.
                             </p>
-                            <div class="mt-6 grid grid-cols-3 gap-2">
-                                <div
-                                    class="text-center p-2 border border-white/10"
-                                >
-                                    <div
-                                        class="font-display text-xl font-black text-brand-blue"
-                                    >
-                                        98%
-                                    </div>
-                                    <div
-                                        class="font-mono text-[7px] text-white/30 uppercase mt-1"
-                                    >
-                                        Pass
-                                    </div>
+                            <div class="mt-6 font-mono text-[9px] text-white/40 space-y-1 mb-6">
+                                <div>Categories: MATH_FORMAL, LOGIC_SAT,</div>
+                                <div>CODE_EXECUTION, FACTUAL_ONCHAIN,</div>
+                                <div>CRYPTO_VERIFY, NUMERICAL_APPROX</div>
+                            </div>
+                            <div class="grid grid-cols-3 gap-2">
+                                <div class="text-center p-2 border border-white/10">
+                                    <div class="font-display text-xl font-black text-brand-blue">98%</div>
+                                    <div class="font-mono text-[7px] text-white/30 uppercase mt-1">Pass</div>
                                 </div>
-                                <div
-                                    class="text-center p-2 border border-white/10"
-                                >
-                                    <div
-                                        class="font-display text-xl font-black text-brand-red"
-                                    >
-                                        1.4%
-                                    </div>
-                                    <div
-                                        class="font-mono text-[7px] text-white/30 uppercase mt-1"
-                                    >
-                                        Challenge
-                                    </div>
+                                <div class="text-center p-2 border border-white/10">
+                                    <div class="font-display text-xl font-black text-brand-red">1.5%</div>
+                                    <div class="font-mono text-[7px] text-white/30 uppercase mt-1">Challenged</div>
                                 </div>
-                                <div
-                                    class="text-center p-2 border border-white/10"
-                                >
-                                    <div
-                                        class="font-display text-xl font-black text-white/40"
-                                    >
-                                        0.6%
-                                    </div>
-                                    <div
-                                        class="font-mono text-[7px] text-white/30 uppercase mt-1"
-                                    >
-                                        Slash
-                                    </div>
+                                <div class="text-center p-2 border border-white/10">
+                                    <div class="font-display text-xl font-black text-white/40">0.5%</div>
+                                    <div class="font-mono text-[7px] text-white/30 uppercase mt-1">Slashed</div>
                                 </div>
                             </div>
                         </div>
@@ -984,209 +737,208 @@
                 </div>
             </section>
 
+            <!-- ══════════════════════════════════
+                 ROADMAP (new)
+            ══════════════════════════════════ -->
+            <section id="roadmap" class="py-32 px-6">
+                <div class="max-w-[1400px] mx-auto">
+                    <div class="reveal mb-16">
+                        <div class="font-mono text-[10px] uppercase tracking-[0.3em] text-gray-600 mb-4">Development Phases</div>
+                        <h3 class="font-display text-5xl lg:text-7xl font-black tracking-tighter">
+                            FROM <span class="text-outline">GENESIS</span><br />TO MAINNET.
+                        </h3>
+                    </div>
+
+                    <div class="grid lg:grid-cols-4 gap-px bg-white/5">
+                        <!-- Phase 0 — Active -->
+                        <div class="phase-active bg-[#050505] p-8 border-l-2 border-brand-blue reveal reveal-delay-1">
+                            <div class="flex items-center gap-2 mb-6">
+                                <div class="w-2 h-2 rounded-full bg-brand-blue animate-pulse shadow-[0_0_6px_#00F0FF]"></div>
+                                <span class="font-mono text-[9px] uppercase tracking-widest text-brand-blue">Active Now</span>
+                            </div>
+                            <div class="font-mono text-[9px] text-gray-700 mb-2">Q1 2026</div>
+                            <h4 class="font-display text-2xl font-black mb-4">Phase 0<br /><span class="text-brand-blue">Genesis</span></h4>
+                            <ul class="space-y-2 font-mono text-[10px] text-gray-500">
+                                <li class="flex gap-2"><span class="text-brand-blue">✓</span> Whitepaper v1.0 complete</li>
+                                <li class="flex gap-2"><span class="text-brand-blue">✓</span> CoherenceScore in Rust + Python</li>
+                                <li class="flex gap-2"><span class="text-brand-blue">✓</span> RISC Zero proof-of-execution</li>
+                                <li class="flex gap-2"><span class="text-yellow-500">→</span> MMLU convergence benchmark</li>
+                                <li class="flex gap-2"><span class="text-yellow-500">→</span> 3+ external contributors</li>
+                            </ul>
+                        </div>
+
+                        <!-- Phase 1 -->
+                        <div class="bg-[#050505] p-8 border-l border-white/5 reveal reveal-delay-2">
+                            <div class="flex items-center gap-2 mb-6">
+                                <div class="w-2 h-2 rounded-full bg-white/20"></div>
+                                <span class="font-mono text-[9px] uppercase tracking-widest text-gray-600">Upcoming</span>
+                            </div>
+                            <div class="font-mono text-[9px] text-gray-700 mb-2">Q2–Q3 2026</div>
+                            <h4 class="font-display text-2xl font-black mb-4 text-gray-400">Phase 1<br />Devnet</h4>
+                            <ul class="space-y-2 font-mono text-[10px] text-gray-600">
+                                <li class="flex gap-2"><span>○</span> Agave fork — Neural SVM v0.1</li>
+                                <li class="flex gap-2"><span>○</span> PoIQ v0.1 on-chain (Anchor)</li>
+                                <li class="flex gap-2"><span>○</span> Cognitive Scheduler (8 threads)</li>
+                                <li class="flex gap-2"><span>○</span> Smart Agent SDK in Rust</li>
+                                <li class="flex gap-2"><span>○</span> 100 agents, 1K queries/day</li>
+                            </ul>
+                        </div>
+
+                        <!-- Phase 2 -->
+                        <div class="bg-[#050505] p-8 border-l border-white/5 reveal reveal-delay-3">
+                            <div class="flex items-center gap-2 mb-6">
+                                <div class="w-2 h-2 rounded-full bg-white/10"></div>
+                                <span class="font-mono text-[9px] uppercase tracking-widest text-gray-700">Planned</span>
+                            </div>
+                            <div class="font-mono text-[9px] text-gray-700 mb-2">Q4 2026</div>
+                            <h4 class="font-display text-2xl font-black mb-4 text-gray-500">Phase 2<br />Testnet</h4>
+                            <ul class="space-y-2 font-mono text-[10px] text-gray-700">
+                                <li class="flex gap-2"><span>○</span> $RAX real economic value (TGE)</li>
+                                <li class="flex gap-2"><span>○</span> GPU proof acceleration (4–10s)</li>
+                                <li class="flex gap-2"><span>○</span> Full 6-category challenges</li>
+                                <li class="flex gap-2"><span>○</span> Sovereign Rollup → Solana L1</li>
+                                <li class="flex gap-2"><span>○</span> RaxLang v0.1 beta</li>
+                            </ul>
+                        </div>
+
+                        <!-- Phase 3 -->
+                        <div class="bg-[#050505] p-8 border-l border-white/5 reveal reveal-delay-4">
+                            <div class="flex items-center gap-2 mb-6">
+                                <div class="w-2 h-2 rounded-full bg-white/5"></div>
+                                <span class="font-mono text-[9px] uppercase tracking-widest text-gray-800">Future</span>
+                            </div>
+                            <div class="font-mono text-[9px] text-gray-700 mb-2">2027</div>
+                            <h4 class="font-display text-2xl font-black mb-4 text-gray-600">Phase 3<br />Mainnet v1</h4>
+                            <ul class="space-y-2 font-mono text-[10px] text-gray-700">
+                                <li class="flex gap-2"><span>○</span> ZK ASIC first-gen (&lt;2s)</li>
+                                <li class="flex gap-2"><span>○</span> PoIQ v1.0 — formally audited</li>
+                                <li class="flex gap-2"><span>○</span> On-chain governance active</li>
+                                <li class="flex gap-2"><span>○</span> 50+ Smart Agents (RS &gt; 0.80)</span></li>
+                                <li class="flex gap-2"><span>○</span> Independent security audit ×2</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Mainnet prerequisites note -->
+                    <div class="reveal mt-6 p-6 border border-brand-red/20 bg-brand-red/[0.02]">
+                        <div class="flex gap-4 items-start">
+                            <div class="w-2 h-2 rounded-full bg-brand-red flex-shrink-0 mt-1"></div>
+                            <p class="font-mono text-[10px] text-gray-600 leading-relaxed">
+                                <span class="text-brand-red uppercase tracking-widest">Mainnet prerequisite:</span> Testnet must be stable for 90 consecutive days without critical bugs.
+                                Two independent security audits. Formal PoIQ audit by academic researchers.
+                                Top-10 validators control &lt;40% of stake. These are non-negotiable gates, not suggestions.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ══════════════════════════════════
+                 WHITEPAPER
+            ══════════════════════════════════ -->
             <section id="whitepaper" class="py-32 px-6">
                 <div class="max-w-[1400px] mx-auto">
-                    <div
-                        class="reveal border border-white/10 p-16 lg:p-24 relative overflow-hidden shimmer-border"
-                    >
-                        <div
-                            class="absolute -right-20 -top-20 w-64 h-64 bg-brand-blue/5 rounded-full blur-3xl pointer-events-none"
-                        ></div>
-                        <div
-                            class="absolute -left-20 -bottom-20 w-64 h-64 bg-brand-red/5 rounded-full blur-3xl pointer-events-none"
-                        ></div>
+                    <div class="reveal border border-white/10 p-16 lg:p-24 relative overflow-hidden shimmer-border">
+                        <div class="absolute -right-20 -top-20 w-64 h-64 bg-brand-blue/5 rounded-full blur-3xl pointer-events-none"></div>
+                        <div class="absolute -left-20 -bottom-20 w-64 h-64 bg-brand-red/5 rounded-full blur-3xl pointer-events-none"></div>
 
-                        <div
-                            class="relative z-10 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-12"
-                        >
+                        <div class="relative z-10 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-12">
                             <div class="max-w-xl">
-                                <div
-                                    class="font-mono text-[10px] text-brand-blue uppercase tracking-widest mb-4"
-                                >
-                                     RAXION Whitepaper v0.3 | February 2026
+                                <div class="font-mono text-[10px] text-brand-blue uppercase tracking-widest mb-4">
+                                    RAXION Whitepaper v1.0 | February 2026
                                 </div>
-                                <h3
-                                    class="font-display text-5xl lg:text-6xl font-black tracking-tighter mb-6"
-                                >
+                                <h3 class="font-display text-5xl lg:text-6xl font-black tracking-tighter mb-6">
                                     The era of<br />proofs begins.
                                 </h3>
-                                <p
-                                    class="text-gray-500 text-sm leading-relaxed"
-                                >
-                                    Complete architecture of the Sovereign SVM
-                                    Rollup, Neural SVM cognitive scheduler,
-                                    zk-ML Proof of Inference Quality, tokenomics
-                                    of $RAX as cognitive fuel, and the full
-                                    roadmap from Testnet to Mainnet.
+                                <p class="text-gray-500 text-sm leading-relaxed">
+                                    Complete architecture of the Sovereign SVM Rollup, Neural SVM cognitive scheduler, zk-ML Proof of Inference Quality (with formal mathematical definitions), tokenomics of $RAX as cognitive fuel, and the full roadmap from Genesis to Mainnet.
                                 </p>
                             </div>
-                            <div
-                                class="flex flex-col gap-4 w-full lg:w-auto lg:min-w-[220px]"
-                            >
-                                <a
-                                    href="https://github.com/rodrigooler/raxion/blob/main/WHITEPAPER.md"
-                                    target="_blank"
-                                    class="px-10 py-5 bg-white text-black font-display font-black text-base hover:bg-brand-blue transition-all duration-300 text-center tracking-wide"
-                                >
+                            <div class="flex flex-col gap-4 w-full lg:w-auto lg:min-w-[220px]">
+                                <a href="https://github.com/rodrigooler/raxion/blob/main/WHITEPAPER.md" target="_blank" class="px-10 py-5 bg-white text-black font-display font-black text-base hover:bg-brand-blue transition-all duration-300 text-center tracking-wide">
                                     READ WHITEPAPER
                                 </a>
-                                <a
-                                    href="https://github.com/rodrigooler/raxion"
-                                    target="_blank"
-                                    class="px-10 py-5 border border-white/20 font-display font-black text-base hover:border-brand-blue/60 hover:bg-brand-blue/5 transition-all duration-300 text-center tracking-wide"
-                                >
-                                    JOIN DEVNET
+                                <a href="https://github.com/rodrigooler/raxion" target="_blank" class="px-10 py-5 border border-white/20 font-display font-black text-base hover:border-brand-blue/60 hover:bg-brand-blue/5 transition-all duration-300 text-center tracking-wide">
+                                    VIEW GITHUB
                                 </a>
                             </div>
                         </div>
 
-                        <div
-                            class="mt-16 grid md:grid-cols-4 gap-4 border-t border-white/5 pt-12 relative z-10"
-                        >
+                        <div class="mt-16 grid md:grid-cols-5 gap-4 border-t border-white/5 pt-12 relative z-10">
                             <div class="group">
-                                <div
-                                    class="font-mono text-[9px] text-gray-700 mb-2"
-                                >
-                                    Chapter 01
-                                </div>
-                                <div
-                                    class="font-display text-base font-black mb-2 group-hover:text-brand-blue transition-colors"
-                                >
-                                    The Subjectivity Crisis
-                                </div>
-                                <div
-                                    class="h-px bg-white/5 group-hover:bg-brand-blue/40 transition-colors"
-                                ></div>
+                                <div class="font-mono text-[9px] text-gray-700 mb-2">Chapter 01</div>
+                                <div class="font-display text-sm font-black mb-2 group-hover:text-brand-blue transition-colors">The Subjectivity Crisis</div>
+                                <div class="h-px bg-white/5 group-hover:bg-brand-blue/40 transition-colors"></div>
                             </div>
                             <div class="group">
-                                <div
-                                    class="font-mono text-[9px] text-gray-700 mb-2"
-                                >
-                                    Chapter 01.5
-                                </div>
-                                <div
-                                    class="font-display text-base font-black mb-2 group-hover:text-brand-blue transition-colors"
-                                >
-                                    What We Are Not
-                                </div>
-                                <div
-                                    class="h-px bg-white/5 group-hover:bg-brand-blue/40 transition-colors"
-                                ></div>
+                                <div class="font-mono text-[9px] text-gray-700 mb-2">Chapter 01.5</div>
+                                <div class="font-display text-sm font-black mb-2 group-hover:text-brand-blue transition-colors">What We Are Not</div>
+                                <div class="h-px bg-white/5 group-hover:bg-brand-blue/40 transition-colors"></div>
                             </div>
                             <div class="group">
-                                <div
-                                    class="font-mono text-[9px] text-gray-700 mb-2"
-                                >
-                                    Chapter 02
-                                </div>
-                                <div
-                                    class="font-display text-base font-black mb-2 group-hover:text-brand-blue transition-colors"
-                                >
-                                    Neural SVM Architecture
-                                </div>
-                                <div
-                                    class="h-px bg-white/5 group-hover:bg-brand-blue/40 transition-colors"
-                                ></div>
+                                <div class="font-mono text-[9px] text-gray-700 mb-2">Chapter 02</div>
+                                <div class="font-display text-sm font-black mb-2 group-hover:text-brand-blue transition-colors">Neural SVM Architecture</div>
+                                <div class="h-px bg-white/5 group-hover:bg-brand-blue/40 transition-colors"></div>
                             </div>
                             <div class="group">
-                                <div
-                                    class="font-mono text-[9px] text-gray-700 mb-2"
-                                >
-                                    Chapter 03/05
-                                </div>
-                                <div
-                                    class="font-display text-base font-black mb-2 group-hover:text-gray-400 transition-colors text-white/20"
-                                >
-                                    PoIQ + Tokenomics
-                                        <span
-                                            class="font-mono text-[8px] text-gray-700 block"
-                                            >(coming soon)</span
-                                        >
-                                </div>
-                                <div class="h-px bg-white/5"></div>
+                                <div class="font-mono text-[9px] text-gray-700 mb-2">Chapter 03</div>
+                                <div class="font-display text-sm font-black mb-2 group-hover:text-brand-blue transition-colors">zk-ML + PoIQ Protocol</div>
+                                <div class="h-px bg-white/5 group-hover:bg-brand-blue/40 transition-colors"></div>
+                            </div>
+                            <div class="group">
+                                <div class="font-mono text-[9px] text-gray-700 mb-2">Chapter 04–05</div>
+                                <div class="font-display text-sm font-black mb-2 group-hover:text-brand-blue transition-colors">$RAX Tokenomics + Roadmap</div>
+                                <div class="h-px bg-white/5 group-hover:bg-brand-blue/40 transition-colors"></div>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
+
         </main>
 
+        <!-- Footer -->
         <footer class="p-12 border-t border-white/5">
-            <div
-                class="max-w-[1400px] mx-auto flex flex-col md:flex-row justify-between items-center gap-8"
-            >
-                <div
-                    class="font-display text-2xl font-black italic tracking-tight"
-                >
-                    RAXION
-                </div>
-                <div
-                    class="font-mono text-[9px] text-gray-700 uppercase tracking-[0.4em]"
-                >
+            <div class="max-w-[1400px] mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+                <div class="font-display text-2xl font-black italic tracking-tight">RAXION</div>
+                <div class="font-mono text-[9px] text-gray-700 uppercase tracking-[0.4em]">
                     Built for the post-subjectivity era © 2026
                 </div>
                 <div class="flex gap-3">
-                    <button
-                        class="w-10 h-10 bg-white/5 border border-white/10 flex items-center justify-center hover:border-brand-blue hover:text-brand-blue cursor-pointer transition-all duration-300 font-mono text-sm"
-                    >
-                        𝕏
-                    </button>
-                    <a
-                        href="https://github.com/rodrigooler/raxion"
-                        target="_blank"
-                        class="w-10 h-10 bg-white/5 border border-white/10 flex items-center justify-center hover:border-brand-blue hover:text-brand-blue cursor-pointer transition-all duration-300 font-mono text-[10px]"
-                    >
-                        GH
-                    </a>
-                    <button
-                        class="w-10 h-10 bg-white/5 border border-white/10 flex items-center justify-center hover:border-brand-purple hover:text-brand-purple cursor-pointer transition-all duration-300 font-mono text-[10px]"
-                    >
-                        DC
-                    </button>
+                    <button class="w-10 h-10 bg-white/5 border border-white/10 flex items-center justify-center hover:border-brand-blue hover:text-brand-blue cursor-pointer transition-all duration-300 font-mono text-sm">𝕏</button>
+                    <a href="https://github.com/rodrigooler/raxion" target="_blank" class="w-10 h-10 bg-white/5 border border-white/10 flex items-center justify-center hover:border-brand-blue hover:text-brand-blue cursor-pointer transition-all duration-300 font-mono text-[10px]">GH</a>
+                    <button class="w-10 h-10 bg-white/5 border border-white/10 flex items-center justify-center hover:border-brand-purple hover:text-brand-purple cursor-pointer transition-all duration-300 font-mono text-[10px]">DC</button>
                 </div>
             </div>
         </footer>
 
         <script>
+            // Cursor
             const cursor = document.getElementById("cursor");
-
             document.addEventListener("mousemove", (e) => {
                 cursor.style.left = e.clientX + "px";
                 cursor.style.top = e.clientY + "px";
             });
-
             document.querySelectorAll("a, button").forEach((el) => {
-                el.addEventListener("mouseenter", () =>
-                    cursor.classList.add("hover"),
-                );
-                el.addEventListener("mouseleave", () =>
-                    cursor.classList.remove("hover"),
-                );
+                el.addEventListener("mouseenter", () => cursor.classList.add("hover"));
+                el.addEventListener("mouseleave", () => cursor.classList.remove("hover"));
             });
 
+            // Flare parallax
             document.addEventListener("mousemove", (e) => {
                 const x = (e.clientX / window.innerWidth - 0.5) * 50;
                 const y = (e.clientY / window.innerHeight - 0.5) * 50;
-                document.getElementById("flare-1").style.transform =
-                    `translate(${x}px, ${y}px)`;
-                document.getElementById("flare-2").style.transform =
-                    `translate(${-x}px, ${-y}px)`;
+                document.getElementById("flare-1").style.transform = `translate(${x}px, ${y}px)`;
+                document.getElementById("flare-2").style.transform = `translate(${-x}px, ${-y}px)`;
             });
 
-            const observer = new IntersectionObserver(
-                (entries) => {
-                    entries.forEach((entry) => {
-                        if (entry.isIntersecting) {
-                            entry.target.classList.add("visible");
-                        }
-                    });
-                },
-                { threshold: 0.08 },
-            );
-
-            document
-                .querySelectorAll(".reveal")
-                .forEach((el) => observer.observe(el));
+            // Scroll reveal
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) entry.target.classList.add("visible");
+                });
+            }, { threshold: 0.08 });
+            document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
         </script>
     </body>
 </html>
