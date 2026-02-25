@@ -1,0 +1,9 @@
+.git
+.gitignore
+**/.DS_Store
+**/target
+**/.pytest_cache
+**/.mypy_cache
+**/.venv
+**/node_modules
+**/.next

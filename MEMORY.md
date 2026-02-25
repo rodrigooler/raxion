@@ -19,6 +19,10 @@ License: BUSL 1.1 → MIT 2030-02-20
 
 ### Q2 Execution Notes (2026-02-25)
 
+- Dockerized deploy path added for Anchor/Solana:
+  - `docker/anchor-devnet/Dockerfile` with pinned Rust/Solana/Anchor versions
+  - wrappers: `scripts/docker_anchor_shell.sh` and `scripts/docker_deploy_poiq_devnet.sh`
+  - objective: bypass macOS LLVM/linker incompatibilities using reproducible Linux container toolchain
 - Environment/toolchain blocker note:
   - `cargo install --git https://github.com/coral-xyz/anchor anchor-cli --locked` failed on this macOS host due LLVM bitcode mismatch at link time (`rustc LLVM21` artifacts vs Apple linker `LLVM17` reader).
   - Operational recommendation: execute Anchor deploy/test path in Linux CI or a pinned dev container to avoid host LLVM drift.

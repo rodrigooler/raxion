@@ -97,3 +97,15 @@ uv run poc/run_poc.py --provider openrouter --query "Explain the Oracle Problem 
 
 Core protocol: BUSL 1.1, change date `2030-02-20` to MIT.  
 SDKs and developer tooling: Apache 2.0.
+
+## Docker Toolchain (Q2 Devnet)
+
+If local macOS toolchains fail to compile Anchor/Solana binaries, use the pinned Docker flow:
+
+```bash
+./scripts/docker_anchor_shell.sh
+./scripts/docker_deploy_poiq_devnet.sh
+```
+
+Image definition:
+- `docker/anchor-devnet/Dockerfile`
