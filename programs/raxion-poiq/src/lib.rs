@@ -4,7 +4,7 @@ use anchor_lang::prelude::*;
 
 pub mod challenge;
 
-declare_id!("11111111111111111111111111111111");
+declare_id!("5JVFMV1DvhQD6Tm2BtPBs8zkvGArzRGUYF6GSNw2XUeT");
 
 pub const COHERENCE_THRESHOLD_REJECT: f32 = 0.30;
 pub const COHERENCE_THRESHOLD_STANDARD: f32 = 0.60;

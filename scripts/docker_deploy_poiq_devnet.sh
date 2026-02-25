@@ -2,6 +2,8 @@
 set -euo pipefail
 
 IMAGE_TAG="raxion/anchor-devnet:0.1"
+DOCKER_PLATFORM="${DOCKER_PLATFORM:-linux/amd64}"
+CONTAINER_PATH="/usr/local/cargo/bin:/root/.local/share/solana/install/active_release/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
 if ! command -v docker >/dev/null 2>&1; then
   echo "docker not found"
@@ -13,12 +15,19 @@ if [ ! -d "$HOME/.config/solana" ]; then
   exit 1
 fi
 
-docker build -f docker/anchor-devnet/Dockerfile -t "$IMAGE_TAG" .
+docker build --platform "$DOCKER_PLATFORM" -f docker/anchor-devnet/Dockerfile -t "$IMAGE_TAG" .
 
-docker run --rm -it \
+TTY_ARGS=""
+if [ -t 0 ] && [ -t 1 ]; then
+  TTY_ARGS="-it"
+fi
+
+docker run --rm $TTY_ARGS \
+  --platform "$DOCKER_PLATFORM" \
   -v "$(pwd)":/work \
   -v "$HOME/.config/solana":/root/.config/solana \
+  -e PATH="$CONTAINER_PATH" \
   -e ANCHOR_WALLET=/root/.config/solana/id.json \
   -w /work \
   "$IMAGE_TAG" \
-  bash -lc "solana --version && anchor --version && ./scripts/deploy_poiq_devnet.sh"
+  bash -c "solana --version && anchor --version && ./scripts/deploy_poiq_devnet.sh"
