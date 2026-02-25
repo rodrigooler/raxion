@@ -109,3 +109,6 @@ If local macOS toolchains fail to compile Anchor/Solana binaries, use the pinned
 
 Image definition:
 - `docker/anchor-devnet/Dockerfile`
+
+Safe deploy config template:
+- `config/deploy/devnet.env.example`

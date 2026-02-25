@@ -33,3 +33,15 @@ explorer/out/
 .DS_Store
 Thumbs.db
 Desktop.ini
+
+# Secrets / Wallets
+*.pem
+*.key
+*.seed
+*.mnemonic
+**/.env.local
+**/.env.*.local
+**/id.json
+**/*-keypair.json
+**/wallet*.json
+**/keypair*.json

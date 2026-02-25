@@ -1,0 +1,2 @@
+# Vendored compatibility patches used only to keep Anchor/SBF toolchain working.
+third_party/** linguist-vendored
