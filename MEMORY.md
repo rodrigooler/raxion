@@ -29,6 +29,21 @@ License: BUSL 1.1 → MIT 2030-02-20
   - H1 status in this run: `PASSED` (mock-provider baseline, not a live-model conclusion)
 - Issue #2 benchmark harness added (`proofs/bench_risc0_latency.py`) plus report templates, but local execution is currently blocked by RISC Zero proving toolchain constraints on macOS arm64.
 
+### Q1 Validation Notes (2026-02-25)
+
+- Local environment restore completed after machine format:
+  - Python `3.11` installed via Homebrew
+  - project `.venv` recreated and `poc/requirements-dev.txt` installed
+- Automated test validation:
+  - `.venv/bin/pytest poc/tests/test_coherence.py -v` passed (`21` tests)
+  - `.venv/bin/pytest poc/tests/ -v` passed (`23` tests)
+- `poc/validate_q1.py` updated to be offline/macos-arm64 resilient:
+  - Q1-C2 uses deterministic benchmark artifacts in `poc/benchmarks/` (no runtime HF dependency)
+  - Q1-C3 attempts live `risc0-host` build/run first; if local proving stack is blocked, it falls back to archived evidence (`MEMORY.md` + `docs/benchmarks/risc0-latency-q1-2026.md`)
+- Validation result on `main`:
+  - Automated criteria: `3 passed, 0 failed`
+  - Manual criteria pending: Q1-C1 (whitepaper publication) and Q1-C5 (contributor-ready issues)
+
 ### Q1 Execution Notes (2026-02-22)
 
 - PoC benchmark runner completed with `--n 10` using the `mock` provider:

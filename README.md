@@ -55,24 +55,25 @@ Q1 was started in February 2026 and is focused on proving technical viability be
 
 Requirements:
 - Python `3.11+`
+- `uv` ([install guide](https://docs.astral.sh/uv/getting-started/installation/))
 
 ```bash
-python3 -m venv .venv
+uv venv --python 3.11 .venv
 source .venv/bin/activate
-pip install -r poc/requirements-dev.txt
+uv pip sync poc/requirements-dev.txt
 ```
 
 Run deterministic local benchmark (no external model provider):
 
 ```bash
-python poc/run_poc.py --provider mock --n 10 --output poc/benchmarks/results_q1.json
+uv run poc/run_poc.py --provider mock --n 10 --output poc/benchmarks/results_q1.json
 ```
 
 Run with OpenRouter models:
 
 ```bash
 export OPENROUTER_API_KEY="sk-or-..."
-python poc/run_poc.py --provider openrouter --query "Explain the Oracle Problem in blockchain"
+uv run poc/run_poc.py --provider openrouter --query "Explain the Oracle Problem in blockchain"
 ```
 
 ## Repository Guide

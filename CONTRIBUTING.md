@@ -37,10 +37,8 @@ By participating in this project, you agree to abide by our [Code of Conduct](./
 
 ### Prerequisites
 
+- Python 3.11+ with `uv`
 - Rust 1.75+ (for core protocol)
-- Node.js 20+ (for tooling)
-- Solana CLI tools
-- Anchor CLI (for Solana programs)
 
 ### Building
 
@@ -49,14 +47,17 @@ By participating in this project, you agree to abide by our [Code of Conduct](./
 git clone https://github.com/rodrigooler/raxion.git
 cd raxion
 
+# Python environment (PoC)
+uv venv --python 3.11 .venv
+source .venv/bin/activate
+uv pip sync poc/requirements-dev.txt
+
 # Build core (Rust)
 cargo build
 
 # Run tests
 cargo test
-
-# Build Solana programs
-anchor build
+uv run pytest poc/tests/ -v
 ```
 
 ---
