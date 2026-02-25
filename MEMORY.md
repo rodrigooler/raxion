@@ -38,13 +38,16 @@ License: BUSL 1.1 → MIT 2030-02-20
   - `proofs/risc0-guest` upgraded for embedding-based commitment path
   - `proofs/risc0-host` upgraded for embedding-input prove flow (local full link still constrained on macOS ARM toolchain)
 - Gate E partial implemented:
-  - `sdk/agent` crate added with `SmartAgent`, memory/inference helpers, runner stub, and `math_agent` example
-  - `cargo check` and example build pass
+  - `sdk/agent` crate added with `SmartAgent`, memory/inference helpers, runner stub
+  - three reference agents compiled: `math_agent`, `code_agent`, `text_agent`
+  - quickstart added in `sdk/agent/README.md`
+  - `explorer/` Next.js app added with live Solana devnet program-account reads for recent `InferenceRecord` entries and category-colored CoherenceScore bars
 - Gate F tooling added:
   - `scripts/cross_validate_coherence.py` added
   - `scripts/validate_q2.sh` added and passing in local profile with documented fallbacks:
     - uses `.venv/bin/pytest` when available
     - uses `RISC0_SKIP_BUILD_KERNELS=1 cargo check` fallback when full `risc0-host` build is blocked by local macOS toolchain constraints
+    - includes SDK example build and explorer build checks
 
 ### Q1 Execution Notes (2026-02-23)
 

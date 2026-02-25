@@ -76,6 +76,9 @@ check "Q2-R3" "risc0-types tests pass" \
 check "Q2-R4" "cross-validation script passes" \
   "python3 scripts/cross_validate_coherence.py | grep -q 'PASS'"
 
+check "Q2-S1" "SDK examples compile" \
+  "cargo build --manifest-path sdk/agent/Cargo.toml --example math_agent --example code_agent --example text_agent"
+
 # RISC0 host build: prefer direct, fallback for macOS local constraints
 check_with_fallback \
   "Q2-R5" \
@@ -90,6 +93,13 @@ if command -v anchor >/dev/null 2>&1; then
 else
   check "Q2-C1" "Anchor-equivalent build path (cargo)" \
     "cargo test --manifest-path programs/raxion-poiq/Cargo.toml"
+fi
+
+if command -v npm >/dev/null 2>&1; then
+  check "Q2-E1" "Explorer build succeeds" \
+    "cd explorer && npm run build"
+else
+  check "Q2-E1" "Explorer build skipped (npm missing)" "true"
 fi
 
 echo ""

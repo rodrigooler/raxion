@@ -25,6 +25,9 @@ poc/benchmarks/results/
 .idea/
 .vscode/
 *.swp
+node_modules/
+explorer/.next/
+explorer/out/
 
 # OS
 .DS_Store
