@@ -21,7 +21,3 @@ sha2 = "0.10"
 
 [dev-dependencies]
 rand = "0.8"
-
-[patch.crates-io]
-anchor-syn = { path = "../../third_party/anchor-syn-0.30.1" }
-constant_time_eq = { path = "../../third_party/constant_time_eq-0.4.2" }

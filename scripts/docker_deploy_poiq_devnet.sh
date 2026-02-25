@@ -28,6 +28,7 @@ docker run --rm $TTY_ARGS \
   -v "$HOME/.config/solana":/root/.config/solana \
   -e PATH="$CONTAINER_PATH" \
   -e ANCHOR_WALLET=/root/.config/solana/id.json \
+  -e CARGO_HOME=/work/.cargo-home \
   -w /work \
   "$IMAGE_TAG" \
   bash -c "solana --version && anchor --version && ./scripts/deploy_poiq_devnet.sh"

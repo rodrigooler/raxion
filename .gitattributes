@@ -1,2 +1,2 @@
-# Vendored compatibility patches used only to keep Anchor/SBF toolchain working.
-third_party/** linguist-vendored
+# Keep generated deploy artifacts out of language stats noise when present.
+target/** linguist-generated

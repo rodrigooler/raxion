@@ -109,6 +109,7 @@ If local macOS toolchains fail to compile Anchor/Solana binaries, use the pinned
 
 Image definition:
 - `docker/anchor-devnet/Dockerfile`
+- `scripts/apply_rust_toolchain_patches.sh` (applies minimal local registry patches for SBF cargo compatibility)
 
 Safe deploy config template:
 - `config/deploy/devnet.env.example`

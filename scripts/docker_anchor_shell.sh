@@ -23,6 +23,7 @@ if [ "$#" -gt 0 ]; then
     -v "$(pwd)":/work \
     -v "$HOME/.config/solana":/root/.config/solana \
     -e PATH="$CONTAINER_PATH" \
+    -e CARGO_HOME=/work/.cargo-home \
     -w /work \
     "$IMAGE_TAG" bash -c "$*"
 else
@@ -31,6 +32,7 @@ else
     -v "$(pwd)":/work \
     -v "$HOME/.config/solana":/root/.config/solana \
     -e PATH="$CONTAINER_PATH" \
+    -e CARGO_HOME=/work/.cargo-home \
     -w /work \
     "$IMAGE_TAG" bash
 fi
