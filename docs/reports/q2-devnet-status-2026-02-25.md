@@ -22,6 +22,7 @@
 - Point explorer environment to deployed devnet program id and publish URL (`devnet.raxion.network`).
 - Run sustained network criteria (1,000+ live queries, challenge/slashing events).
 - Full `risc0-host` prove path on this machine remains constrained by local macOS ARM toolchain (fallback path documented).
+- `anchor-cli` local installation failed on this host due LLVM bitcode/linker mismatch (`rustc LLVM21` vs Apple linker `LLVM17`), so deployment should run in Linux CI or standardized container image.
 
 ## Whitepaper fidelity notes
 

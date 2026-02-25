@@ -19,6 +19,9 @@ License: BUSL 1.1 → MIT 2030-02-20
 
 ### Q2 Execution Notes (2026-02-25)
 
+- Environment/toolchain blocker note:
+  - `cargo install --git https://github.com/coral-xyz/anchor anchor-cli --locked` failed on this macOS host due LLVM bitcode mismatch at link time (`rustc LLVM21` artifacts vs Apple linker `LLVM17` reader).
+  - Operational recommendation: execute Anchor deploy/test path in Linux CI or a pinned dev container to avoid host LLVM drift.
 - Runtime integration update:
   - Agave upstream imported as subtree in `runtime/agave` (source ref: `agave v2.1` branch/tag line)
   - RAXION runtime extensions remain isolated in `runtime/cognitive`
