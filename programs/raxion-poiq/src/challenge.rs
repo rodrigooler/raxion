@@ -93,4 +93,44 @@ mod tests {
         let cat2 = challenge_category(&slot_hash, 1, 1);
         assert_eq!(cat1, cat2);
     }
+
+    #[test]
+    fn test_challenge_rate_for_new_agents_approximately_5_percent() {
+        let stake_seed = 77u64;
+        let mut challenged = 0u32;
+        let n = 10_000u64;
+
+        for inf_id in 0..n {
+            let mut slot_hash = [0u8; 32];
+            slot_hash[..8].copy_from_slice(&inf_id.to_le_bytes());
+            if should_challenge(&slot_hash, inf_id, stake_seed, 50) {
+                challenged += 1;
+            }
+        }
+
+        let rate = challenged as f64 / n as f64;
+        assert!((rate - 0.05).abs() < 0.01, "rate={} challenged={}", rate, challenged);
+    }
+
+    #[test]
+    fn test_category_selection_is_not_trivially_equal_to_challenge_outcome() {
+        let mut equal_count = 0usize;
+        let n = 1024u64;
+
+        for inf_id in 0..n {
+            let mut slot_hash = [0u8; 32];
+            slot_hash[..8].copy_from_slice(&inf_id.to_le_bytes());
+            let challenged = should_challenge(&slot_hash, inf_id, 11, 15);
+            let category = challenge_category(&slot_hash, inf_id, 11);
+            if (challenged && category == CHALLENGE_CATEGORY_CODE)
+                || (!challenged && category == CHALLENGE_CATEGORY_MATH)
+            {
+                equal_count += 1;
+            }
+        }
+
+        // If streams were coupled, equal_count would collapse near extremes.
+        // This broad guard ensures we don't accidentally tie category to decision bit.
+        assert!(equal_count > 200 && equal_count < 824, "equal_count={equal_count}");
+    }
 }

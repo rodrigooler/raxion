@@ -19,6 +19,10 @@ License: BUSL 1.1 → MIT 2030-02-20
 
 ### Q2 Execution Notes (2026-02-25)
 
+- Runtime integration update:
+  - Agave upstream imported as subtree in `runtime/agave` (source ref: `agave v2.1` branch/tag line)
+  - RAXION runtime extensions remain isolated in `runtime/cognitive`
+  - This preserves upstream baseline while allowing incremental cognitive integration
 - Gate A baseline validated on `q2-devnet`:
   - `pytest poc/tests/ -v` passed
   - `python poc/run_poc.py --provider mock --mmlu --n 100 --seed 42 --output poc/benchmarks/results/mmlu_100_q2_baseline.json` generated baseline artifact
@@ -33,6 +37,7 @@ License: BUSL 1.1 → MIT 2030-02-20
   - new Anchor-compatible crate `programs/raxion-poiq`
   - deterministic challenge module added (`challenge_seed = HASH(slot_hash || inf_id || stake_seed)`)
   - slashing arithmetic migrated to integer-safe basis-points path to avoid float truncation-to-zero
+  - additional challenge tests added for warmup 5% rate and category independence guard
 - Gate D implemented:
   - `proofs/risc0-types` upgraded with `EmbeddingInput`, `CoherenceCommitment`, and CS_semantic helpers
   - `proofs/risc0-guest` upgraded for embedding-based commitment path
@@ -48,6 +53,8 @@ License: BUSL 1.1 → MIT 2030-02-20
     - uses `.venv/bin/pytest` when available
     - uses `RISC0_SKIP_BUILD_KERNELS=1 cargo check` fallback when full `risc0-host` build is blocked by local macOS toolchain constraints
     - includes SDK example build and explorer build checks
+  - deployment helper added: `scripts/deploy_poiq_devnet.sh`
+  - status report added: `docs/reports/q2-devnet-status-2026-02-25.md`
 
 ### Q1 Execution Notes (2026-02-23)
 
