@@ -42,7 +42,7 @@ class NeuroSymbolicArchitecture(BaseArchitecture):
         model: str = "z-ai/glm-4.5-air:free",
         temperature: float = 0.1,
         provider: str = "openrouter",
-    ):
+    ) -> None:
         self.model = model
         self.temperature = temperature
         self.provider = provider
@@ -86,9 +86,9 @@ class NeuroSymbolicArchitecture(BaseArchitecture):
         if self.provider == "ollama":
             import ollama
 
-            messages = [{"role": "system", "content": system_prompt}]
             if context:
-                messages.append({"role": "system", "content": f"Context:\n{context}"})
+                system_prompt = f"{system_prompt}\n\nContext:\n{context}"
+            messages = [{"role": "system", "content": system_prompt}]
             messages.append({"role": "user", "content": query})
 
             response = ollama.chat(
@@ -113,7 +113,7 @@ class NeuroSymbolicArchitecture(BaseArchitecture):
         if self.provider == "mock":
             output = (
                 "Premises:\n"
-                f"- {_rule_extract_premises(query)}\n"
+                f"- {premise_hint}\n"
                 "Assumptions:\n"
                 "- Limited information beyond the query text.\n"
                 "Reasoning:\n"

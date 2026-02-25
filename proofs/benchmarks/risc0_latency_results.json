@@ -1,0 +1,57 @@
+{
+  "metadata": {
+    "date_utc": "2026-02-23T00:00:00Z",
+    "status": "blocked",
+    "command": "python proofs/bench_risc0_latency.py",
+    "note": "Local macOS arm64 environment is missing a working RISC Zero proving toolchain for risc0-host benchmark execution."
+  },
+  "hardware": {
+    "os": "macOS (arm64)",
+    "machine": "arm64"
+  },
+  "results": [
+    {
+      "name": "xs",
+      "input_bytes": 64,
+      "output_bytes": 256,
+      "prove_time_s": null,
+      "verify_time_s": null,
+      "status": "blocked"
+    },
+    {
+      "name": "s",
+      "input_bytes": 128,
+      "output_bytes": 512,
+      "prove_time_s": null,
+      "verify_time_s": null,
+      "status": "blocked"
+    },
+    {
+      "name": "m",
+      "input_bytes": 256,
+      "output_bytes": 1024,
+      "prove_time_s": null,
+      "verify_time_s": null,
+      "status": "blocked"
+    },
+    {
+      "name": "l",
+      "input_bytes": 512,
+      "output_bytes": 2048,
+      "prove_time_s": null,
+      "verify_time_s": null,
+      "status": "blocked"
+    },
+    {
+      "name": "xl",
+      "input_bytes": 1024,
+      "output_bytes": 4096,
+      "prove_time_s": null,
+      "verify_time_s": null,
+      "status": "blocked"
+    }
+  ],
+  "summary": {
+    "q2_recommendation": "Run the same benchmark script on Linux x86_64 CI runner with RISC Zero toolchain preinstalled to collect prove/verify timings."
+  }
+}
