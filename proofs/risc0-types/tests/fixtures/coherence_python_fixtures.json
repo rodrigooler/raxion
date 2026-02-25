@@ -1,0 +1,52 @@
+[
+  {
+    "name": "identical_two_arch",
+    "sim_ts": 1.0,
+    "sim_tn": 1.0,
+    "sim_sn": 1.0,
+    "cc_approximate": 1.0,
+    "cs_semantic": 1.0,
+    "score": 1.0,
+    "category": "HIGH_COHERENCE"
+  },
+  {
+    "name": "similar_two_arch",
+    "sim_ts": 0.7268197536468506,
+    "sim_tn": 0.7268197536468506,
+    "sim_sn": 0.7268197536468506,
+    "cc_approximate": 0.7417600750923157,
+    "cs_semantic": 0.7268197536468506,
+    "score": 0.7357839465141296,
+    "category": "STANDARD"
+  },
+  {
+    "name": "low_confidence_two_arch",
+    "sim_ts": 0.35,
+    "sim_tn": 0.35,
+    "sim_sn": 0.35,
+    "cc_approximate": 0.4,
+    "cs_semantic": 0.35,
+    "score": 0.38,
+    "category": "LOW_CONFIDENCE"
+  },
+  {
+    "name": "divergent_two_arch",
+    "sim_ts": 0.0,
+    "sim_tn": 0.0,
+    "sim_sn": 0.0,
+    "cc_approximate": 0.0,
+    "cs_semantic": 0.0,
+    "score": 0.0,
+    "category": "REJECTED"
+  },
+  {
+    "name": "three_arch_consistent",
+    "sim_ts": 0.7292139530181885,
+    "sim_tn": 0.7428373098373413,
+    "sim_sn": 0.6577777862548828,
+    "cc_approximate": 0.7033424178759257,
+    "cs_semantic": 0.7089396945543942,
+    "score": 0.7055813285473131,
+    "category": "STANDARD"
+  }
+]

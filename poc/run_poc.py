@@ -104,6 +104,7 @@ def run_benchmark(
     transformer: TransformerArchitecture,
     ssm: SSMProxyArchitecture,
     output_path: str | None = None,
+    seed: int = 42,
 ) -> dict:
     """Run full benchmark and report aggregate statistics."""
     results = []
@@ -130,6 +131,7 @@ def run_benchmark(
 
     stats = {
         "total_queries": len(results),
+        "seed": seed,
         "avg_coherence_score": sum(scores) / len(scores),
         "min_coherence_score": min(scores),
         "max_coherence_score": max(scores),
@@ -198,6 +200,7 @@ def main() -> None:
     parser.add_argument("--n", type=int, default=10, help="Number of benchmark queries")
     parser.add_argument("--mmlu", action="store_true", help="Use MMLU dataset")
     parser.add_argument("--output", type=str, help="Save results to JSON file")
+    parser.add_argument("--seed", type=int, default=42, help="Deterministic dataset sampling seed")
     parser.add_argument("--provider", default=os.getenv("RAXION_LLM_PROVIDER", "openrouter"))
     parser.add_argument("--transformer-model", default="arcee-ai/trinity-large-preview:free")
     parser.add_argument("--ssm-model", default="z-ai/glm-4.5-air:free")
@@ -217,8 +220,12 @@ def main() -> None:
     if args.query:
         run_single_query(args.query, transformer, ssm, verbose=True)
     else:
-        queries = load_mmlu_queries(n=args.n) if args.mmlu else load_sample_queries(n=args.n)
-        run_benchmark(queries, transformer, ssm, output_path=args.output)
+        queries = (
+            load_mmlu_queries(n=args.n, seed=args.seed)
+            if args.mmlu
+            else load_sample_queries(n=args.n, seed=args.seed)
+        )
+        run_benchmark(queries, transformer, ssm, output_path=args.output, seed=args.seed)
 
 
 if __name__ == "__main__":

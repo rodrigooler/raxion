@@ -5,6 +5,8 @@ extern crate alloc;
 use alloc::string::String;
 use serde::{Deserialize, Serialize};
 
+pub mod coherence;
+
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct InferenceCommitment {
     pub input_hash: [u8; 32],
