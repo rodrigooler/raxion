@@ -15,6 +15,7 @@ dist/
 target/
 .cargo-home/
 .cargo-target/
+runtime/agave/
 
 # Data
 poc/data/*.jsonl

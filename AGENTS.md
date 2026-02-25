@@ -18,7 +18,7 @@ The core innovation is **Cognitive Finality**: zk-ML proofs that make a collecti
 
 ```
 raxion/
-├── runtime/                    # Neural SVM — fork of Agave (Solana runtime)
+├── runtime/                    # Neural SVM extensions (Agave base fetched on demand)
 │   ├── cognitive/
 │   │   ├── account_types.rs    # CognitiveAccount, NativeMemoryAccount structs
 │   │   ├── scheduler.rs        # CognitiveScheduler — parallel thread dispatch

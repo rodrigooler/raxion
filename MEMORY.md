@@ -27,9 +27,9 @@ License: BUSL 1.1 → MIT 2030-02-20
   - `cargo install --git https://github.com/coral-xyz/anchor anchor-cli --locked` failed on this macOS host due LLVM bitcode mismatch at link time (`rustc LLVM21` artifacts vs Apple linker `LLVM17` reader).
   - Operational recommendation: execute Anchor deploy/test path in Linux CI or a pinned dev container to avoid host LLVM drift.
 - Runtime integration update:
-  - Agave upstream imported as subtree in `runtime/agave` (source ref: `agave v2.1` branch/tag line)
+  - Agave upstream is now fetched on-demand via `scripts/fetch_agave.sh` (pinned ref: `2694497991c6f789c1775d81f5968f11ee32ac4b`)
   - RAXION runtime extensions remain isolated in `runtime/cognitive`
-  - This preserves upstream baseline while allowing incremental cognitive integration
+  - This preserves upstream baseline while keeping repository size/review overhead lower
 - Gate A baseline validated on `q2-devnet`:
   - `pytest poc/tests/ -v` passed
   - `python poc/run_poc.py --provider mock --mmlu --n 100 --seed 42 --output poc/benchmarks/results/mmlu_100_q2_baseline.json` generated baseline artifact

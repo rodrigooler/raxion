@@ -80,6 +80,7 @@ uv run poc/run_poc.py --provider openrouter --query "Explain the Oracle Problem 
 
 - `poc/`: Phase 0 Python validation code
 - `proofs/`: RISC Zero guest/host scaffolding
+- `runtime/cognitive/`: RAXION runtime extensions (Agave base is fetched on demand)
 - `WHITEPAPER.md`: protocol whitepaper (v0.4 source at repository root)
 - `docs/whitepaper/`: auxiliary whitepaper assets
 - `docs/yellowpaper/`: formal protocol proofs (work in progress)
@@ -113,3 +114,9 @@ Image definition:
 
 Safe deploy config template:
 - `config/deploy/devnet.env.example`
+
+Agave runtime bootstrap (pinned upstream commit):
+
+```bash
+./scripts/fetch_agave.sh
+```
