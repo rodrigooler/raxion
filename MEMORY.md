@@ -9,13 +9,42 @@
 ## Project Status
 
 ```
-Last updated: 2026-02-23
+Last updated: 2026-02-25
 Current phase: Phase 0 — Genesis (Q1 2026)
 Next milestone: Devnet launch (Q2 2026)
 Whitepaper version: v0.4 (complete)
 GitHub: https://github.com/raxion-network/raxion
 License: BUSL 1.1 → MIT 2030-02-20
 ```
+
+### Q2 Execution Notes (2026-02-25)
+
+- Gate A baseline validated on `q2-devnet`:
+  - `pytest poc/tests/ -v` passed
+  - `python poc/run_poc.py --provider mock --mmlu --n 100 --seed 42 --output poc/benchmarks/results/mmlu_100_q2_baseline.json` generated baseline artifact
+  - benchmark metadata indicates H1 pass in deterministic mock profile (`hypothesis_h1_validated=true`)
+- Gate B implemented:
+  - `runtime/cognitive` crate scaffolded with `account_types.rs`, `scheduler.rs`, `memory.rs`, `convergence.rs`
+  - tests and clippy pass locally
+- Whitepaper consistency note identified:
+  - Formula `max_threads = floor(log2(stake/1000) * 8) + 1` does not match example outputs for `100,000` and `1,000,000` stake in plan text.
+  - Current implementation is formula-faithful; examples require whitepaper/plan review.
+- Gate C implemented:
+  - new Anchor-compatible crate `programs/raxion-poiq`
+  - deterministic challenge module added (`challenge_seed = HASH(slot_hash || inf_id || stake_seed)`)
+  - slashing arithmetic migrated to integer-safe basis-points path to avoid float truncation-to-zero
+- Gate D implemented:
+  - `proofs/risc0-types` upgraded with `EmbeddingInput`, `CoherenceCommitment`, and CS_semantic helpers
+  - `proofs/risc0-guest` upgraded for embedding-based commitment path
+  - `proofs/risc0-host` upgraded for embedding-input prove flow (local full link still constrained on macOS ARM toolchain)
+- Gate E partial implemented:
+  - `sdk/agent` crate added with `SmartAgent`, memory/inference helpers, runner stub, and `math_agent` example
+  - `cargo check` and example build pass
+- Gate F tooling added:
+  - `scripts/cross_validate_coherence.py` added
+  - `scripts/validate_q2.sh` added and passing in local profile with documented fallbacks:
+    - uses `.venv/bin/pytest` when available
+    - uses `RISC0_SKIP_BUILD_KERNELS=1 cargo check` fallback when full `risc0-host` build is blocked by local macOS toolchain constraints
 
 ### Q1 Execution Notes (2026-02-23)
 
@@ -65,7 +94,8 @@ License: BUSL 1.1 → MIT 2030-02-20
 
 > Hypotheses that have been empirically confirmed. Move entries here from "Open Hypotheses" when confirmed.
 
-*(empty — Devnet validation not yet started)*
+- **H1-prelim (2026-02-25, deterministic mock profile)**: 100-query MMLU baseline run reported `100.0%` finality in mock provider mode (`poc/benchmarks/results/mmlu_100_q2_baseline.json`).
+  - Scope note: this is an offline deterministic baseline, not a live-model statistical claim.
 
 ---
 

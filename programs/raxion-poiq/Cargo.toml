@@ -1,0 +1,22 @@
+[package]
+name = "raxion-poiq"
+version = "0.1.0"
+edition = "2021"
+description = "RAXION PoIQ Anchor program"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+
+[features]
+default = []
+no-entrypoint = []
+no-idl = []
+no-log-ix-name = []
+cpi = ["no-entrypoint"]
+
+[dependencies]
+anchor-lang = "0.30"
+sha2 = "0.10"
+
+[dev-dependencies]
+rand = "0.8"
