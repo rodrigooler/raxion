@@ -6,7 +6,7 @@
 
 ## Project Identity
 
-**RAXION** is a sovereign Layer-1 blockchain (Sovereign SVM Rollup on Solana) that proves AI inference quality mathematically — replacing human subjective consensus with cryptographic proofs.
+**RAXION** is a Sovereign SVM Rollup settled on Solana that proves AI inference quality mathematically — replacing human subjective consensus with cryptographic proofs.
 
 **Core thesis**: Bittensor's failure is not an implementation problem. It is an axiom problem. Any system with a human in the inference evaluation loop inherits the Oracle Problem. RAXION removes the human entirely.
 
@@ -16,15 +16,15 @@
 
 ## Current Phase
 
-**Phase 0 — Genesis (Q1 2026)**
+**Phase 1 — Devnet (Q2 2026)**
 
 Active work:
-- Whitepaper v1.0 complete ✅
-- Python PoC: validate convergence between 2 architectures on 100+ queries
-- RISC Zero: basic proof-of-execution for simple model
-- Repository setup with contributor-ready issues
+- PoIQ v0.1 on-chain path and deterministic challenge flow
+- Runtime cognitive extensions and SDK stabilization
+- RISC Zero embedding commitment path validation
+- Devnet explorer hardening and deployment flow
 
-**Do not** ask Claude to implement Agave fork, on-chain programs, or token mechanics yet. Those are Phase 1 (Q2 2026).
+**Do not** ask Claude to implement Testnet/Mainnet-only scope (GPU proving, full 6 challenge categories, TGE tokenomics) yet.
 
 ---
 
@@ -43,6 +43,11 @@ Read this before asking "why didn't you just...":
 | No optimistic assumptions | Cognitive consequences are irreversible; 7-day challenge windows allow harmful propagation | Optimistic rollup-style contestation |
 | Jolt for quality proofs | 10–100x faster than RISC Zero for matrix operations / embedding similarity | RISC Zero for everything |
 | α=0.4, β=0.6 weighting | Causal coherence is more robust than surface embedding similarity | Equal weighting |
+| Agent stake PDA derivation is fixed | Prevents arbitrary stake injection in slashing paths; Anchor enforces seeds/owner constraints | Free-form external stake account input |
+| Stake source-of-truth is protocol stake PDA | Financial math must use synchronized protocol-owned state; scheduler cache is non-canonical | CognitiveAccount cache or SPL token account as slash source |
+| `chronic_multiplier_milli` derived on-chain | Removes client-controlled slashing amplification vector; bounded deterministic behavior | Client-provided chronic multiplier |
+| `is_final` depends on challenge lifecycle | Enforces that challenged inferences are not final until verified pass | Marking final immediately when score ≥0.60 |
+| Q2 completion requires anti-manipulation invariants | Events alone are insufficient; deterministic challenge + stake constraints + on-chain derivation are mandatory | Declaring completion by happy-path event output |
 
 ---
 
@@ -102,8 +107,8 @@ consensus in decentralized AI with Proof of Inference Quality (PoIQ).
 
 Context files: AGENTS.md (repo structure + invariants), CLAUDE.md (this), MEMORY.md (decisions).
 
-Current phase: Phase 0 (Q1 2026) — Python PoC + basic RISC Zero integration.
-Next milestone: Devnet Q2 2026.
+Current phase: Phase 1 (Q2 2026) — Devnet implementation and validation.
+Next milestone: Testnet preparation (Q3/Q4 2026).
 
 Key files:
 - Whitepaper: docs/whitepaper/RAXION_Whitepaper_v1.0_EN.md
@@ -201,7 +206,7 @@ Use this test fixture for CoherenceScore validation:
 
 | Term | Definition |
 |---|---|
-| **Cognitive Finality** | State where a zk-ML proof is valid and committed to Solana L1 — immutable |
+| **Cognitive Finality** | State where a zk-ML proof is valid and committed to Solana settlement layer — immutable |
 | **CoherenceScore** | 0.4×CS_semantic + 0.6×CC — epistemic coherence among 3 architectures |
 | **Cognition Thread** | Atomic unit of parallel inference — one architecture, one query, one partial proof |
 | **Cognitive Scheduler** | Decomposes queries into DAGs of parallel threads |
@@ -212,7 +217,7 @@ Use this test fixture for CoherenceScore validation:
 | **π_quality** | Quality proof — Jolt proof of CoherenceScore computation |
 | **π_poiq** | Aggregated final proof = AGGREGATE(π_exec×3, π_quality) |
 | **Dissent Queue** | Holding area for high-confidence divergent outputs awaiting challenge |
-| **Sovereign SVM Rollup** | Neural SVM executes independently; commits state roots to Solana L1 |
+| **Sovereign SVM Rollup** | Neural SVM executes independently; commits state roots to Solana settlement layer |
 
 ---
 

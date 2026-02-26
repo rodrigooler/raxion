@@ -1,0 +1,2 @@
+# Keep generated deploy artifacts out of language stats noise when present.
+target/** linguist-generated

@@ -1,0 +1,19 @@
+[package]
+name = "raxion-cognitive"
+version = "0.1.0"
+edition = "2021"
+description = "RAXION Neural SVM cognitive extensions for Agave"
+
+[dependencies]
+solana-sdk = { version = "2.1", features = ["borsh"] }
+borsh = { version = "1.5", features = ["derive"] }
+serde = { version = "1.0", features = ["derive"] }
+sha2 = "0.10"
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "time"] }
+thiserror = "1.0"
+log = "0.4"
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
+serde_json = "1.0"
+
+[dev-dependencies]
+tokio-test = "0.4"

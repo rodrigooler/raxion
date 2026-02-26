@@ -2,44 +2,64 @@
 #![no_std]
 
 extern crate alloc;
-use alloc::vec::Vec;
 
-use alloc::string::String;
-use risc0_types::InferenceCommitment;
+use risc0_types::{
+    categorize, compute_cs_semantic, CoherenceCommitment, EmbeddingInput, ALPHA, BETA,
+};
 use risc0_zkvm::guest::env;
 use sha2::{Digest, Sha256};
 
 risc0_zkvm::guest::entry!(main);
 
+fn hash_embeddings(emb: &[f32]) -> [u8; 32] {
+    let mut hasher = Sha256::new();
+    for value in emb {
+        hasher.update(value.to_le_bytes());
+    }
+    hasher.finalize().into()
+}
+
 fn main() {
-    let input_bytes: Vec<u8> = env::read();
-    let output_bytes: Vec<u8> = env::read();
-    let architecture: String = env::read();
+    let input: EmbeddingInput = env::read();
 
-    let input_hash: [u8; 32] = {
-        let mut hasher = Sha256::new();
-        hasher.update(&input_bytes);
-        hasher.finalize().into()
-    };
+    assert_eq!(
+        input.embedding_t.len(),
+        input.embedding_s.len(),
+        "embedding dimensions must match"
+    );
 
-    let output_hash: [u8; 32] = {
-        let mut hasher = Sha256::new();
-        hasher.update(&output_bytes);
-        hasher.finalize().into()
-    };
+    if let Some(ref emb_n) = input.embedding_n {
+        assert_eq!(
+            input.embedding_t.len(),
+            emb_n.len(),
+            "embedding_n dimensions must match"
+        );
+    }
 
-    let joint_commitment: [u8; 32] = {
-        let mut hasher = Sha256::new();
-        hasher.update(input_hash);
-        hasher.update(output_hash);
-        hasher.update(architecture.as_bytes());
-        hasher.finalize().into()
-    };
+    let cs_semantic = compute_cs_semantic(
+        &input.embedding_t,
+        &input.embedding_s,
+        input.embedding_n.as_deref(),
+    );
 
-    env::commit(&InferenceCommitment {
-        input_hash,
-        output_hash,
-        joint_commitment,
-        architecture,
+    // Phase-1 approximation for CC while logical circuits are not in zkVM yet.
+    let cc_approximate = (0.8 * cs_semantic + 0.14).clamp(0.0, 1.0);
+    let coherence_score = (ALPHA * cs_semantic + BETA * cc_approximate).clamp(0.0, 1.0);
+
+    let embedding_t_hash = hash_embeddings(&input.embedding_t);
+    let embedding_s_hash = hash_embeddings(&input.embedding_s);
+    let embedding_n_hash = input
+        .embedding_n
+        .as_ref()
+        .map(|n| hash_embeddings(n))
+        .unwrap_or([0u8; 32]);
+
+    env::commit(&CoherenceCommitment {
+        coherence_score,
+        cs_semantic,
+        embedding_t_hash,
+        embedding_s_hash,
+        embedding_n_hash,
+        category: categorize(coherence_score),
     });
 }

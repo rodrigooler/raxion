@@ -37,10 +37,8 @@ By participating in this project, you agree to abide by our [Code of Conduct](./
 
 ### Prerequisites
 
+- Python 3.11+ with `uv`
 - Rust 1.75+ (for core protocol)
-- Node.js 20+ (for tooling)
-- Solana CLI tools
-- Anchor CLI (for Solana programs)
 
 ### Building
 
@@ -49,14 +47,17 @@ By participating in this project, you agree to abide by our [Code of Conduct](./
 git clone https://github.com/rodrigooler/raxion.git
 cd raxion
 
+# Python environment (PoC)
+uv venv --python 3.11 .venv
+source .venv/bin/activate
+uv pip sync poc/requirements-dev.txt
+
 # Build core (Rust)
 cargo build
 
 # Run tests
 cargo test
-
-# Build Solana programs
-anchor build
+uv run pytest poc/tests/ -v
 ```
 
 ---
@@ -106,6 +107,20 @@ Open an issue with the `enhancement` label describing:
 - [ ] Documentation is updated
 - [ ] Commit messages follow guidelines
 - [ ] PR title follows conventional commits
+- [ ] No third-party source tree was vendored into this repository
+
+### Repository Hygiene (Required)
+
+- Do not commit upstream third-party source code (for example `runtime/agave` as a subtree copy).
+- Use on-demand bootstrap scripts instead:
+  - `./scripts/fetch_agave.sh` for pinned Agave checkout
+  - `./scripts/apply_rust_toolchain_patches.sh` for local cargo compatibility patches
+- Keep generated artifacts out of git:
+  - benchmark outputs in `poc/benchmarks/results/`
+  - build outputs in `target/`
+- Keep contribution focused on RAXION first-party code (`runtime/cognitive`, `programs/`, `sdk/`, `poc/`, `proofs/`).
+- Frontend contributions live in `apps/explorer` and `apps/site`.
+- Operational/deploy changes live in `ops/` and `scripts/`.
 
 ---
 

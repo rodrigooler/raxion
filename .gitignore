@@ -4,24 +4,51 @@ __pycache__/
 .env
 venv/
 .venv/
+.venv*/
+.python-version
+.uv-cache/
 *.egg-info/
 dist/
 .pytest_cache/
 
 # Rust
 target/
+.cargo-home/
+.cargo-target/
+runtime/agave/
+**/Cargo.lock
 
 # Data
 poc/data/*.jsonl
 poc/data/*.parquet
 poc/benchmarks/results/
+!poc/benchmarks/results/
+poc/benchmarks/results/*
+!poc/benchmarks/results/mmlu_100_q2_baseline.json
 
 # IDE
 .idea/
 .vscode/
 *.swp
+node_modules/
+apps/explorer/.next/
+apps/explorer/out/
+**/package-lock.json
+!apps/explorer/package-lock.json
 
 # OS
 .DS_Store
 Thumbs.db
 Desktop.ini
+
+# Secrets / Wallets
+*.pem
+*.key
+*.seed
+*.mnemonic
+**/.env.local
+**/.env.*.local
+**/id.json
+**/*-keypair.json
+**/wallet*.json
+**/keypair*.json

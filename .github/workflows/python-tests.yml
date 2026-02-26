@@ -10,26 +10,31 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
 
       - name: Set up Python
-        id: setup-python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.11'
+          cache: 'pip'
+          cache-dependency-path: |
+            poc/requirements-dev.txt
+            poc/requirements.txt
 
-      - name: Cache pip downloads
-        uses: actions/cache@v4
+      - name: Restore Python venv cache
+        id: cache-python-venv
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830
         with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-py${{ steps.setup-python.outputs.python-version }}-pip-${{ hashFiles('poc/requirements.txt', 'poc/requirements-dev.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-py${{ steps.setup-python.outputs.python-version }}-pip-
+          path: .venv
+          key: ${{ runner.os }}-py311-venv-${{ hashFiles('poc/requirements-dev.txt', 'poc/requirements.txt') }}
 
       - name: Install dependencies
+        if: steps.cache-python-venv.outputs.cache-hit != 'true'
         run: |
+          python -m venv .venv
+          . .venv/bin/activate
           python -m pip install --upgrade pip
           pip install --prefer-binary -r poc/requirements-dev.txt
 
       - name: Run test suite
-        run: pytest poc/tests/ -v
+        run: .venv/bin/pytest poc/tests/ -v

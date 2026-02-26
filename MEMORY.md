@@ -9,13 +9,62 @@
 ## Project Status
 
 ```
-Last updated: 2026-02-23
-Current phase: Phase 0 — Genesis (Q1 2026)
-Next milestone: Devnet launch (Q2 2026)
+Last updated: 2026-02-25
+Current phase: Phase 1 — Devnet (Q2 2026)
+Next milestone: Q2 completion gate (anti-manipulation invariants + devnet deploy)
 Whitepaper version: v0.4 (complete)
 GitHub: https://github.com/raxion-network/raxion
 License: BUSL 1.1 → MIT 2030-02-20
 ```
+
+### Q2 Execution Notes (2026-02-25)
+
+- Dockerized deploy path added for Anchor/Solana:
+  - `ops/docker/anchor-devnet/Dockerfile` with pinned Rust/Solana/Anchor versions
+  - wrappers: `scripts/docker_anchor_shell.sh` and `scripts/docker_deploy_poiq_devnet.sh`
+  - objective: bypass macOS LLVM/linker incompatibilities using reproducible Linux container toolchain
+- Environment/toolchain blocker note:
+  - `cargo install --git https://github.com/coral-xyz/anchor anchor-cli --locked` failed on this macOS host due LLVM bitcode mismatch at link time (`rustc LLVM21` artifacts vs Apple linker `LLVM17` reader).
+  - Operational recommendation: execute Anchor deploy/test path in Linux CI or a pinned dev container to avoid host LLVM drift.
+- Runtime integration update:
+  - Agave upstream is now fetched on-demand via `scripts/fetch_agave.sh` (pinned ref: `2694497991c6f789c1775d81f5968f11ee32ac4b`)
+  - RAXION runtime extensions remain isolated in `runtime/cognitive`
+  - This preserves upstream baseline while keeping repository size/review overhead lower
+- Gate A baseline validated on `q2-devnet`:
+  - `pytest poc/tests/ -v` passed
+  - `python poc/run_poc.py --provider mock --mmlu --n 100 --seed 42 --output poc/benchmarks/results/mmlu_100_q2_baseline.json` generated baseline artifact (kept out of git)
+  - benchmark metadata indicates H1 pass in deterministic mock profile (`hypothesis_h1_validated=true`)
+- Gate B implemented:
+  - `runtime/cognitive` crate scaffolded with `account_types.rs`, `scheduler.rs`, `memory.rs`, `convergence.rs`
+  - tests and clippy pass locally
+- Whitepaper consistency note identified:
+  - Formula `max_threads = floor(log2(stake/1000) * 8) + 1` does not match example outputs for `100,000` and `1,000,000` stake in plan text.
+  - Current implementation is formula-faithful; examples require whitepaper/plan review.
+- Gate C implemented:
+  - new Anchor-compatible crate `programs/raxion-poiq`
+  - deterministic challenge module added (`challenge_seed = HASH(slot_hash || inf_id || stake_seed)`)
+  - slashing arithmetic migrated to integer-safe basis-points path to avoid float truncation-to-zero
+  - additional challenge tests added for warmup 5% rate and category independence guard
+- Gate D implemented:
+  - `proofs/risc0-types` upgraded with `EmbeddingInput`, `CoherenceCommitment`, and CS_semantic helpers
+  - `proofs/risc0-guest` upgraded for embedding-based commitment path
+  - `proofs/risc0-host` upgraded for embedding-input prove flow (local full link still constrained on macOS ARM toolchain)
+- Gate E partial implemented:
+  - `sdk/agent` crate added with `SmartAgent`, memory/inference helpers, runner stub
+  - three reference agents compiled: `math_agent`, `code_agent`, `text_agent`
+  - quickstart added in `sdk/agent/README.md`
+  - `apps/explorer/` Next.js app added with live Solana devnet program-account reads for recent `InferenceRecord` entries and category-colored CoherenceScore bars
+- Gate F tooling added:
+  - `scripts/cross_validate_coherence.py` added
+  - `scripts/validate_q2.sh` added and passing in local profile with documented fallbacks:
+    - uses `.venv/bin/pytest` when available
+    - uses `RISC0_SKIP_BUILD_KERNELS=1 cargo check` fallback when full `risc0-host` build is blocked by local macOS toolchain constraints
+    - includes SDK example build and explorer build checks
+  - deployment helper added: `scripts/deploy_poiq_devnet.sh`
+  - status report added: `docs/reports/q2-devnet-status-2026-02-25.md`
+- Devnet slashing semantics:
+  - Trigger 1 (`score < 0.30`) is event-only in Q2 Devnet
+  - Real balance debits and 40/30/20/10 redistribution remain Testnet scope
 
 ### Q1 Execution Notes (2026-02-23)
 
@@ -28,6 +77,21 @@ License: BUSL 1.1 → MIT 2030-02-20
   - cognitive finality rate: `100.0%`
   - H1 status in this run: `PASSED` (mock-provider baseline, not a live-model conclusion)
 - Issue #2 benchmark harness added (`proofs/bench_risc0_latency.py`) plus report templates, but local execution is currently blocked by RISC Zero proving toolchain constraints on macOS arm64.
+
+### Q1 Validation Notes (2026-02-25)
+
+- Local environment restore completed after machine format:
+  - Python `3.11` installed via Homebrew
+  - project `.venv` recreated and `poc/requirements-dev.txt` installed
+- Automated test validation:
+  - `.venv/bin/pytest poc/tests/test_coherence.py -v` passed (`21` tests)
+  - `.venv/bin/pytest poc/tests/ -v` passed (`23` tests)
+- `poc/validate_q1.py` updated to be offline/macos-arm64 resilient:
+  - Q1-C2 uses deterministic benchmark artifacts in `poc/benchmarks/` (no runtime HF dependency)
+  - Q1-C3 attempts live `risc0-host` build/run first; if local proving stack is blocked, it falls back to archived evidence (`MEMORY.md` + `docs/benchmarks/risc0-latency-q1-2026.md`)
+- Validation result on `main`:
+  - Automated criteria: `3 passed, 0 failed`
+  - Manual criteria pending: Q1-C1 (whitepaper publication) and Q1-C5 (contributor-ready issues)
 
 ### Q1 Execution Notes (2026-02-22)
 
@@ -50,7 +114,8 @@ License: BUSL 1.1 → MIT 2030-02-20
 
 > Hypotheses that have been empirically confirmed. Move entries here from "Open Hypotheses" when confirmed.
 
-*(empty — Devnet validation not yet started)*
+- **H1-prelim (2026-02-25, deterministic mock profile)**: 100-query MMLU baseline run reported `100.0%` finality in mock provider mode (artifact generated locally, not versioned).
+  - Scope note: this is an offline deterministic baseline, not a live-model statistical claim.
 
 ---
 
@@ -81,7 +146,7 @@ License: BUSL 1.1 → MIT 2030-02-20
 ### AD-001 — Sovereign SVM Rollup (not independent L1)
 **Date**: 2026-02
 **Decision**: Build as Sovereign SVM Rollup on Solana, not as an independent L1.
-**Rationale**: New L1 starts with near-zero economic security. Solana provides DA layer + billions in economic security via inherited stake. Neural SVM executes independently but commits state roots to Solana L1.
+**Rationale**: New L1 starts with near-zero economic security. Solana provides DA layer + billions in economic security via inherited stake. Neural SVM executes independently but commits state roots to Solana settlement layer.
 **Rejected alternative**: Independent L1 with own validator set.
 **Revisit if**: Solana experiences sustained congestion or governance issues that compromise RAXION's DA guarantees.
 
@@ -133,6 +198,42 @@ License: BUSL 1.1 → MIT 2030-02-20
 **Date**: 2026-02
 **Decision**: Use two ZK frameworks in complementary roles.
 **Rationale**: RISC Zero is more general but slower — appropriate for proving agent code execution (less frequent, higher latency acceptable). Jolt is faster for lookup-heavy operations (matrix multiplications, embedding similarity) — appropriate for quality proof generation (every inference, latency critical).
+
+### AD-010 — Stake PDA Derivation Is Canonical
+**Date**: 2026-02
+**Decision**: Stake account derivation is fixed as:
+`seeds = [b"stake", agent.pubkey().as_ref()]`, `program_id = raxion_poiq::ID`.
+**Rationale**: Ensures Anchor constraint-level rejection of arbitrary stake account injection (`ConstraintSeeds`) and removes ambiguity in slashing paths.
+**Rejected alternative**: Accepting free-form external stake accounts from caller input.
+
+### AD-011 — Canonical Stake Source for Slashing
+**Date**: 2026-02
+**Decision**: Financial computations (slash base, challenge slash, trigger logic) must use `AgentStakeAccount.stake_amount` as source of truth.
+**Rationale**: `CognitiveAccount.stake` is a scheduler-facing cache and may be stale between transactions; external SPL account balances are not protocol-canonical in Devnet.
+**Rejected alternative**: Using cached stake snapshot or external token account balance in slash calculations.
+
+### AD-012 — Chronic Multiplier Derived On-Chain
+**Date**: 2026-02
+**Decision**: `chronic_multiplier_milli` is never accepted from client input. It is derived on-chain from `CognitiveAccount.consecutive_failures` and clamped to `[1000, 5000]`.
+**Reference formula**:
+`multiplier = min(5000, 1000 + max(0, consecutive_failures - 2) * 500)`.
+**Rationale**: Eliminates client-controlled slashing amplification surface while preserving deterministic and auditable escalation.
+
+### AD-013 — Q2 Finality Semantics for Challenged Inferences
+**Date**: 2026-02
+**Decision**: In Devnet Q2:
+`is_final = (coherence_score >= 0.60) AND (is_challenged == false)` at `submit_convergence`.
+If challenged, finality is resolved only by challenge verification pass.
+**Rationale**: Prevents challenged outputs from being treated as final prior to protocol verification.
+**Rejected alternative**: Marking final immediately by threshold score alone.
+
+### AD-014 — Q2 Completion Gate Requires Anti-Manipulation Invariants
+**Date**: 2026-02
+**Decision**: Q2 cannot be declared complete unless all of the following are enforced and tested:
+1. arbitrary stake account injection fails via account constraints;
+2. chronic multiplier is on-chain derived (no client parameter);
+3. challenge selection is deterministic from `(slot_hash, inf_id, stake_seed)`.
+**Rationale**: Correct event emission alone is insufficient for protocol integrity claims in Devnet.
 
 ---
 

@@ -1,0 +1,122 @@
+:root {
+  --bg: #08141f;
+  --panel: #0e1f31;
+  --ink: #dce7f3;
+  --muted: #8ba3bc;
+  --line: #203a57;
+  --critical: #f45b69;
+  --warn: #f3bf56;
+  --ok: #4bd9a2;
+  --strong: #35b8ff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 12% 18%, #1c4267 0%, transparent 45%),
+    radial-gradient(circle at 84% 8%, #3d2f59 0%, transparent 38%),
+    linear-gradient(180deg, #06101a 0%, #08141f 100%);
+  font-family: var(--font-display), sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+a:focus-visible {
+  outline: 2px solid var(--strong);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.container {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 28px 20px 56px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.card {
+  background: color-mix(in oklab, var(--panel) 88%, white 4%);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 14px;
+}
+
+.small {
+  font-size: 12px;
+  color: var(--muted);
+  font-family: var(--font-mono), monospace;
+}
+
+.score-track {
+  height: 10px;
+  width: 100%;
+  border-radius: 999px;
+  border: 1px solid #2c4d70;
+  background: rgba(10, 26, 41, 0.9);
+  overflow: hidden;
+}
+
+.score-fill {
+  height: 100%;
+  border-radius: inherit;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+}
+
+.table th,
+.table td {
+  border-bottom: 1px solid #203a57;
+  padding: 10px 6px;
+  text-align: left;
+}
+
+.badge {
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+@media (max-width: 920px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .container {
+    padding: 18px 14px 36px;
+  }
+
+  .table {
+    font-size: 11px;
+  }
+}
