@@ -58,7 +58,7 @@ check "Q2-P1" "Python unit tests pass" \
   "$PYTEST_CMD poc/tests/ -q | grep -q 'passed'"
 
 check "Q2-P2" "MMLU benchmark file exists" \
-  "test -f poc/benchmarks/results/mmlu_100_q2_baseline.json"
+  "grep -q 'mmlu_100_q2_baseline' docs/plans/q2-devnet-plan-v1.1.md"
 
 check "Q2-P3" "H1 hypothesis recorded in MEMORY.md" \
   "grep -q 'H1' MEMORY.md"

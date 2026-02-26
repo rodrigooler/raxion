@@ -107,6 +107,18 @@ Open an issue with the `enhancement` label describing:
 - [ ] Documentation is updated
 - [ ] Commit messages follow guidelines
 - [ ] PR title follows conventional commits
+- [ ] No third-party source tree was vendored into this repository
+
+### Repository Hygiene (Required)
+
+- Do not commit upstream third-party source code (for example `runtime/agave` as a subtree copy).
+- Use on-demand bootstrap scripts instead:
+  - `./scripts/fetch_agave.sh` for pinned Agave checkout
+  - `./scripts/apply_rust_toolchain_patches.sh` for local cargo compatibility patches
+- Keep generated artifacts out of git:
+  - benchmark outputs in `poc/benchmarks/results/`
+  - build outputs in `target/`
+- Keep contribution focused on RAXION first-party code (`runtime/cognitive`, `programs/`, `sdk/`, `poc/`, `proofs/`).
 
 ---
 

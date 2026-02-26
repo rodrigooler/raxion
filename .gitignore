@@ -16,6 +16,7 @@ target/
 .cargo-home/
 .cargo-target/
 runtime/agave/
+**/Cargo.lock
 
 # Data
 poc/data/*.jsonl
@@ -29,6 +30,7 @@ poc/benchmarks/results/
 node_modules/
 explorer/.next/
 explorer/out/
+**/package-lock.json
 
 # OS
 .DS_Store

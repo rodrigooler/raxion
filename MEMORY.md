@@ -32,7 +32,7 @@ License: BUSL 1.1 → MIT 2030-02-20
   - This preserves upstream baseline while keeping repository size/review overhead lower
 - Gate A baseline validated on `q2-devnet`:
   - `pytest poc/tests/ -v` passed
-  - `python poc/run_poc.py --provider mock --mmlu --n 100 --seed 42 --output poc/benchmarks/results/mmlu_100_q2_baseline.json` generated baseline artifact
+  - `python poc/run_poc.py --provider mock --mmlu --n 100 --seed 42 --output poc/benchmarks/results/mmlu_100_q2_baseline.json` generated baseline artifact (kept out of git)
   - benchmark metadata indicates H1 pass in deterministic mock profile (`hypothesis_h1_validated=true`)
 - Gate B implemented:
   - `runtime/cognitive` crate scaffolded with `account_types.rs`, `scheduler.rs`, `memory.rs`, `convergence.rs`
@@ -111,7 +111,7 @@ License: BUSL 1.1 → MIT 2030-02-20
 
 > Hypotheses that have been empirically confirmed. Move entries here from "Open Hypotheses" when confirmed.
 
-- **H1-prelim (2026-02-25, deterministic mock profile)**: 100-query MMLU baseline run reported `100.0%` finality in mock provider mode (`poc/benchmarks/results/mmlu_100_q2_baseline.json`).
+- **H1-prelim (2026-02-25, deterministic mock profile)**: 100-query MMLU baseline run reported `100.0%` finality in mock provider mode (artifact generated locally, not versioned).
   - Scope note: this is an offline deterministic baseline, not a live-model statistical claim.
 
 ---
