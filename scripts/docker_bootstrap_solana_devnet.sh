@@ -24,20 +24,22 @@ fi
 if [ ! -f "$SOLANA_DIR/id.json" ]; then
   docker run --rm $TTY_ARGS \
     --platform "$DOCKER_PLATFORM" \
-    -v "$SOLANA_DIR":/root/.config/solana \
+    -v "$SOLANA_DIR":/home/raxion/.config/solana \
     -e PATH="$CONTAINER_PATH" \
+    -e HOME=/home/raxion \
     "$IMAGE_TAG" \
-    bash -c "solana-keygen new --no-bip39-passphrase -o /root/.config/solana/id.json --force"
+    bash -c "solana-keygen new --no-bip39-passphrase -o /home/raxion/.config/solana/id.json --force"
   chmod 600 "$SOLANA_DIR/id.json"
 fi
 
 # If keypair exists but is malformed, stop to avoid destructive overwrite.
 if ! docker run --rm $TTY_ARGS \
   --platform "$DOCKER_PLATFORM" \
-  -v "$SOLANA_DIR":/root/.config/solana \
+  -v "$SOLANA_DIR":/home/raxion/.config/solana \
   -e PATH="$CONTAINER_PATH" \
+  -e HOME=/home/raxion \
   "$IMAGE_TAG" \
-  bash -c "solana address --keypair /root/.config/solana/id.json >/dev/null 2>&1"; then
+  bash -c "solana address --keypair /home/raxion/.config/solana/id.json >/dev/null 2>&1"; then
   echo "Existing keypair at $SOLANA_DIR/id.json appears invalid."
   echo "Refusing to overwrite automatically. Fix/recover it manually and re-run."
   exit 1
@@ -46,17 +48,19 @@ fi
 # Configure devnet endpoint in a local config file.
 docker run --rm $TTY_ARGS \
   --platform "$DOCKER_PLATFORM" \
-  -v "$SOLANA_DIR":/root/.config/solana \
+  -v "$SOLANA_DIR":/home/raxion/.config/solana \
   -e PATH="$CONTAINER_PATH" \
+  -e HOME=/home/raxion \
   "$IMAGE_TAG" \
-  bash -c "solana config set --url https://api.devnet.solana.com --keypair /root/.config/solana/id.json"
+  bash -c "solana config set --url https://api.devnet.solana.com --keypair /home/raxion/.config/solana/id.json"
 
 # Attempt devnet airdrop so deploy can proceed.
 docker run --rm $TTY_ARGS \
   --platform "$DOCKER_PLATFORM" \
-  -v "$SOLANA_DIR":/root/.config/solana \
+  -v "$SOLANA_DIR":/home/raxion/.config/solana \
   -e PATH="$CONTAINER_PATH" \
+  -e HOME=/home/raxion \
   "$IMAGE_TAG" \
-  bash -c "solana airdrop 2 --keypair /root/.config/solana/id.json || true; solana balance --keypair /root/.config/solana/id.json"
+  bash -c "solana airdrop 2 --keypair /home/raxion/.config/solana/id.json || true; solana balance --keypair /home/raxion/.config/solana/id.json"
 
 echo "Bootstrap complete: $SOLANA_DIR/id.json"

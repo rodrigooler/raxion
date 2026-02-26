@@ -25,9 +25,10 @@ fi
 docker run --rm $TTY_ARGS \
   --platform "$DOCKER_PLATFORM" \
   -v "$(pwd)":/work \
-  -v "$HOME/.config/solana":/root/.config/solana \
+  -v "$HOME/.config/solana":/home/raxion/.config/solana \
   -e PATH="$CONTAINER_PATH" \
-  -e ANCHOR_WALLET=/root/.config/solana/id.json \
+  -e HOME=/home/raxion \
+  -e ANCHOR_WALLET=/home/raxion/.config/solana/id.json \
   -e CARGO_HOME=/work/.cargo-home \
   -w /work \
   "$IMAGE_TAG" \

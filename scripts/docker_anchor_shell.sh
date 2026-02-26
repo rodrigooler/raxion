@@ -21,8 +21,9 @@ if [ "$#" -gt 0 ]; then
   docker run --rm $TTY_ARGS \
     --platform "$DOCKER_PLATFORM" \
     -v "$(pwd)":/work \
-    -v "$HOME/.config/solana":/root/.config/solana \
+    -v "$HOME/.config/solana":/home/raxion/.config/solana \
     -e PATH="$CONTAINER_PATH" \
+    -e HOME=/home/raxion \
     -e CARGO_HOME=/work/.cargo-home \
     -w /work \
     "$IMAGE_TAG" bash -c "$*"
@@ -30,8 +31,9 @@ else
   docker run --rm $TTY_ARGS \
     --platform "$DOCKER_PLATFORM" \
     -v "$(pwd)":/work \
-    -v "$HOME/.config/solana":/root/.config/solana \
+    -v "$HOME/.config/solana":/home/raxion/.config/solana \
     -e PATH="$CONTAINER_PATH" \
+    -e HOME=/home/raxion \
     -e CARGO_HOME=/work/.cargo-home \
     -w /work \
     "$IMAGE_TAG" bash

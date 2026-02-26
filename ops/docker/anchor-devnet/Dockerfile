@@ -22,8 +22,15 @@ RUN cargo install --git https://github.com/coral-xyz/anchor anchor-cli --tag ${A
 
 # Solana / Agave CLI
 RUN curl -sSfL "https://release.anza.xyz/${SOLANA_VERSION}/install" | sh
+
+# Create an unprivileged runtime user for all container executions.
+RUN useradd --create-home --uid 1000 --shell /bin/bash raxion && \
+    mkdir -p /work /home/raxion/.config/solana && \
+    chown -R raxion:raxion /work /home/raxion/.config
+
 ENV PATH="/usr/local/cargo/bin:/root/.local/share/solana/install/active_release/bin:${PATH}"
 
 WORKDIR /work
+USER raxion
 
 CMD ["bash"]
