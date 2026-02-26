@@ -16,12 +16,12 @@ mkdir -p "$SOLANA_DIR"
 docker build --platform "$DOCKER_PLATFORM" -f ops/docker/anchor-devnet/Dockerfile -t "$IMAGE_TAG" .
 
 TTY_ARGS=""
-if [ -t 0 ] && [ -t 1 ]; then
+if [[ -t 0 && -t 1 ]]; then
   TTY_ARGS="-it"
 fi
 
 # Generate keypair only if missing.
-if [ ! -f "$SOLANA_DIR/id.json" ]; then
+if [[ ! -f "$SOLANA_DIR/id.json" ]]; then
   docker run --rm $TTY_ARGS \
     --platform "$DOCKER_PLATFORM" \
     -v "$SOLANA_DIR":/home/raxion/.config/solana \

@@ -16,7 +16,7 @@ fi
 
 mkdir -p "$(dirname "$AGAVE_DIR")"
 
-if [ ! -d "$AGAVE_DIR/.git" ]; then
+if [[ ! -d "$AGAVE_DIR/.git" ]]; then
   echo "[agave] cloning $AGAVE_REPO_URL into $AGAVE_DIR"
   git clone "$AGAVE_REPO_URL" "$AGAVE_DIR"
 fi
@@ -27,10 +27,10 @@ git -C "$AGAVE_DIR" fetch --tags --prune origin
 echo "[agave] checking out $AGAVE_REF"
 git -C "$AGAVE_DIR" checkout "$AGAVE_REF"
 
-if [ -d "$PATCH_DIR" ]; then
+if [[ -d "$PATCH_DIR" ]]; then
   shopt -s nullglob
   patch_files=("$PATCH_DIR"/*.patch)
-  if [ "${#patch_files[@]}" -gt 0 ]; then
+  if [[ "${#patch_files[@]}" -gt 0 ]]; then
     echo "[agave] applying local patches from $PATCH_DIR"
     for patch_file in "${patch_files[@]}"; do
       echo "  - $(basename "$patch_file")"
@@ -40,4 +40,3 @@ if [ -d "$PATCH_DIR" ]; then
 fi
 
 echo "[agave] ready at $AGAVE_DIR"
-

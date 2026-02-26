@@ -23,6 +23,7 @@ check() {
     FAIL=$((FAIL + 1))
     sed -n '1,80p' /tmp/raxion_q2_check.log
   fi
+  return 0
 }
 
 check_with_fallback() {
@@ -46,11 +47,12 @@ check_with_fallback() {
     sed -n '1,80p' /tmp/raxion_q2_check.log
     sed -n '1,80p' /tmp/raxion_q2_check_fallback.log
   fi
+  return 0
 }
 
 # Python tests
 PYTEST_CMD="python3 -m pytest"
-if [ -x ".venv/bin/pytest" ]; then
+if [[ -x ".venv/bin/pytest" ]]; then
   PYTEST_CMD=".venv/bin/pytest"
 fi
 
@@ -107,7 +109,7 @@ echo "════════════════════════�
 echo "Results: $PASS passed, $FAIL failed"
 echo ""
 
-if [ "$FAIL" -gt 0 ]; then
+if [[ "$FAIL" -gt 0 ]]; then
   echo "❌ Q2 validation FAILED. Do not announce Devnet public until all pass."
   exit 1
 else

@@ -14,17 +14,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     clang \
     cmake \
     protobuf-compiler \
-    && rm -rf /var/lib/apt/lists/*
-
-# Anchor CLI pinned to project-compatible line.
-# Do not use --locked here: newer Rust toolchains need updated transitive deps.
-RUN cargo install --git https://github.com/coral-xyz/anchor anchor-cli --tag ${ANCHOR_VERSION}
-
-# Solana / Agave CLI
-RUN curl -sSfL "https://release.anza.xyz/${SOLANA_VERSION}/install" | sh
-
-# Create an unprivileged runtime user for all container executions.
-RUN useradd --create-home --uid 1000 --shell /bin/bash raxion && \
+    && rm -rf /var/lib/apt/lists/* \
+    && cargo install --git https://github.com/coral-xyz/anchor anchor-cli --tag ${ANCHOR_VERSION} \
+    && curl -sSfL "https://release.anza.xyz/${SOLANA_VERSION}/install" | sh \
+    && useradd --create-home --uid 1000 --shell /bin/bash raxion \
+    && \
     mkdir -p /work /home/raxion/.config/solana && \
     chown -R raxion:raxion /work /home/raxion/.config
 

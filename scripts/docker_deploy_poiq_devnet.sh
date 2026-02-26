@@ -10,7 +10,7 @@ if ! command -v docker >/dev/null 2>&1; then
   exit 1
 fi
 
-if [ ! -d "$HOME/.config/solana" ]; then
+if [[ ! -d "$HOME/.config/solana" ]]; then
   echo "missing $HOME/.config/solana"
   exit 1
 fi
@@ -18,7 +18,7 @@ fi
 docker build --platform "$DOCKER_PLATFORM" -f ops/docker/anchor-devnet/Dockerfile -t "$IMAGE_TAG" .
 
 TTY_ARGS=""
-if [ -t 0 ] && [ -t 1 ]; then
+if [[ -t 0 && -t 1 ]]; then
   TTY_ARGS="-it"
 fi
 

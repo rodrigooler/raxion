@@ -82,7 +82,6 @@ function parseInferenceRecord(data: Buffer, pubkey: string): InferenceRow | null
   let challengePassed: boolean | null = null;
   if (optionTag === 1) {
     challengePassed = data.readUInt8(o) === 1;
-    o += 1;
   }
 
   return {
@@ -119,9 +118,8 @@ export async function fetchInferences(limit = 20): Promise<InferenceRow[]> {
     }
   }
 
-  return rows
-    .sort((a, b) => Number(b.timestamp - a.timestamp))
-    .slice(0, limit);
+  const sortedRows = [...rows].sort((a, b) => Number(b.timestamp - a.timestamp));
+  return sortedRows.slice(0, limit);
 }
 
 export function summarize(rows: InferenceRow[]) {

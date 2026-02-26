@@ -30,11 +30,11 @@ anchor build || (./scripts/apply_rust_toolchain_patches.sh && anchor build)
 
 # Anchor may emit artifacts under program-local target dir on some toolchain combos.
 # Normalize into workspace target/deploy so `anchor deploy` can always find them.
-if [ ! -f "target/deploy/raxion_poiq.so" ] && [ -f "$PROGRAM_DIR/target/deploy/raxion_poiq.so" ]; then
+if [[ ! -f "target/deploy/raxion_poiq.so" && -f "$PROGRAM_DIR/target/deploy/raxion_poiq.so" ]]; then
   mkdir -p target/deploy
   cp "$PROGRAM_DIR/target/deploy/raxion_poiq.so" "target/deploy/raxion_poiq.so"
 fi
-if [ ! -f "target/deploy/raxion_poiq-keypair.json" ] && [ -f "$PROGRAM_DIR/target/deploy/raxion_poiq-keypair.json" ]; then
+if [[ ! -f "target/deploy/raxion_poiq-keypair.json" && -f "$PROGRAM_DIR/target/deploy/raxion_poiq-keypair.json" ]]; then
   mkdir -p target/deploy
   cp "$PROGRAM_DIR/target/deploy/raxion_poiq-keypair.json" "target/deploy/raxion_poiq-keypair.json"
 fi

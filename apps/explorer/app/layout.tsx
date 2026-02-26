@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   description: "Live PoIQ convergence feed from Solana devnet",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
       <body className={`${display.variable} ${mono.variable}`}>{children}</body>
