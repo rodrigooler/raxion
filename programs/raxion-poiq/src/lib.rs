@@ -1,6 +1,8 @@
 //! raxion-poiq - RAXION Proof of Inference Quality on-chain program.
 
 use anchor_lang::prelude::*;
+use anchor_lang::solana_program::sysvar::slot_hashes::SlotHashes;
+use anchor_lang::solana_program::sysvar::Sysvar;
 
 pub mod challenge;
 
@@ -17,6 +19,11 @@ pub const SLASH_RATE_CHALLENGE_BPS: u16 = 200;
 
 pub const CHALLENGE_RATE_NEW_AGENT: u16 = 50; // 5.0%
 pub const CHALLENGE_RATE_ESTABLISHED: u16 = 15; // 1.5%
+pub const CHRONIC_MULTIPLIER_MIN_MILLI: u64 = 1_000;
+pub const CHRONIC_MULTIPLIER_MAX_MILLI: u64 = 5_000;
+pub const CHRONIC_MULTIPLIER_STEP_MILLI: u64 = 500;
+pub const CHRONIC_BASE_FAILURES: u16 = 2;
+pub const WARMUP_SLOTS: u64 = 518_400; // ~72h at ~2 slots/sec
 
 #[account]
 #[derive(Default)]
@@ -55,6 +62,31 @@ impl SlashRecord {
     pub const LEN: usize = 32 + 8 + 1 + 8 + 8 + 1;
 }
 
+#[account]
+#[derive(Default)]
+pub struct AgentStakeAccount {
+    pub agent: Pubkey,
+    pub stake_amount: u64,
+    pub bump: u8,
+}
+
+impl AgentStakeAccount {
+    pub const LEN: usize = 32 + 8 + 1;
+}
+
+#[account]
+#[derive(Default)]
+pub struct CognitiveAccountState {
+    pub agent: Pubkey,
+    pub consecutive_failures: u16,
+    pub staked_at_slot: u64,
+    pub bump: u8,
+}
+
+impl CognitiveAccountState {
+    pub const LEN: usize = 32 + 2 + 8 + 1;
+}
+
 #[program]
 pub mod raxion_poiq {
     use super::*;
@@ -73,6 +105,20 @@ pub mod raxion_poiq {
         require!(proof_hash != [0u8; 32], PoiqError::MissingProof);
 
         let clock = Clock::get()?;
+        let slot_hash = latest_slot_hash(&ctx.accounts.slot_hashes)?;
+        let challenge_rate = if clock.slot.saturating_sub(ctx.accounts.cognitive_account.staked_at_slot)
+            < WARMUP_SLOTS
+        {
+            CHALLENGE_RATE_NEW_AGENT
+        } else {
+            CHALLENGE_RATE_ESTABLISHED
+        };
+        let challenged = challenge::should_challenge(
+            &slot_hash,
+            inference_id,
+            ctx.accounts.agent_stake.stake_amount,
+            challenge_rate,
+        );
         let record = &mut ctx.accounts.inference_record;
 
         record.agent = ctx.accounts.agent.key();
@@ -80,12 +126,12 @@ pub mod raxion_poiq {
         record.slot = clock.slot;
         record.coherence_score = coherence_score;
         record.category = categorize_score(coherence_score);
-        record.is_final = coherence_score >= COHERENCE_THRESHOLD_STANDARD;
+        record.is_final = coherence_score >= COHERENCE_THRESHOLD_STANDARD && !challenged;
         record.proof_hash = proof_hash;
         record.output_hash_t = output_hash_t;
         record.output_hash_s = output_hash_s;
         record.timestamp = clock.unix_timestamp;
-        record.challenged = false;
+        record.challenged = challenged;
         record.challenge_passed = None;
         record.bump = ctx.bumps.inference_record;
 
@@ -94,13 +140,15 @@ pub mod raxion_poiq {
             inference_id,
             coherence_score,
             is_final: record.is_final,
+            challenged,
             slot: record.slot,
             timestamp: record.timestamp,
         });
 
         // SLASHING: Trigger 1 (immediate rejection) event emission path.
         if coherence_score < COHERENCE_THRESHOLD_REJECT {
-            let slash = compute_immediate_slash(ctx.accounts.agent_stake.lamports(), coherence_score);
+            let slash =
+                compute_immediate_slash(ctx.accounts.agent_stake.stake_amount, coherence_score);
             emit!(SlashTriggered {
                 agent: record.agent,
                 slash_amount: slash,
@@ -119,7 +167,6 @@ pub mod raxion_poiq {
         inference_id: u64,
         response_hash: [u8; 32],
         is_correct: bool,
-        chronic_multiplier_milli: u16,
     ) -> Result<()> {
         require!(response_hash != [0u8; 32], PoiqError::MissingChallengeResponseHash);
 
@@ -129,11 +176,17 @@ pub mod raxion_poiq {
         require!(record.challenge_passed.is_none(), PoiqError::AlreadyResponded);
 
         record.challenge_passed = Some(is_correct);
+        let cognitive = &mut ctx.accounts.cognitive_account;
 
         // SLASHING: Trigger 2 (challenge failure) event emission path.
-        if !is_correct {
+        if is_correct {
+            cognitive.consecutive_failures = 0;
+            record.is_final = record.coherence_score >= COHERENCE_THRESHOLD_STANDARD;
+        } else {
+            cognitive.consecutive_failures = cognitive.consecutive_failures.saturating_add(1);
+            let chronic_multiplier_milli = derive_chronic_multiplier_milli(cognitive.consecutive_failures);
             let slash = compute_challenge_slash(
-                ctx.accounts.agent_stake.lamports(),
+                ctx.accounts.agent_stake.stake_amount,
                 chronic_multiplier_milli,
             );
             emit!(SlashTriggered {
@@ -191,6 +244,23 @@ fn compute_challenge_slash(stake_lamports: u64, chronic_multiplier_milli: u16) -
     slash.min(u128::from(u64::MAX)) as u64
 }
 
+fn derive_chronic_multiplier_milli(consecutive_failures: u16) -> u16 {
+    let extra = u64::from(consecutive_failures.saturating_sub(CHRONIC_BASE_FAILURES));
+    let value = CHRONIC_MULTIPLIER_MIN_MILLI
+        .saturating_add(extra.saturating_mul(CHRONIC_MULTIPLIER_STEP_MILLI))
+        .min(CHRONIC_MULTIPLIER_MAX_MILLI);
+    value as u16
+}
+
+fn latest_slot_hash(slot_hashes_ai: &AccountInfo<'_>) -> Result<[u8; 32]> {
+    let slot_hashes = SlotHashes::from_account_info(slot_hashes_ai)
+        .map_err(|_| error!(PoiqError::InvalidSlotHashesSysvar))?;
+    let (_, hash) = slot_hashes
+        .first()
+        .ok_or_else(|| error!(PoiqError::MissingSlotHash))?;
+    Ok(hash.to_bytes())
+}
+
 fn categorize_score(coherence_score: f32) -> u8 {
     if coherence_score < COHERENCE_THRESHOLD_REJECT {
         0
@@ -209,8 +279,23 @@ pub struct SubmitConvergence<'info> {
     #[account(mut)]
     pub agent: Signer<'info>,
 
-    /// CHECK: used only for lamports balance input to slash formulas.
-    pub agent_stake: AccountInfo<'info>,
+    #[account(
+        seeds = [b"stake", agent.key().as_ref()],
+        bump = agent_stake.bump,
+        constraint = agent_stake.agent == agent.key() @ PoiqError::StakeOwnerMismatch,
+    )]
+    pub agent_stake: Account<'info, AgentStakeAccount>,
+
+    #[account(
+        seeds = [b"cognitive", agent.key().as_ref()],
+        bump = cognitive_account.bump,
+        constraint = cognitive_account.agent == agent.key() @ PoiqError::CognitiveOwnerMismatch,
+    )]
+    pub cognitive_account: Account<'info, CognitiveAccountState>,
+
+    /// CHECK: sysvar account address is enforced below.
+    #[account(address = anchor_lang::solana_program::sysvar::slot_hashes::id())]
+    pub slot_hashes: AccountInfo<'info>,
 
     #[account(
         init,
@@ -230,8 +315,20 @@ pub struct SubmitChallengeResponse<'info> {
     #[account(mut)]
     pub agent: Signer<'info>,
 
-    /// CHECK: used only for lamports balance input to slash formulas.
-    pub agent_stake: AccountInfo<'info>,
+    #[account(
+        seeds = [b"stake", agent.key().as_ref()],
+        bump = agent_stake.bump,
+        constraint = agent_stake.agent == agent.key() @ PoiqError::StakeOwnerMismatch,
+    )]
+    pub agent_stake: Account<'info, AgentStakeAccount>,
+
+    #[account(
+        mut,
+        seeds = [b"cognitive", agent.key().as_ref()],
+        bump = cognitive_account.bump,
+        constraint = cognitive_account.agent == agent.key() @ PoiqError::CognitiveOwnerMismatch,
+    )]
+    pub cognitive_account: Account<'info, CognitiveAccountState>,
 
     #[account(
         mut,
@@ -247,6 +344,7 @@ pub struct ConvergenceSubmitted {
     pub inference_id: u64,
     pub coherence_score: f32,
     pub is_final: bool,
+    pub challenged: bool,
     pub slot: u64,
     pub timestamp: i64,
 }
@@ -286,6 +384,18 @@ pub enum PoiqError {
 
     #[msg("Challenge response already submitted")]
     AlreadyResponded,
+
+    #[msg("Stake account owner mismatch")]
+    StakeOwnerMismatch,
+
+    #[msg("Cognitive account owner mismatch")]
+    CognitiveOwnerMismatch,
+
+    #[msg("Invalid slot-hashes sysvar account")]
+    InvalidSlotHashesSysvar,
+
+    #[msg("No slot hash available")]
+    MissingSlotHash,
 }
 
 #[cfg(test)]
@@ -328,5 +438,13 @@ mod tests {
         // 2% with 1.5x multiplier => 30_000
         let slash = compute_challenge_slash(stake, 1500);
         assert_eq!(slash, 30_000);
+    }
+
+    #[test]
+    fn test_derive_chronic_multiplier_bounds() {
+        assert_eq!(derive_chronic_multiplier_milli(0), 1_000);
+        assert_eq!(derive_chronic_multiplier_milli(2), 1_000);
+        assert_eq!(derive_chronic_multiplier_milli(3), 1_500);
+        assert_eq!(derive_chronic_multiplier_milli(10), 5_000);
     }
 }
