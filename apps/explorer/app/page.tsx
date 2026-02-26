@@ -146,7 +146,7 @@ export default async function ExplorerPage() {
                       <a
                         className="small"
                         target="_blank"
-                        rel="noreferrer"
+                        rel="noopener noreferrer"
                         href={`https://explorer.solana.com/address/${row.pubkey}?cluster=devnet`}
                       >
                         {shortHash(row.proofHash)}

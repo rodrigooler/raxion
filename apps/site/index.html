@@ -35,15 +35,7 @@
         <meta name="twitter:description" content="The first sovereign blockchain that transforms intelligence from a service into a verifiable state. Zero human subjectivity. Mathematical proof." />
         <meta name="twitter:image" content="https://raxion.network/assets/og.webp" />
 
-        <link rel="dns-prefetch" href="https://cdn.tailwindcss.com" />
-        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
-        <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link
-            href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=JetBrains+Mono:wght@300;400;500&family=Inter:wght@300;400&display=swap"
-            rel="stylesheet"
-        />
+        <!-- Keep external deps explicit and integrity-pinned where possible. -->
 
         <script type="application/ld+json">
         {
@@ -58,7 +50,12 @@
         }
         </script>
 
-        <script src="https://cdn.tailwindcss.com"></script>
+        <script
+            src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"
+            integrity="sha384-NIEnmBZDJa6zQwZWLtsVZJlPYu8tc0CNul8EMJ0WMxf4ZpsKsOfKjtEToHNCoIOH"
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        ></script>
         <script>
             tailwind.config = {
                 theme: {
@@ -305,7 +302,7 @@
                                 <a href="#problem" class="px-8 py-4 bg-white text-black font-display font-black text-base hover:bg-brand-blue transition-all duration-300 text-center tracking-wide">
                                     SEE THE PROBLEM
                                 </a>
-                                <a href="https://github.com/rodrigooler/raxion" target="_blank" class="px-8 py-4 border border-white/20 font-display font-black text-base hover:bg-white/10 hover:border-white/40 transition-all duration-300 text-center tracking-wide">
+                                <a href="https://github.com/rodrigooler/raxion" target="_blank" rel="noopener noreferrer" class="px-8 py-4 border border-white/20 font-display font-black text-base hover:bg-white/10 hover:border-white/40 transition-all duration-300 text-center tracking-wide">
                                     GITHUB_REPO
                                 </a>
                             </div>
@@ -855,10 +852,10 @@
                                 </p>
                             </div>
                             <div class="flex flex-col gap-4 w-full lg:w-auto lg:min-w-[220px]">
-                                <a href="https://github.com/rodrigooler/raxion/blob/main/WHITEPAPER.md" target="_blank" class="px-10 py-5 bg-white text-black font-display font-black text-base hover:bg-brand-blue transition-all duration-300 text-center tracking-wide">
+                                <a href="https://github.com/rodrigooler/raxion/blob/main/WHITEPAPER.md" target="_blank" rel="noopener noreferrer" class="px-10 py-5 bg-white text-black font-display font-black text-base hover:bg-brand-blue transition-all duration-300 text-center tracking-wide">
                                     READ WHITEPAPER
                                 </a>
-                                <a href="https://github.com/rodrigooler/raxion" target="_blank" class="px-10 py-5 border border-white/20 font-display font-black text-base hover:border-brand-blue/60 hover:bg-brand-blue/5 transition-all duration-300 text-center tracking-wide">
+                                <a href="https://github.com/rodrigooler/raxion" target="_blank" rel="noopener noreferrer" class="px-10 py-5 border border-white/20 font-display font-black text-base hover:border-brand-blue/60 hover:bg-brand-blue/5 transition-all duration-300 text-center tracking-wide">
                                     VIEW GITHUB
                                 </a>
                             </div>
@@ -906,7 +903,7 @@
                 </div>
                 <div class="flex gap-3">
                     <button class="w-10 h-10 bg-white/5 border border-white/10 flex items-center justify-center hover:border-brand-blue hover:text-brand-blue cursor-pointer transition-all duration-300 font-mono text-sm">𝕏</button>
-                    <a href="https://github.com/rodrigooler/raxion" target="_blank" class="w-10 h-10 bg-white/5 border border-white/10 flex items-center justify-center hover:border-brand-blue hover:text-brand-blue cursor-pointer transition-all duration-300 font-mono text-[10px]">GH</a>
+                    <a href="https://github.com/rodrigooler/raxion" target="_blank" rel="noopener noreferrer" class="w-10 h-10 bg-white/5 border border-white/10 flex items-center justify-center hover:border-brand-blue hover:text-brand-blue cursor-pointer transition-all duration-300 font-mono text-[10px]">GH</a>
                     <button class="w-10 h-10 bg-white/5 border border-white/10 flex items-center justify-center hover:border-brand-purple hover:text-brand-purple cursor-pointer transition-all duration-300 font-mono text-[10px]">DC</button>
                 </div>
             </div>
