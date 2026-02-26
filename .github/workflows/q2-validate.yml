@@ -21,6 +21,13 @@ jobs:
             poc/requirements-dev.txt
             poc/requirements.txt
 
+      - name: Restore Python venv cache
+        id: cache-python-venv
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830
+        with:
+          path: .venv
+          key: ${{ runner.os }}-py311-venv-${{ hashFiles('poc/requirements-dev.txt', 'poc/requirements.txt') }}
+
       - name: Setup Rust
         uses: dtolnay/rust-toolchain@efa25f7f19611383d5b0ccf2d1c8914531636bf9
         with:
@@ -36,13 +43,16 @@ jobs:
             sdk/agent -> sdk/agent/target
 
       - name: Install Python deps
+        if: steps.cache-python-venv.outputs.cache-hit != 'true'
         run: |
+          python -m venv .venv
+          . .venv/bin/activate
           python -m pip install --upgrade pip
           pip install --prefer-binary -r poc/requirements-dev.txt
 
       - name: Python tests
         run: |
-          pytest poc/tests/ -q
+          .venv/bin/pytest poc/tests/ -q
 
       - name: Runtime cognitive tests
         run: |
@@ -58,7 +68,7 @@ jobs:
 
       - name: Coherence cross-validation
         run: |
-          python scripts/cross_validate_coherence.py
+          .venv/bin/python scripts/cross_validate_coherence.py
 
       - name: SDK examples
         run: |
