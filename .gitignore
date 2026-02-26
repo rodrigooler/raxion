@@ -22,6 +22,9 @@ runtime/agave/
 poc/data/*.jsonl
 poc/data/*.parquet
 poc/benchmarks/results/
+!poc/benchmarks/results/
+poc/benchmarks/results/*
+!poc/benchmarks/results/mmlu_100_q2_baseline.json
 
 # IDE
 .idea/
