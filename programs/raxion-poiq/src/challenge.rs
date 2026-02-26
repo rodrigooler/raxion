@@ -7,19 +7,23 @@ pub const CHALLENGE_CATEGORY_CODE: u8 = 1;
 pub const N_DEVNET_CATEGORIES: u8 = 2;
 
 /// Determines whether an inference should be challenged.
-/// Formula: challenge_seed = HASH(slot_hash || inf_id || stake_seed)
-/// Rule: is_challenged = challenge_seed mod 1000 < rate_per_1000
+/// PoIQ Layer 2 formula (Whitepaper Chapter 3):
+/// `challenge_seed = HASH(slot_hash || inf_id || stake_seed)`.
+/// Decision rule: `is_challenged = challenge_seed mod 1000 < rate_per_1000`.
 pub fn should_challenge(
     slot_hash: &[u8; 32],
     inf_id: u64,
     stake_seed: u64,
     rate_per_1000: u16,
 ) -> bool {
+    let bounded_rate = rate_per_1000.min(1000);
     let seed = compute_challenge_seed(slot_hash, inf_id, stake_seed);
-    (seed % 1000) < u64::from(rate_per_1000)
+    (seed % 1000) < u64::from(bounded_rate)
 }
 
 /// Determines challenge category independent from challenge decision.
+/// Uses the same seed derivation base from `compute_challenge_seed`
+/// and a secondary hash stream (Whitepaper Chapter 3, Layer 2).
 pub fn challenge_category(slot_hash: &[u8; 32], inf_id: u64, stake_seed: u64) -> u8 {
     let seed = compute_challenge_seed(slot_hash, inf_id, stake_seed);
     let mut hasher = Sha256::new();

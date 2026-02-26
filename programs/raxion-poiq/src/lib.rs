@@ -92,7 +92,8 @@ pub mod raxion_poiq {
     use super::*;
 
     /// Submit PoIQ Layer 1 convergence.
-    /// Formula: CoherenceScore = 0.4*CS_semantic + 0.6*CC
+    /// Formula: `CoherenceScore = 0.4 * CS_semantic + 0.6 * CC`.
+    /// See PoIQ Whitepaper, Chapter 3 (Layer 1).
     pub fn submit_convergence(
         ctx: Context<SubmitConvergence>,
         inference_id: u64,
@@ -161,7 +162,8 @@ pub mod raxion_poiq {
     }
 
     /// Submit PoIQ Layer 2 challenge response.
-    /// Formula reference: slash_challenge = stake * 0.02 * chronic_multiplier
+    /// Formula reference: `slash_challenge = stake * 0.02 * chronic_multiplier`.
+    /// See PoIQ Whitepaper, Chapter 3 (Layer 2/3 interaction).
     pub fn submit_challenge_response(
         ctx: Context<SubmitChallengeResponse>,
         inference_id: u64,

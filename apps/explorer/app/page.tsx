@@ -44,7 +44,7 @@ export default async function ExplorerPage() {
   }
 
   const stats = summarize(rows);
-  const programId = process.env.NEXT_PUBLIC_POIQ_PROGRAM_ID ?? "11111111111111111111111111111111";
+  const programId = process.env.NEXT_PUBLIC_POIQ_PROGRAM_ID ?? "(missing NEXT_PUBLIC_POIQ_PROGRAM_ID)";
   const rpcUrl = process.env.NEXT_PUBLIC_SOLANA_RPC_URL ?? "https://api.devnet.solana.com";
   let content: React.ReactNode;
 

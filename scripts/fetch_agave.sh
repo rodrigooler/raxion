@@ -34,7 +34,11 @@ if [[ -d "$PATCH_DIR" ]]; then
     echo "[agave] applying local patches from $PATCH_DIR"
     for patch_file in "${patch_files[@]}"; do
       echo "  - $(basename "$patch_file")"
-      git -C "$AGAVE_DIR" apply "$PWD/$patch_file"
+      if git -C "$AGAVE_DIR" apply --check "$PWD/$patch_file" >/dev/null 2>&1; then
+        git -C "$AGAVE_DIR" apply "$PWD/$patch_file"
+      else
+        echo "    skipping already-applied or non-applicable patch"
+      fi
     done
   fi
 fi

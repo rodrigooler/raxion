@@ -1,5 +1,6 @@
 use async_trait::async_trait;
 use raxion_sdk::{AgentMemory, AgentRunner, InferenceRequest, SmartAgent};
+use std::time::Duration;
 
 struct TextAgent {
     ollama_endpoint: String,
@@ -18,16 +19,24 @@ impl SmartAgent for TextAgent {
     async fn respond(
         &self,
         request: &InferenceRequest,
-        _memory: &AgentMemory,
+        memory: &AgentMemory,
     ) -> anyhow::Result<String> {
+        let recalled = memory.recall(&request.query, 3).await.unwrap_or_default();
+        let memory_context = if recalled.is_empty() {
+            String::new()
+        } else {
+            format!("\n\nContext:\n{}", recalled.join("\n- "))
+        };
         let system = "You are a precise text reasoning agent. \
             Produce concise, structured answers and flag uncertainty clearly.";
 
-        let client = reqwest::Client::new();
+        let client = reqwest::Client::builder()
+            .timeout(Duration::from_secs(30))
+            .build()?;
         let body = serde_json::json!({
             "model": "mistral:7b",
             "messages": [
-                {"role": "system", "content": system},
+                {"role": "system", "content": format!("{system}{memory_context}")},
                 {"role": "user", "content": &request.query}
             ],
             "stream": false,
@@ -39,14 +48,19 @@ impl SmartAgent for TextAgent {
             .json(&body)
             .send()
             .await?
+            .error_for_status()?
             .json()
             .await?;
 
-        Ok(response["message"]["content"]
-            .as_str()
-            .unwrap_or("")
-            .trim()
-            .to_owned())
+        let content = response
+            .get("message")
+            .and_then(|m| m.get("content"))
+            .and_then(|v| v.as_str())
+            .map(str::trim)
+            .filter(|s| !s.is_empty())
+            .ok_or_else(|| anyhow::anyhow!("missing or empty message.content in Ollama response"))?;
+
+        Ok(content.to_owned())
     }
 }
 

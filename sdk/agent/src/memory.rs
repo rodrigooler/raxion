@@ -13,11 +13,7 @@ impl AgentMemory {
     }
 
     pub async fn store(&self, key: &str, value: &str) -> Result<()> {
-        log::info!(
-            "[Memory] Store: {} = {}...",
-            key,
-            &value[..value.len().min(50)]
-        );
+        log::info!("[Memory] Store: key={} value_len={}", key, value.chars().count());
         Ok(())
     }
 }

@@ -38,6 +38,9 @@ mod tests {
         assert_eq!(categorize(0.40), ConvergenceCategory::LowConfidence);
         assert_eq!(categorize(0.70), ConvergenceCategory::Standard);
         assert_eq!(categorize(0.90), ConvergenceCategory::HighCoherence);
+        assert_eq!(categorize(0.30), ConvergenceCategory::LowConfidence);
+        assert_eq!(categorize(0.60), ConvergenceCategory::Standard);
+        assert_eq!(categorize(0.85), ConvergenceCategory::HighCoherence);
     }
 
     #[test]

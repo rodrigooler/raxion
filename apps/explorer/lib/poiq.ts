@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { Connection, PublicKey } from "@solana/web3.js";
 
 export type Category = "REJECTED" | "LOW_CONFIDENCE" | "STANDARD" | "HIGH_COHERENCE";
@@ -17,7 +18,10 @@ export type InferenceRow = {
 };
 
 const DEFAULT_RPC = "https://api.devnet.solana.com";
-const DEFAULT_PROGRAM_ID = "11111111111111111111111111111111";
+const INFERENCE_RECORD_DISCRIMINATOR = createHash("sha256")
+  .update("account:InferenceRecord")
+  .digest()
+  .subarray(0, 8);
 
 const CATEGORY_MAP: Record<number, Category> = {
   0: "REJECTED",
@@ -39,8 +43,11 @@ function safeCategory(value: number): Category {
 }
 
 function parseInferenceRecord(data: Buffer, pubkey: string): InferenceRow | null {
-  // Anchor account discriminator + InferenceRecord fields
-  if (data.length < 8 + 32 + 8 + 8 + 4 + 1 + 1 + 32 + 32 + 32 + 8 + 1 + 1 + 1) {
+  // Anchor discriminator + base InferenceRecord fields (Option<bool> tag only).
+  if (data.length < 8 + 32 + 8 + 8 + 4 + 1 + 1 + 32 + 32 + 32 + 8 + 1 + 1) {
+    return null;
+  }
+  if (!data.subarray(0, 8).equals(INFERENCE_RECORD_DISCRIMINATOR)) {
     return null;
   }
 
@@ -81,6 +88,9 @@ function parseInferenceRecord(data: Buffer, pubkey: string): InferenceRow | null
   o += 1;
   let challengePassed: boolean | null = null;
   if (optionTag === 1) {
+    if (data.length < o + 1) {
+      return null;
+    }
     challengePassed = data.readUInt8(o) === 1;
   }
 
@@ -101,7 +111,10 @@ function parseInferenceRecord(data: Buffer, pubkey: string): InferenceRow | null
 
 export async function fetchInferences(limit = 20): Promise<InferenceRow[]> {
   const rpcUrl = process.env.NEXT_PUBLIC_SOLANA_RPC_URL ?? DEFAULT_RPC;
-  const programId = process.env.NEXT_PUBLIC_POIQ_PROGRAM_ID ?? DEFAULT_PROGRAM_ID;
+  const programId = process.env.NEXT_PUBLIC_POIQ_PROGRAM_ID;
+  if (!programId) {
+    throw new Error("NEXT_PUBLIC_POIQ_PROGRAM_ID is required");
+  }
 
   const connection = new Connection(rpcUrl, "confirmed");
   const program = new PublicKey(programId);

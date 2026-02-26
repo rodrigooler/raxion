@@ -37,8 +37,8 @@ From `WHITEPAPER.md` + `MEMORY.md` active params:
   - Reference outputs:
     - `1,000 -> 1`
     - `8,000 -> 25`
-    - `100,000 -> 61`
-    - `1,000,000 -> 81`
+    - `100,000 -> 54`
+    - `1,000,000 -> 80`
 
 Implementation note:
 - Keep internal stake units explicit (`stake_rax` or `stake_units`) and avoid naming as lamports in cognitive runtime formulas.

@@ -83,7 +83,7 @@ impl CognitiveAccount {
 
     /// Formula: floor(log2(stake/1000) * 8) + 1
     /// Whitepaper examples:
-    /// 1,000 -> 1 | 8,000 -> 25 | 100,000 -> 61 | 1,000,000 -> 81
+    /// 1,000 -> 1 | 8,000 -> 25 | 100,000 -> 54 | 1,000,000 -> 80
     pub fn max_threads(&self) -> u32 {
         let stake_units = self.stake_rax / MINIMUM_STAKE_RAX;
         if stake_units < 1 {

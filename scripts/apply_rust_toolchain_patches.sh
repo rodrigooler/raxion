@@ -60,7 +60,7 @@ patch_anchor_syn() {
   fi
   while IFS= read -r file; do
     [[ -z "$file" ]] && continue
-    sed -i.bak 's/proc_macro2::Span::call_site().source_file().path()/std::path::PathBuf::from(".")/' "$file"
+    sed -i.bak 's/proc_macro2::Span::call_site()\.source_file()\.path()/std::path::PathBuf::from(".")/' "$file"
     rm -f "${file}.bak"
     echo "[patch] anchor-syn patched: $file"
   done <<< "$files"

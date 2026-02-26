@@ -16,13 +16,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     protobuf-compiler \
     && rm -rf /var/lib/apt/lists/* \
     && cargo install --git https://github.com/coral-xyz/anchor anchor-cli --tag ${ANCHOR_VERSION} \
-    && curl -sSfL "https://release.anza.xyz/${SOLANA_VERSION}/install" | sh \
     && useradd --create-home --uid 1000 --shell /bin/bash raxion \
-    && \
-    mkdir -p /work /home/raxion/.config/solana && \
+    && mkdir -p /work /home/raxion/.config/solana && \
     chown -R raxion:raxion /work /home/raxion/.config
 
-ENV PATH="/usr/local/cargo/bin:/root/.local/share/solana/install/active_release/bin:${PATH}"
+RUN su - raxion -c "curl -sSfL https://release.anza.xyz/${SOLANA_VERSION}/install | sh"
+
+ENV PATH="/usr/local/cargo/bin:/home/raxion/.local/share/solana/install/active_release/bin:${PATH}"
 
 WORKDIR /work
 USER raxion
