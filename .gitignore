@@ -31,6 +31,7 @@ node_modules/
 explorer/.next/
 explorer/out/
 **/package-lock.json
+!explorer/package-lock.json
 
 # OS
 .DS_Store
