@@ -97,7 +97,7 @@ fi
 
 if command -v npm >/dev/null 2>&1; then
   check "Q2-E1" "Explorer build succeeds" \
-    "cd explorer && npm run build"
+    "cd apps/explorer && npm run build"
 else
   check "Q2-E1" "Explorer build skipped (npm missing)" "true"
 fi

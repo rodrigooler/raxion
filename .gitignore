@@ -31,10 +31,10 @@ poc/benchmarks/results/*
 .vscode/
 *.swp
 node_modules/
-explorer/.next/
-explorer/out/
+apps/explorer/.next/
+apps/explorer/out/
 **/package-lock.json
-!explorer/package-lock.json
+!apps/explorer/package-lock.json
 
 # OS
 .DS_Store

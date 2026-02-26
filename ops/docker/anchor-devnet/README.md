@@ -11,7 +11,7 @@ Pinned toolchain image for RAXION Q2 deploy tasks.
 ## Build
 
 ```bash
-docker build -f docker/anchor-devnet/Dockerfile -t raxion/anchor-devnet:0.1 .
+docker build -f ops/docker/anchor-devnet/Dockerfile -t raxion/anchor-devnet:0.1 .
 ```
 
 On Apple Silicon, wrappers force `linux/amd64` by default for better Solana/Anchor compatibility.

@@ -18,6 +18,15 @@ The core innovation is **Cognitive Finality**: zk-ML proofs that make a collecti
 
 ```
 raxion/
+├── apps/
+│   ├── explorer/               # Devnet explorer (Next.js)
+│   └── site/                   # Static website
+│
+├── ops/
+│   ├── docker/                 # Pinned container images/toolchains
+│   └── config/
+│       └── deploy/             # Deployment env templates
+│
 ├── runtime/                    # Neural SVM extensions (Agave base fetched on demand)
 │   ├── cognitive/
 │   │   ├── account_types.rs    # CognitiveAccount, NativeMemoryAccount structs
@@ -97,7 +106,7 @@ A result has Cognitive Finality when:
 VERIFY(π_exec × 3) = ACCEPT
 ∧ VERIFY(π_quality) = ACCEPT
 ∧ CoherenceScore ≥ 0.60
-∧ commit(output, π_poiq, slot) ∈ Solana_L1
+∧ commit(output, π_poiq, slot) ∈ Solana settlement layer
 ```
 
 This is the only valid definition. Do not treat any intermediate state as final.
@@ -114,12 +123,12 @@ This is the only valid definition. Do not treat any intermediate state as final.
 
 | Phase | Status | In Scope |
 |---|---|---|
-| **Phase 0 — Genesis** (Q1 2026) | 🟡 Active | Whitepaper, Python PoC, RISC Zero basic integration |
-| **Phase 1 — Devnet** (Q2–Q3 2026) | 🔜 Next | Agave fork, PoIQ v0.1, Agent SDK v0.1 |
+| **Phase 0 — Genesis** (Q1 2026) | ✅ Completed | Whitepaper, Python PoC, RISC Zero basic integration |
+| **Phase 1 — Devnet** (Q2–Q3 2026) | 🟡 Active | Agave integration, PoIQ v0.1, Agent SDK v0.1 |
 | **Phase 2 — Testnet** (Q4 2026) | 🔜 Planned | GPU proofs, all PoIQ layers, RaxLang v0.1 |
 | **Phase 3 — Mainnet v1** (2027) | 🔜 Planned | ZK ASICs, full protocol, $RAX live |
 
-**Current phase is Phase 0.** Do not implement Mainnet features during Phase 0. The PoC does not need ZK proofs — it needs to validate convergence.
+**Current phase is Phase 1 (Devnet).** Do not implement Testnet/Mainnet-only features in this stage.
 
 ---
 

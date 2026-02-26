@@ -33,23 +33,19 @@ Finality target (Cognitive Finality) requires zk execution/quality verification 
 
 ## Project Status
 
-Current phase: `Phase 0 — Genesis` (Q1 2026).
+Current phase: `Phase 1 — Devnet` (Q2 2026), with Q1 foundations preserved.
 
-Q1 was started in February 2026 and is focused on proving technical viability before runtime-level integration.
+Q2 scope in this repository now includes:
+- Runtime cognitive extensions (`runtime/cognitive`)
+- Anchor PoIQ devnet program (`programs/raxion-poiq`)
+- RISC0 embedding commitment path (`proofs/`)
+- SDK and reference agents (`sdk/agent`)
+- Devnet explorer (`apps/explorer`)
 
-### Phase 0 Focus (In Scope)
-
-- Python PoC for convergence between heterogeneous architectures
-- CoherenceScore implementation and protocol-invariant tests
-- Initial RISC Zero proof-of-execution scaffold
-- Contributor onboarding setup (issues, structure, workflows)
-
-### Out of Scope in Phase 0
-
-- Agave runtime fork
-- Anchor on-chain programs
-- Full PoIQ production implementation
-- Tokenomics and mainnet mechanics
+Q2 Devnet semantics currently enforced:
+- Trigger 1 slashing (`score < 0.30`) is **event-only** in Devnet.
+- `is_final` depends on challenge lifecycle, not score alone.
+- Deterministic challenge generation is on-chain.
 
 ## Quick Start (PoC)
 
@@ -81,11 +77,18 @@ uv run poc/run_poc.py --provider openrouter --query "Explain the Oracle Problem 
 - `poc/`: Phase 0 Python validation code
 - `proofs/`: RISC Zero guest/host scaffolding
 - `runtime/cognitive/`: RAXION runtime extensions (Agave base is fetched on demand)
+- `programs/raxion-poiq/`: Anchor PoIQ program for Devnet
+- `sdk/agent/`: Rust SDK and reference agents
+- `apps/explorer/`: Next.js Devnet explorer
+- `apps/site/`: static website
+- `ops/docker/`: pinned container toolchain for Anchor/Solana workflows
+- `ops/config/deploy/`: deploy environment templates
 - `WHITEPAPER.md`: protocol whitepaper (v0.4 source at repository root)
 - `docs/whitepaper/`: auxiliary whitepaper assets
 - `docs/yellowpaper/`: formal protocol proofs (work in progress)
 - `AGENTS.md`: core protocol context for contributors and agents
 - `MEMORY.md`: project decisions, parameters, and execution notes
+- `docs/REPO_MAP.md`: navigability map and ownership by area
 
 ## Documentation
 
@@ -109,11 +112,11 @@ If local macOS toolchains fail to compile Anchor/Solana binaries, use the pinned
 ```
 
 Image definition:
-- `docker/anchor-devnet/Dockerfile`
+- `ops/docker/anchor-devnet/Dockerfile`
 - `scripts/apply_rust_toolchain_patches.sh` (applies minimal local registry patches for SBF cargo compatibility)
 
 Safe deploy config template:
-- `config/deploy/devnet.env.example`
+- `ops/config/deploy/devnet.env.example`
 
 Agave runtime bootstrap (pinned upstream commit):
 

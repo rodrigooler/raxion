@@ -56,6 +56,6 @@ jobs:
 
       - name: Explorer build
         run: |
-          cd explorer
+          cd apps/explorer
           npm ci
           npm run build

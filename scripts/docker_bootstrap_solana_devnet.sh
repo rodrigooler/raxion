@@ -13,7 +13,7 @@ fi
 
 mkdir -p "$SOLANA_DIR"
 
-docker build --platform "$DOCKER_PLATFORM" -f docker/anchor-devnet/Dockerfile -t "$IMAGE_TAG" .
+docker build --platform "$DOCKER_PLATFORM" -f ops/docker/anchor-devnet/Dockerfile -t "$IMAGE_TAG" .
 
 TTY_ARGS=""
 if [ -t 0 ] && [ -t 1 ]; then

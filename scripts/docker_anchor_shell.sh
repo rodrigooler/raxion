@@ -10,7 +10,7 @@ if ! command -v docker >/dev/null 2>&1; then
   exit 1
 fi
 
-docker build --platform "$DOCKER_PLATFORM" -f docker/anchor-devnet/Dockerfile -t "$IMAGE_TAG" .
+docker build --platform "$DOCKER_PLATFORM" -f ops/docker/anchor-devnet/Dockerfile -t "$IMAGE_TAG" .
 
 TTY_ARGS=""
 if [ -t 0 ] && [ -t 1 ]; then

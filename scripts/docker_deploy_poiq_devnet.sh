@@ -15,7 +15,7 @@ if [ ! -d "$HOME/.config/solana" ]; then
   exit 1
 fi
 
-docker build --platform "$DOCKER_PLATFORM" -f docker/anchor-devnet/Dockerfile -t "$IMAGE_TAG" .
+docker build --platform "$DOCKER_PLATFORM" -f ops/docker/anchor-devnet/Dockerfile -t "$IMAGE_TAG" .
 
 TTY_ARGS=""
 if [ -t 0 ] && [ -t 1 ]; then

@@ -10,8 +10,8 @@
 
 ```
 Last updated: 2026-02-25
-Current phase: Phase 0 — Genesis (Q1 2026)
-Next milestone: Devnet launch (Q2 2026)
+Current phase: Phase 1 — Devnet (Q2 2026)
+Next milestone: Q2 completion gate (anti-manipulation invariants + devnet deploy)
 Whitepaper version: v0.4 (complete)
 GitHub: https://github.com/raxion-network/raxion
 License: BUSL 1.1 → MIT 2030-02-20
@@ -20,7 +20,7 @@ License: BUSL 1.1 → MIT 2030-02-20
 ### Q2 Execution Notes (2026-02-25)
 
 - Dockerized deploy path added for Anchor/Solana:
-  - `docker/anchor-devnet/Dockerfile` with pinned Rust/Solana/Anchor versions
+  - `ops/docker/anchor-devnet/Dockerfile` with pinned Rust/Solana/Anchor versions
   - wrappers: `scripts/docker_anchor_shell.sh` and `scripts/docker_deploy_poiq_devnet.sh`
   - objective: bypass macOS LLVM/linker incompatibilities using reproducible Linux container toolchain
 - Environment/toolchain blocker note:
@@ -53,7 +53,7 @@ License: BUSL 1.1 → MIT 2030-02-20
   - `sdk/agent` crate added with `SmartAgent`, memory/inference helpers, runner stub
   - three reference agents compiled: `math_agent`, `code_agent`, `text_agent`
   - quickstart added in `sdk/agent/README.md`
-  - `explorer/` Next.js app added with live Solana devnet program-account reads for recent `InferenceRecord` entries and category-colored CoherenceScore bars
+  - `apps/explorer/` Next.js app added with live Solana devnet program-account reads for recent `InferenceRecord` entries and category-colored CoherenceScore bars
 - Gate F tooling added:
   - `scripts/cross_validate_coherence.py` added
   - `scripts/validate_q2.sh` added and passing in local profile with documented fallbacks:
@@ -62,6 +62,9 @@ License: BUSL 1.1 → MIT 2030-02-20
     - includes SDK example build and explorer build checks
   - deployment helper added: `scripts/deploy_poiq_devnet.sh`
   - status report added: `docs/reports/q2-devnet-status-2026-02-25.md`
+- Devnet slashing semantics:
+  - Trigger 1 (`score < 0.30`) is event-only in Q2 Devnet
+  - Real balance debits and 40/30/20/10 redistribution remain Testnet scope
 
 ### Q1 Execution Notes (2026-02-23)
 
@@ -143,7 +146,7 @@ License: BUSL 1.1 → MIT 2030-02-20
 ### AD-001 — Sovereign SVM Rollup (not independent L1)
 **Date**: 2026-02
 **Decision**: Build as Sovereign SVM Rollup on Solana, not as an independent L1.
-**Rationale**: New L1 starts with near-zero economic security. Solana provides DA layer + billions in economic security via inherited stake. Neural SVM executes independently but commits state roots to Solana L1.
+**Rationale**: New L1 starts with near-zero economic security. Solana provides DA layer + billions in economic security via inherited stake. Neural SVM executes independently but commits state roots to Solana settlement layer.
 **Rejected alternative**: Independent L1 with own validator set.
 **Revisit if**: Solana experiences sustained congestion or governance issues that compromise RAXION's DA guarantees.
 
@@ -195,6 +198,42 @@ License: BUSL 1.1 → MIT 2030-02-20
 **Date**: 2026-02
 **Decision**: Use two ZK frameworks in complementary roles.
 **Rationale**: RISC Zero is more general but slower — appropriate for proving agent code execution (less frequent, higher latency acceptable). Jolt is faster for lookup-heavy operations (matrix multiplications, embedding similarity) — appropriate for quality proof generation (every inference, latency critical).
+
+### AD-010 — Stake PDA Derivation Is Canonical
+**Date**: 2026-02
+**Decision**: Stake account derivation is fixed as:
+`seeds = [b"stake", agent.pubkey().as_ref()]`, `program_id = raxion_poiq::ID`.
+**Rationale**: Ensures Anchor constraint-level rejection of arbitrary stake account injection (`ConstraintSeeds`) and removes ambiguity in slashing paths.
+**Rejected alternative**: Accepting free-form external stake accounts from caller input.
+
+### AD-011 — Canonical Stake Source for Slashing
+**Date**: 2026-02
+**Decision**: Financial computations (slash base, challenge slash, trigger logic) must use `AgentStakeAccount.stake_amount` as source of truth.
+**Rationale**: `CognitiveAccount.stake` is a scheduler-facing cache and may be stale between transactions; external SPL account balances are not protocol-canonical in Devnet.
+**Rejected alternative**: Using cached stake snapshot or external token account balance in slash calculations.
+
+### AD-012 — Chronic Multiplier Derived On-Chain
+**Date**: 2026-02
+**Decision**: `chronic_multiplier_milli` is never accepted from client input. It is derived on-chain from `CognitiveAccount.consecutive_failures` and clamped to `[1000, 5000]`.
+**Reference formula**:
+`multiplier = min(5000, 1000 + max(0, consecutive_failures - 2) * 500)`.
+**Rationale**: Eliminates client-controlled slashing amplification surface while preserving deterministic and auditable escalation.
+
+### AD-013 — Q2 Finality Semantics for Challenged Inferences
+**Date**: 2026-02
+**Decision**: In Devnet Q2:
+`is_final = (coherence_score >= 0.60) AND (is_challenged == false)` at `submit_convergence`.
+If challenged, finality is resolved only by challenge verification pass.
+**Rationale**: Prevents challenged outputs from being treated as final prior to protocol verification.
+**Rejected alternative**: Marking final immediately by threshold score alone.
+
+### AD-014 — Q2 Completion Gate Requires Anti-Manipulation Invariants
+**Date**: 2026-02
+**Decision**: Q2 cannot be declared complete unless all of the following are enforced and tested:
+1. arbitrary stake account injection fails via account constraints;
+2. chronic multiplier is on-chain derived (no client parameter);
+3. challenge selection is deterministic from `(slot_hash, inf_id, stake_seed)`.
+**Rationale**: Correct event emission alone is insufficient for protocol integrity claims in Devnet.
 
 ---
 

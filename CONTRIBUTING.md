@@ -119,6 +119,8 @@ Open an issue with the `enhancement` label describing:
   - benchmark outputs in `poc/benchmarks/results/`
   - build outputs in `target/`
 - Keep contribution focused on RAXION first-party code (`runtime/cognitive`, `programs/`, `sdk/`, `poc/`, `proofs/`).
+- Frontend contributions live in `apps/explorer` and `apps/site`.
+- Operational/deploy changes live in `ops/` and `scripts/`.
 
 ---
 
