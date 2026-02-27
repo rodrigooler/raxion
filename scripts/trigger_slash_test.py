@@ -7,24 +7,36 @@ This attempts to call a debug endpoint used for operational validation.
 from __future__ import annotations
 
 import argparse
-import httpx
+import json
+from urllib import error as urlerror
+from urllib import request as urlrequest
 
 DEFAULT_BASE_URL = "https://devnet.raxion.network"
 
 
 def trigger_immediate_slash(base_url: str) -> None:
     print("[SlashTest] Submitting deliberately incoherent inference pair...")
-    resp = httpx.post(
-        f"{base_url}/api/debug/trigger_slash",
-        json={
+    payload = json.dumps(
+        {
             "output_t": "The mitochondria is the powerhouse of the cell.",
             "output_s": "Solana achieves 65,000 TPS via parallel transaction processing.",
             "agent": "slash_test_agent_do_not_stake",
-        },
-        timeout=60.0,
+        }
+    ).encode("utf-8")
+    req = urlrequest.Request(
+        f"{base_url}/api/debug/trigger_slash",
+        data=payload,
+        headers={"Content-Type": "application/json"},
+        method="POST",
     )
-    resp.raise_for_status()
-    data = resp.json()
+    try:
+        with urlrequest.urlopen(req, timeout=60.0) as resp:
+            data = json.loads(resp.read().decode("utf-8"))
+    except urlerror.HTTPError as exc:
+        body = exc.read().decode("utf-8", errors="replace")
+        raise RuntimeError(f"http error {exc.code}: {body}") from exc
+    except urlerror.URLError as exc:
+        raise RuntimeError(f"url error: {exc.reason}") from exc
 
     score = float(data["coherence_score"])
     slash_tx = data.get("slash_tx")

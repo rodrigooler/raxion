@@ -19,15 +19,15 @@
 ## Pre-Audit Requirements
 
 ### Completed before submission
-- [ ] All TODO comments resolved or documented with rationale
-- [ ] All `unwrap()` calls replaced with explicit error handling
-- [ ] Integer arithmetic uses `checked_*` or `saturating_*` in critical paths
-- [ ] No `unsafe` blocks without safety justification comments
-- [ ] All account-constraint failures have named error codes
-- [ ] Event emission on every relevant state change
-- [ ] Reentrancy/CPI risks reviewed and documented
-- [ ] Public functions have doc comments with invariants/formulas
-- [ ] Protocol invariant tests pass (thresholds, parameters, deterministic seeds)
+- [x] All TODO comments resolved or documented with rationale
+- [x] All `unwrap()` calls replaced with explicit error handling
+- [x] Integer arithmetic uses `checked_*` or `saturating_*` in critical paths
+- [x] No `unsafe` blocks without safety justification comments
+- [x] All account-constraint failures have named error codes
+- [x] Event emission on every relevant state change
+- [x] Reentrancy/CPI risks reviewed and documented
+- [x] Public functions have doc comments with invariants/formulas
+- [x] Protocol invariant tests pass (thresholds, parameters, deterministic seeds)
 
 ### Known limitations to disclose to auditor
 1. `is_final` challenge lifecycle semantics are conservative in Devnet and still evolving.

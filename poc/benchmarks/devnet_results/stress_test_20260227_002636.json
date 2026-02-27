@@ -1,0 +1,78 @@
+{
+  "stats": {
+    "base_url": "https://devnet.raxion.network",
+    "total_queries": 5,
+    "successful": 0,
+    "errors": 5,
+    "protocol_failure_rate": 1.0,
+    "avg_coherence_score": 0.0,
+    "median_coherence_score": 0.0,
+    "pct_final": 0.0,
+    "challenged_count": 0,
+    "observed_challenge_rate": 0.0,
+    "avg_latency_ms": 0.0,
+    "p90_latency_ms": 0.0,
+    "p99_latency_ms": 0.0,
+    "q2_c1_no_protocol_failure": false,
+    "q2_c2_avg_cs_above_0_65": false,
+    "q2_c3_challenge_rate_1_5pct": false,
+    "timestamp": "2026-02-27T03:26:36.420680+00:00"
+  },
+  "results": [
+    {
+      "query_id": 0,
+      "query": "Explain the CAP theorem and its implications for distributed database design.",
+      "coherence_score": 0.0,
+      "category": "ERROR",
+      "is_final": false,
+      "is_challenged": false,
+      "latency_ms": 44.10033300000002,
+      "tx_sig": "",
+      "error": "url error: [Errno 8] nodename nor servname provided, or not known"
+    },
+    {
+      "query_id": 3,
+      "query": "What is the time complexity of Dijkstra's algorithm with a binary heap?",
+      "coherence_score": 0.0,
+      "category": "ERROR",
+      "is_final": false,
+      "is_challenged": false,
+      "latency_ms": 54.53608300000001,
+      "tx_sig": "",
+      "error": "url error: [Errno 8] nodename nor servname provided, or not known"
+    },
+    {
+      "query_id": 1,
+      "query": "What is the difference between a SNARK and a STARK proof system?",
+      "coherence_score": 0.0,
+      "category": "ERROR",
+      "is_final": false,
+      "is_challenged": false,
+      "latency_ms": 4.576999999999998,
+      "tx_sig": "",
+      "error": "url error: [Errno 8] nodename nor servname provided, or not known"
+    },
+    {
+      "query_id": 2,
+      "query": "Prove by induction that the sum of first n natural numbers is n(n+1)/2.",
+      "coherence_score": 0.0,
+      "category": "ERROR",
+      "is_final": false,
+      "is_challenged": false,
+      "latency_ms": 6.813583000000012,
+      "tx_sig": "",
+      "error": "url error: [Errno 8] nodename nor servname provided, or not known"
+    },
+    {
+      "query_id": 4,
+      "query": "Explain zero-knowledge proofs and give a concrete example.",
+      "coherence_score": 0.0,
+      "category": "ERROR",
+      "is_final": false,
+      "is_challenged": false,
+      "latency_ms": 3.163540999999992,
+      "tx_sig": "",
+      "error": "url error: [Errno 8] nodename nor servname provided, or not known"
+    }
+  ]
+}

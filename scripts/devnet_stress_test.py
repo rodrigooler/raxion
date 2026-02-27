@@ -17,8 +17,8 @@ from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
-
-import httpx
+from urllib import error as urlerror
+from urllib import request as urlrequest
 
 DEFAULT_BASE_URL = "https://devnet.raxion.network"
 RESULTS_DIR = Path("poc/benchmarks/devnet_results")
@@ -69,17 +69,18 @@ def percentile(values: list[float], p: float) -> float:
 
 
 async def submit_query(
-    client: httpx.AsyncClient, base_url: str, query_id: int, query: str
+    base_url: str, query_id: int, query: str
 ) -> QueryResult:
     start = time.perf_counter()
     try:
-        resp = await client.post(
+        payload = json.dumps({"query": query, "agent": "stress_test_agent"}).encode("utf-8")
+        req = urlrequest.Request(
             f"{base_url}/api/inference",
-            json={"query": query, "agent": "stress_test_agent"},
-            timeout=90.0,
+            data=payload,
+            headers={"Content-Type": "application/json"},
+            method="POST",
         )
-        resp.raise_for_status()
-        data = resp.json()
+        data = await asyncio.to_thread(_urlopen_json, req, 90.0)
         return QueryResult(
             query_id=query_id,
             query=query[:80],
@@ -114,25 +115,24 @@ async def run_stress_test(base_url: str, n: int = 1000, concurrency: int = 5) ->
     print(f"[Stress Test] Target: {base_url}")
     print(f"[Stress Test] Started: {now_iso()}\n")
 
-    async with httpx.AsyncClient() as client:
-        semaphore = asyncio.Semaphore(concurrency)
+    semaphore = asyncio.Semaphore(concurrency)
 
-        async def bounded(i: int, q: str) -> QueryResult:
-            async with semaphore:
-                return await submit_query(client, base_url, i, q)
+    async def bounded(i: int, q: str) -> QueryResult:
+        async with semaphore:
+            return await submit_query(base_url, i, q)
 
-        tasks = [bounded(i, q) for i, q in enumerate(queries)]
-        for coro in asyncio.as_completed(tasks):
-            result = await coro
-            results.append(result)
-            if result.error:
-                errors += 1
-            if len(results) % 100 == 0:
-                done = len(results)
-                ok = done - errors
-                valid_scores = [r.coherence_score for r in results if not r.error]
-                avg_score = statistics.mean(valid_scores) if valid_scores else 0.0
-                print(f"  [{done}/{n}] OK={ok} Errors={errors} AvgCS={avg_score:.3f}")
+    tasks = [bounded(i, q) for i, q in enumerate(queries)]
+    for coro in asyncio.as_completed(tasks):
+        result = await coro
+        results.append(result)
+        if result.error:
+            errors += 1
+        if len(results) % 100 == 0:
+            done = len(results)
+            ok = done - errors
+            valid_scores = [r.coherence_score for r in results if not r.error]
+            avg_score = statistics.mean(valid_scores) if valid_scores else 0.0
+            print(f"  [{done}/{n}] OK={ok} Errors={errors} AvgCS={avg_score:.3f}")
 
     scores = [r.coherence_score for r in results if not r.error]
     challenged = sum(1 for r in results if r.is_challenged)
@@ -193,6 +193,18 @@ def main() -> int:
     args = parse_args()
     asyncio.run(run_stress_test(args.base_url, args.n, args.concurrency))
     return 0
+
+
+def _urlopen_json(req: urlrequest.Request, timeout: float) -> dict[str, Any]:
+    try:
+        with urlrequest.urlopen(req, timeout=timeout) as resp:
+            body = resp.read().decode("utf-8")
+            return json.loads(body)
+    except urlerror.HTTPError as exc:
+        detail = exc.read().decode("utf-8", errors="replace")
+        raise RuntimeError(f"http error {exc.code}: {detail}") from exc
+    except urlerror.URLError as exc:
+        raise RuntimeError(f"url error: {exc.reason}") from exc
 
 
 if __name__ == "__main__":
