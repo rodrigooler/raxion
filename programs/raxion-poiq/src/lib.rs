@@ -91,6 +91,43 @@ impl CognitiveAccountState {
 pub mod raxion_poiq {
     use super::*;
 
+    /// Initializes canonical stake + cognitive accounts for an agent.
+    /// Formula reference: `max_threads = floor(log2(stake/1000) * 8) + 1`,
+    /// where `stake` is sourced from `AgentStakeAccount.stake_amount`.
+    pub fn initialize_agent_accounts(
+        ctx: Context<InitializeAgentAccounts>,
+        stake_amount: u64,
+        staked_at_slot: u64,
+    ) -> Result<()> {
+        require!(stake_amount > 0, PoiqError::InvalidStakeAmount);
+
+        let clock = Clock::get()?;
+        let canonical_staked_at_slot = if staked_at_slot == 0 {
+            clock.slot
+        } else {
+            staked_at_slot
+        };
+
+        let agent_stake = &mut ctx.accounts.agent_stake;
+        agent_stake.agent = ctx.accounts.agent.key();
+        agent_stake.stake_amount = stake_amount;
+        agent_stake.bump = ctx.bumps.agent_stake;
+
+        let cognitive = &mut ctx.accounts.cognitive_account;
+        cognitive.agent = ctx.accounts.agent.key();
+        cognitive.consecutive_failures = 0;
+        cognitive.staked_at_slot = canonical_staked_at_slot;
+        cognitive.bump = ctx.bumps.cognitive_account;
+
+        emit!(AgentAccountsInitialized {
+            agent: ctx.accounts.agent.key(),
+            stake_amount,
+            staked_at_slot: canonical_staked_at_slot,
+        });
+
+        Ok(())
+    }
+
     /// Submit PoIQ Layer 1 convergence.
     /// Formula: `CoherenceScore = 0.4 * CS_semantic + 0.6 * CC`.
     /// See PoIQ Whitepaper, Chapter 3 (Layer 1).
@@ -102,12 +139,17 @@ pub mod raxion_poiq {
         output_hash_t: [u8; 32],
         output_hash_s: [u8; 32],
     ) -> Result<()> {
-        require!((0.0..=1.0).contains(&coherence_score), PoiqError::InvalidCoherenceScore);
+        require!(
+            (0.0..=1.0).contains(&coherence_score),
+            PoiqError::InvalidCoherenceScore
+        );
         require!(proof_hash != [0u8; 32], PoiqError::MissingProof);
 
         let clock = Clock::get()?;
         let slot_hash = latest_slot_hash(&ctx.accounts.slot_hashes)?;
-        let challenge_rate = if clock.slot.saturating_sub(ctx.accounts.cognitive_account.staked_at_slot)
+        let challenge_rate = if clock
+            .slot
+            .saturating_sub(ctx.accounts.cognitive_account.staked_at_slot)
             < WARMUP_SLOTS
         {
             CHALLENGE_RATE_NEW_AGENT
@@ -170,12 +212,21 @@ pub mod raxion_poiq {
         response_hash: [u8; 32],
         is_correct: bool,
     ) -> Result<()> {
-        require!(response_hash != [0u8; 32], PoiqError::MissingChallengeResponseHash);
+        require!(
+            response_hash != [0u8; 32],
+            PoiqError::MissingChallengeResponseHash
+        );
 
         let record = &mut ctx.accounts.inference_record;
-        require!(record.agent == ctx.accounts.agent.key(), PoiqError::UnauthorizedAgent);
+        require!(
+            record.agent == ctx.accounts.agent.key(),
+            PoiqError::UnauthorizedAgent
+        );
         require!(record.challenged, PoiqError::NotChallenged);
-        require!(record.challenge_passed.is_none(), PoiqError::AlreadyResponded);
+        require!(
+            record.challenge_passed.is_none(),
+            PoiqError::AlreadyResponded
+        );
 
         record.challenge_passed = Some(is_correct);
         let cognitive = &mut ctx.accounts.cognitive_account;
@@ -186,7 +237,8 @@ pub mod raxion_poiq {
             record.is_final = record.coherence_score >= COHERENCE_THRESHOLD_STANDARD;
         } else {
             cognitive.consecutive_failures = cognitive.consecutive_failures.saturating_add(1);
-            let chronic_multiplier_milli = derive_chronic_multiplier_milli(cognitive.consecutive_failures);
+            let chronic_multiplier_milli =
+                derive_chronic_multiplier_milli(cognitive.consecutive_failures);
             let slash = compute_challenge_slash(
                 ctx.accounts.agent_stake.stake_amount,
                 chronic_multiplier_milli,
@@ -276,6 +328,35 @@ fn categorize_score(coherence_score: f32) -> u8 {
 }
 
 #[derive(Accounts)]
+pub struct InitializeAgentAccounts<'info> {
+    #[account(mut)]
+    pub payer: Signer<'info>,
+
+    #[account(mut)]
+    pub agent: Signer<'info>,
+
+    #[account(
+        init,
+        payer = payer,
+        space = 8 + AgentStakeAccount::LEN,
+        seeds = [b"stake", agent.key().as_ref()],
+        bump,
+    )]
+    pub agent_stake: Account<'info, AgentStakeAccount>,
+
+    #[account(
+        init,
+        payer = payer,
+        space = 8 + CognitiveAccountState::LEN,
+        seeds = [b"cognitive", agent.key().as_ref()],
+        bump,
+    )]
+    pub cognitive_account: Account<'info, CognitiveAccountState>,
+
+    pub system_program: Program<'info, System>,
+}
+
+#[derive(Accounts)]
 #[instruction(inference_id: u64)]
 pub struct SubmitConvergence<'info> {
     #[account(mut)]
@@ -352,6 +433,13 @@ pub struct ConvergenceSubmitted {
 }
 
 #[event]
+pub struct AgentAccountsInitialized {
+    pub agent: Pubkey,
+    pub stake_amount: u64,
+    pub staked_at_slot: u64,
+}
+
+#[event]
 pub struct SlashTriggered {
     pub agent: Pubkey,
     pub slash_amount: u64,
@@ -398,6 +486,9 @@ pub enum PoiqError {
 
     #[msg("No slot hash available")]
     MissingSlotHash,
+
+    #[msg("Stake amount must be greater than zero")]
+    InvalidStakeAmount,
 }
 
 #[cfg(test)]
