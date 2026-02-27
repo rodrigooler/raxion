@@ -3,6 +3,10 @@ name = "risc0-host"
 version = "0.1.0"
 edition = "2021"
 
+[features]
+default = []
+cuda-backend = ["risc0-zkvm/cuda"]
+
 [dependencies]
 risc0-zkvm = { version = "1.0", features = ["prove", "std"] }
 anyhow = "1.0"

@@ -24,7 +24,9 @@ Active work:
 - RISC Zero embedding commitment path validation
 - Devnet explorer hardening and deployment flow
 
-**Do not** ask Claude to implement Testnet/Mainnet-only scope (GPU proving, full 6 challenge categories, TGE tokenomics) yet.
+**Q3 update (2026-02-27)**: Testnet-prep scaffolding is now in-progress in-repo
+(GPU/Jolt scaffold, 6 challenge categories, token/rollup scaffolds). Production/Testnet
+live execution still depends on infrastructure rollout.
 
 ---
 
@@ -48,6 +50,14 @@ Read this before asking "why didn't you just...":
 | `chronic_multiplier_milli` derived on-chain | Removes client-controlled slashing amplification vector; bounded deterministic behavior | Client-provided chronic multiplier |
 | `is_final` depends on challenge lifecycle | Enforces that challenged inferences are not final until verified pass | Marking final immediately when score ≥0.60 |
 | Q2 completion requires anti-manipulation invariants | Events alone are insufficient; deterministic challenge + stake constraints + on-chain derivation are mandatory | Declaring completion by happy-path event output |
+
+### Q2 Review Decisions (AD-010 to AD-014)
+
+- **AD-010** Stake PDA derivation is canonical.
+- **AD-011** Slashing source-of-truth is protocol stake PDA.
+- **AD-012** Chronic multiplier is derived on-chain (not client-input).
+- **AD-013** `is_final` depends on challenge lifecycle, not score-only.
+- **AD-014** Q2 completion requires anti-manipulation invariants.
 
 ---
 

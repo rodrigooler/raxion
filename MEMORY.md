@@ -9,15 +9,32 @@
 ## Project Status
 
 ```
-Last updated: 2026-02-25
+Last updated: 2026-02-27
 Current phase: Phase 1 — Devnet (Q2 2026)
-Next milestone: Q2 completion gate (anti-manipulation invariants + devnet deploy)
+Next milestone: Q3 Testnet-prep infra execution (live deploy + external validation)
 Whitepaper version: v0.4 (complete)
 GitHub: https://github.com/raxion-network/raxion
 License: BUSL 1.1 → MIT 2030-02-20
 ```
 
 ### Q2 Execution Notes (2026-02-25)
+
+- Q3 Testnet prep implementation wave completed (2026-02-27):
+  - PoIQ Layer 2 category expansion to 6 deterministic categories in `programs/raxion-poiq/src/challenge.rs`.
+  - Dissent Queue core path added: `programs/raxion-poiq/src/dissent.rs` + `submit_dissent` in program lib.
+  - HNSW-shaped hot memory index v0.1 added in `runtime/cognitive/src/memory.rs` with invariants and budget tests.
+  - RaxLang v0.1 scaffold added under `sdk/raxlang` + `examples/agents/math_agent.rax`.
+  - Sovereign rollup commitment scaffold added in `programs/raxion-rollup` + deterministic state root builder in runtime.
+  - $RAX testnet tokenomics scaffold added in `programs/raxion-token` (genesis + vesting).
+  - Q3 validation and operational scripts added: `scripts/validate_q3.py`, `scripts/devnet_stress_test.py`, `scripts/trigger_slash_test.py`, `scripts/benchmark_proof_latency.sh`, `scripts/pre_audit_check.sh`.
+  - Q3 readiness report recorded in `docs/reports/q3-testnet-readiness-2026-02-27.md`.
+  - 90-day Testnet stability plan documented in `docs/plans/testnet-90-day-stability-plan.md`.
+  - Q4 launch-plan draft documented in `docs/plans/q4-testnet-launch-plan-v0.1.md`.
+
+- Q3 blockers observed on this host (2026-02-27):
+  - `devnet.raxion.network` DNS unresolved, blocking live stress/slash API evidence capture.
+  - Local GPU/prover toolchain constraints still prevent direct RISC0 GPU latency measurements.
+  - Live on-chain manual validations remain pending deployment environment readiness.
 
 - Dockerized deploy path added for Anchor/Solana:
   - `ops/docker/anchor-devnet/Dockerfile` with pinned Rust/Solana/Anchor versions
@@ -135,8 +152,8 @@ License: BUSL 1.1 → MIT 2030-02-20
 |---|---|---|---|
 | H1 | Heterogeneous architectures converge in >70% of real-world queries without coordinated training | Devnet Q2 2026 | 🔜 Pending |
 | H2 | PoIQ remains secure when $RAX has real economic value and adversarial actors participate | Testnet Q4 2026 | 🔜 Pending |
-| H3 | RISC Zero + Jolt latency roadmap is achievable (Devnet <60s → Mainnet <2s) | Testnet Q4 2026 | 🔜 Pending |
-| H4 | Developer adoption sufficient to sustain 10+ independent agents at Devnet | Devnet Q3 2026 | 🔜 Pending |
+| H3 | RISC Zero + Jolt latency roadmap is achievable (Devnet <60s → Mainnet <2s) | Testnet Q4 2026 | 🟡 In Progress (code scaffold complete, live GPU evidence pending) |
+| H4 | Developer adoption sufficient to sustain 10+ independent agents at Devnet | Devnet Q3 2026 | 🟡 In Progress (synthetic tooling complete, external adoption evidence pending) |
 | H5 | Agave fork can support CognitiveAccount types without degrading baseline SVM throughput >20% | Devnet Q2 2026 | 🔜 Pending |
 
 ---

@@ -5,6 +5,7 @@ use anchor_lang::solana_program::sysvar::slot_hashes::SlotHashes;
 use anchor_lang::solana_program::sysvar::Sysvar;
 
 pub mod challenge;
+pub mod dissent;
 
 declare_id!("5JVFMV1DvhQD6Tm2BtPBs8zkvGArzRGUYF6GSNw2XUeT");
 
@@ -87,6 +88,22 @@ impl CognitiveAccountState {
     pub const LEN: usize = 32 + 2 + 8 + 1;
 }
 
+#[account]
+#[derive(Default)]
+pub struct DissentRecord {
+    pub inference_record: Pubkey,
+    pub dissenting_arch: u8,
+    pub internal_confidence: f32,
+    pub coherence_score: f32,
+    pub status: u8,
+    pub timestamp: i64,
+    pub bump: u8,
+}
+
+impl DissentRecord {
+    pub const LEN: usize = 32 + 1 + 4 + 4 + 1 + 8 + 1;
+}
+
 #[program]
 pub mod raxion_poiq {
     use super::*;
@@ -102,12 +119,17 @@ pub mod raxion_poiq {
         output_hash_t: [u8; 32],
         output_hash_s: [u8; 32],
     ) -> Result<()> {
-        require!((0.0..=1.0).contains(&coherence_score), PoiqError::InvalidCoherenceScore);
+        require!(
+            (0.0..=1.0).contains(&coherence_score),
+            PoiqError::InvalidCoherenceScore
+        );
         require!(proof_hash != [0u8; 32], PoiqError::MissingProof);
 
         let clock = Clock::get()?;
         let slot_hash = latest_slot_hash(&ctx.accounts.slot_hashes)?;
-        let challenge_rate = if clock.slot.saturating_sub(ctx.accounts.cognitive_account.staked_at_slot)
+        let challenge_rate = if clock
+            .slot
+            .saturating_sub(ctx.accounts.cognitive_account.staked_at_slot)
             < WARMUP_SLOTS
         {
             CHALLENGE_RATE_NEW_AGENT
@@ -170,12 +192,21 @@ pub mod raxion_poiq {
         response_hash: [u8; 32],
         is_correct: bool,
     ) -> Result<()> {
-        require!(response_hash != [0u8; 32], PoiqError::MissingChallengeResponseHash);
+        require!(
+            response_hash != [0u8; 32],
+            PoiqError::MissingChallengeResponseHash
+        );
 
         let record = &mut ctx.accounts.inference_record;
-        require!(record.agent == ctx.accounts.agent.key(), PoiqError::UnauthorizedAgent);
+        require!(
+            record.agent == ctx.accounts.agent.key(),
+            PoiqError::UnauthorizedAgent
+        );
         require!(record.challenged, PoiqError::NotChallenged);
-        require!(record.challenge_passed.is_none(), PoiqError::AlreadyResponded);
+        require!(
+            record.challenge_passed.is_none(),
+            PoiqError::AlreadyResponded
+        );
 
         record.challenge_passed = Some(is_correct);
         let cognitive = &mut ctx.accounts.cognitive_account;
@@ -186,7 +217,8 @@ pub mod raxion_poiq {
             record.is_final = record.coherence_score >= COHERENCE_THRESHOLD_STANDARD;
         } else {
             cognitive.consecutive_failures = cognitive.consecutive_failures.saturating_add(1);
-            let chronic_multiplier_milli = derive_chronic_multiplier_milli(cognitive.consecutive_failures);
+            let chronic_multiplier_milli =
+                derive_chronic_multiplier_milli(cognitive.consecutive_failures);
             let slash = compute_challenge_slash(
                 ctx.accounts.agent_stake.stake_amount,
                 chronic_multiplier_milli,
@@ -204,6 +236,50 @@ pub mod raxion_poiq {
             inference_id,
             passed: is_correct,
             response_hash,
+        });
+
+        Ok(())
+    }
+
+    /// Submit a high-confidence dissent entry when score is below standard threshold
+    /// but above rejection threshold.
+    pub fn submit_dissent(
+        ctx: Context<SubmitDissent>,
+        inference_id: u64,
+        internal_confidence: f32,
+        dissenting_arch: u8,
+    ) -> Result<()> {
+        require!(
+            (0.0..=1.0).contains(&internal_confidence),
+            PoiqError::InvalidInternalConfidence
+        );
+        require!(
+            dissenting_arch <= 2,
+            PoiqError::InvalidDissentingArchitecture
+        );
+
+        let inference = &ctx.accounts.inference_record;
+        require!(
+            dissent::qualifies_for_dissent(inference.coherence_score, internal_confidence),
+            PoiqError::DoesNotQualifyForDissent
+        );
+
+        let dissent_record = &mut ctx.accounts.dissent_record;
+        dissent_record.inference_record = inference.key();
+        dissent_record.dissenting_arch = dissenting_arch;
+        dissent_record.internal_confidence = internal_confidence;
+        dissent_record.coherence_score = inference.coherence_score;
+        dissent_record.status = 0;
+        dissent_record.timestamp = Clock::get()?.unix_timestamp;
+        dissent_record.bump = ctx.bumps.dissent_record;
+
+        emit!(DissentSubmitted {
+            agent: ctx.accounts.agent.key(),
+            inference_id,
+            coherence_score: inference.coherence_score,
+            internal_confidence,
+            dissenting_arch,
+            timestamp: dissent_record.timestamp,
         });
 
         Ok(())
@@ -340,6 +416,31 @@ pub struct SubmitChallengeResponse<'info> {
     pub inference_record: Account<'info, InferenceRecord>,
 }
 
+#[derive(Accounts)]
+#[instruction(inference_id: u64)]
+pub struct SubmitDissent<'info> {
+    #[account(mut)]
+    pub agent: Signer<'info>,
+
+    #[account(
+        seeds = [b"inference", agent.key().as_ref(), &inference_id.to_le_bytes()],
+        bump = inference_record.bump,
+        constraint = inference_record.agent == agent.key() @ PoiqError::UnauthorizedAgent,
+    )]
+    pub inference_record: Account<'info, InferenceRecord>,
+
+    #[account(
+        init,
+        payer = agent,
+        space = 8 + DissentRecord::LEN,
+        seeds = [b"dissent", inference_record.key().as_ref(), agent.key().as_ref()],
+        bump,
+    )]
+    pub dissent_record: Account<'info, DissentRecord>,
+
+    pub system_program: Program<'info, System>,
+}
+
 #[event]
 pub struct ConvergenceSubmitted {
     pub agent: Pubkey,
@@ -365,6 +466,16 @@ pub struct ChallengeResponded {
     pub inference_id: u64,
     pub passed: bool,
     pub response_hash: [u8; 32],
+}
+
+#[event]
+pub struct DissentSubmitted {
+    pub agent: Pubkey,
+    pub inference_id: u64,
+    pub coherence_score: f32,
+    pub internal_confidence: f32,
+    pub dissenting_arch: u8,
+    pub timestamp: i64,
 }
 
 #[error_code]
@@ -398,6 +509,15 @@ pub enum PoiqError {
 
     #[msg("No slot hash available")]
     MissingSlotHash,
+
+    #[msg("Inference does not qualify for dissent queue")]
+    DoesNotQualifyForDissent,
+
+    #[msg("Internal confidence must be in [0.0, 1.0]")]
+    InvalidInternalConfidence,
+
+    #[msg("Dissenting architecture index must be 0..=2")]
+    InvalidDissentingArchitecture,
 }
 
 #[cfg(test)]

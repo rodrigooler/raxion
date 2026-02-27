@@ -1,18 +1,22 @@
 # Repository Map
 
-This map reflects the current project layout for Q2 Devnet work.
+This map reflects the current project layout for Q3 Testnet-prep work.
 
 ## Product Surfaces
 
-- `apps/explorer/`: Next.js Devnet explorer (public read-only interface for inferences/events).
+- `apps/explorer/`: Devnet explorer (public read-only interface for inferences/events).
 - `apps/site/`: static marketing/documentation site assets.
 
 ## Protocol Core
 
 - `runtime/cognitive/`: RAXION runtime extensions (first-party code only).
 - `programs/raxion-poiq/`: Anchor program for PoIQ submission/challenge/slashing flow.
+- `programs/raxion-rollup/`: Anchor scaffold for Sovereign Rollup state-root commitments.
+- `programs/raxion-token/`: Anchor scaffold for testnet $RAX genesis + vesting.
 - `proofs/`: RISC0 guest/host/types and proof-related benchmarks.
+- `proofs/jolt-circuits/`: Jolt quality-proof scaffold crate.
 - `sdk/agent/`: Rust SDK plus reference agents (`math`, `code`, `text`).
+- `sdk/raxlang/`: RaxLang v0.1 parser/transpiler CLI scaffold.
 - `poc/`: Q1/Q2 Python PoC and benchmark tooling.
 
 ## Operations
