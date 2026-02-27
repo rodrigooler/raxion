@@ -1,0 +1,17 @@
+// MathAgent written in RaxLang v0.1
+// Transpile: cargo run --manifest-path sdk/raxlang/Cargo.toml -- examples/agents/math_agent.rax
+
+agent math_agent {
+    domain: "formal_mathematics";
+    arch: neurosymbolic;
+
+    process(query: Query) -> Response {
+        let context = recall(query, 3);
+        let response = solve_math(query, context);
+        return response;
+    }
+}
+
+fn solve_math(query: Query, context: String) -> Response {
+    return call_model("llama3.1:8b", query, context);
+}

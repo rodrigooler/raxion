@@ -18,7 +18,9 @@ def run_cmd(cmd: list[str]) -> bool:
 
 
 def check_jolt() -> bool:
-    return run_cmd(["cargo", "build", "-p", "raxion-jolt-quality", "--manifest-path", "proofs/Cargo.toml"])
+    return run_cmd(
+        ["cargo", "build", "-p", "raxion-jolt-quality", "--manifest-path", "proofs/Cargo.toml"]
+    )
 
 
 def check_challenges() -> bool:
@@ -55,15 +57,33 @@ def check_memory() -> bool:
 
 
 def check_raxlang() -> bool:
-    return run_cmd(["cargo", "run", "-p", "raxlang", "--manifest-path", "sdk/raxlang/Cargo.toml", "--", "examples/agents/math_agent.rax", "--check"])
+    return run_cmd(
+        [
+            "cargo",
+            "run",
+            "--manifest-path",
+            "sdk/raxlang/Cargo.toml",
+            "--",
+            "examples/agents/math_agent.rax",
+            "--check",
+        ]
+    )
 
 
 def check_token() -> bool:
-    return run_cmd(["cargo", "test", "-p", "raxion-token"])
+    return run_cmd(["cargo", "test", "--manifest-path", "programs/raxion-token/Cargo.toml"])
 
 
 def check_vesting() -> bool:
-    return run_cmd(["cargo", "test", "-p", "raxion-token", "--", "vesting"])
+    return run_cmd(
+        [
+            "cargo",
+            "test",
+            "--manifest-path",
+            "programs/raxion-token/Cargo.toml",
+            "vesting",
+        ]
+    )
 
 
 def check_audit() -> bool:

@@ -13,6 +13,7 @@ pub mod account_types;
 pub mod convergence;
 pub mod memory;
 pub mod scheduler;
+pub mod state_root;
 
 pub use account_types::{CognitiveAccount, CognitiveAccountError};
 pub use scheduler::{CognitiveScheduler, SchedulerError, ThreadOutput};

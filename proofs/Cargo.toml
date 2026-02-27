@@ -3,6 +3,7 @@ members = [
     "risc0-host",
     "risc0-guest",
     "risc0-types",
+    "jolt-circuits",
 ]
 resolver = "2"
 

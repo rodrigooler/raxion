@@ -1,0 +1,20 @@
+[package]
+name = "raxion-token"
+version = "0.1.0"
+edition = "2021"
+description = "RAXION tokenomics program (testnet scaffolding)"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+
+[features]
+default = []
+no-entrypoint = []
+no-idl = []
+no-log-ix-name = []
+cpi = ["no-entrypoint"]
+idl-build = ["anchor-lang/idl-build"]
+
+[dependencies]
+anchor-lang = "0.30"
+anchor-spl = "0.30"

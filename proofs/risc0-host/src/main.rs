@@ -34,6 +34,7 @@ struct CliArgs {
     dim: usize,
     with_n: bool,
     json: bool,
+    benchmark: bool,
 }
 
 impl Default for CliArgs {
@@ -42,6 +43,7 @@ impl Default for CliArgs {
             dim: 384,
             with_n: false,
             json: false,
+            benchmark: false,
         }
     }
 }
@@ -63,8 +65,13 @@ fn parse_args() -> Result<CliArgs> {
             "--json" => {
                 args.json = true;
             }
+            "--benchmark" => {
+                args.benchmark = true;
+            }
             "--help" | "-h" => {
-                println!("Usage: cargo run -p risc0-host -- [--dim N] [--with-n] [--json]");
+                println!(
+                    "Usage: cargo run -p risc0-host -- [--dim N] [--with-n] [--json] [--benchmark]"
+                );
                 process::exit(0);
             }
             _ => return Err(anyhow::anyhow!("Unknown argument: {arg}")),
@@ -170,11 +177,13 @@ async fn main() -> Result<()> {
     let expected = expected_score(&input);
     let expected_category = categorize(expected);
 
-    if !args.json {
+    if !args.json && !args.benchmark {
         println!("RAXION Phase 1 - Proof of Quality (pi_quality)");
         println!("Embedding dim: {}", args.dim);
         println!("Third architecture included: {}", args.with_n);
         println!("[RAXION] Generating proof...");
+    } else if args.benchmark {
+        println!("[RISC0] benchmark mode dim={}", args.dim);
     }
 
     let total_start = Instant::now();
