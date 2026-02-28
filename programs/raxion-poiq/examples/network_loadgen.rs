@@ -1,3 +1,6 @@
+// Copyright (c) 2026 RAXION
+// Licensed under the Business Source License 1.1.
+// See the LICENSE file at the project root for the full license text.
 use std::collections::BTreeMap;
 use std::env;
 use std::fs;
@@ -11,6 +14,7 @@ use anchor_client::{Client, Cluster, Program};
 use anyhow::{anyhow, Context, Result};
 use serde::Serialize;
 use sha2::{Digest, Sha256};
+use url::Url;
 
 const DEFAULT_PROGRAM_ID: &str = "5JVFMV1DvhQD6Tm2BtPBs8zkvGArzRGUYF6GSNw2XUeT";
 const DEFAULT_OUT: &str = "docs/reports/network-loadgen-report.json";
@@ -171,7 +175,7 @@ fn run(cfg: Config) -> Result<()> {
 
         if record.challenged {
             challenged = challenged.saturating_add(1);
-            if cfg.challenge_fail_every > 0 && challenged % cfg.challenge_fail_every == 0 {
+            if cfg.challenge_fail_every > 0 && challenged.is_multiple_of(cfg.challenge_fail_every) {
                 let response_hash = hash32("resp_fail", agent.keypair.pubkey(), inference_id, i);
                 let sig = submit_challenge_response(
                     &program,
@@ -188,6 +192,21 @@ fn run(cfg: Config) -> Result<()> {
                 }
                 challenge_failures = challenge_failures.saturating_add(1);
                 trigger2_expected = trigger2_expected.saturating_add(1);
+            } else {
+                let response_hash = hash32("resp_ok", agent.keypair.pubkey(), inference_id, i);
+                let sig = submit_challenge_response(
+                    &program,
+                    &agent.keypair,
+                    inference_id,
+                    response_hash,
+                    true,
+                    agent_stake_pda,
+                    cognitive_pda,
+                    inference_pda,
+                )?;
+                if sample_sigs.len() < 24 {
+                    sample_sigs.push(sig.to_string());
+                }
             }
         }
 
@@ -250,9 +269,37 @@ fn run(cfg: Config) -> Result<()> {
 
 fn init_agents(program: &Program<Rc<Keypair>>, cfg: &Config) -> Result<Vec<AgentState>> {
     let mut agents = Vec::with_capacity(cfg.agents as usize);
+    let per_agent_queries = (cfg.queries.saturating_add(cfg.agents).saturating_sub(1)) / cfg.agents;
+    let inference_rent = program
+        .rpc()
+        .get_minimum_balance_for_rent_exemption(8 + raxion_poiq::InferenceRecord::LEN)
+        .context("failed to fetch rent exemption for inference records")?;
+    let tx_fee_buffer = per_agent_queries
+        .saturating_mul(20_000)
+        .saturating_add(200_000);
+    let funding_lamports = per_agent_queries
+        .saturating_mul(inference_rent)
+        .saturating_add(tx_fee_buffer);
+
     for i in 0..cfg.agents {
         let keypair = Keypair::new();
         let (agent_stake_pda, cognitive_pda, _) = derive_pdas(cfg.program_id, keypair.pubkey(), 0);
+
+        let fund_ix = anchor_client::solana_sdk::system_instruction::transfer(
+            &program.payer(),
+            &keypair.pubkey(),
+            funding_lamports,
+        );
+        let fund_sig = program
+            .request()
+            .instruction(fund_ix)
+            .send()
+            .with_context(|| format!("funding failed for agent index {i}"))?;
+        println!(
+            "[loadgen] funded agent={} lamports={} tx={fund_sig}",
+            keypair.pubkey(),
+            funding_lamports
+        );
 
         let sig = program
             .request()
@@ -317,6 +364,7 @@ fn submit_convergence(
     Ok(sig)
 }
 
+#[allow(clippy::too_many_arguments)]
 fn submit_challenge_response(
     program: &Program<Rc<Keypair>>,
     agent: &Keypair,
@@ -361,7 +409,7 @@ fn derive_pdas(program_id: Pubkey, agent: Pubkey, inference_id: u64) -> (Pubkey,
 }
 
 fn synthetic_score(index: u64, low_every: u64) -> f32 {
-    if low_every > 0 && index % low_every == 0 {
+    if low_every > 0 && index.is_multiple_of(low_every) {
         // Guarantees Trigger-1 slashing events.
         return 0.20;
     }
@@ -389,8 +437,32 @@ fn hash32(tag: &str, agent: Pubkey, inference_id: u64, index: u64) -> [u8; 32] {
 }
 
 fn parse_cluster(cluster: &str, rpc_url: Option<String>) -> Result<Cluster> {
-    if let Some(url) = rpc_url {
-        return Ok(Cluster::Custom(url.clone(), url));
+    if let Some(http_url) = rpc_url {
+        let parsed_rpc_url =
+            Url::parse(&http_url).with_context(|| format!("invalid RAXION_RPC_URL={http_url}"))?;
+        let ws_url = match parsed_rpc_url.scheme() {
+            "http" => {
+                let mut ws_url = parsed_rpc_url.clone();
+                ws_url
+                    .set_scheme("ws")
+                    .map_err(|_| anyhow!("failed to derive websocket URL from {http_url}"))?;
+                ws_url.to_string()
+            }
+            "https" => {
+                let mut ws_url = parsed_rpc_url.clone();
+                ws_url
+                    .set_scheme("wss")
+                    .map_err(|_| anyhow!("failed to derive websocket URL from {http_url}"))?;
+                ws_url.to_string()
+            }
+            "ws" | "wss" => parsed_rpc_url.to_string(),
+            other => {
+                return Err(anyhow!(
+                    "unsupported RAXION_RPC_URL scheme={other}; use http(s):// or ws(s)://"
+                ));
+            }
+        };
+        return Ok(Cluster::Custom(http_url, ws_url));
     }
 
     match cluster.to_ascii_lowercase().as_str() {

@@ -19,5 +19,5 @@ export RAXION_LOADGEN_CHALLENGE_FAIL_EVERY="${RAXION_LOADGEN_CHALLENGE_FAIL_EVER
 export RAXION_LOADGEN_REPORT_OUT="${RAXION_LOADGEN_REPORT_OUT:-docs/reports/network-loadgen-report-${CLUSTER}.json}"
 
 echo "[loadgen] cluster=$RAXION_CLUSTER program=$RAXION_POIQ_PROGRAM_ID agents=$RAXION_LOADGEN_AGENTS queries=$RAXION_LOADGEN_QUERIES"
-cargo run --manifest-path programs/raxion-poiq/Cargo.toml --example network_loadgen
+cargo run --release --manifest-path programs/raxion-poiq/Cargo.toml --example network_loadgen
 echo "[loadgen] report=$RAXION_LOADGEN_REPORT_OUT"
