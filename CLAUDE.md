@@ -26,6 +26,13 @@ Active work:
 
 **Do not** ask Claude to implement Testnet/Mainnet-only scope (GPU proving, full 6 challenge categories, TGE tokenomics) yet.
 
+## Commit Convention
+
+- Use Conventional Commits for all commits.
+- Default prefixes: `feat:`, `fix:`, `refactor:`, `chore:`, `docs:`, `test:`.
+- Use scoped messages when helpful, for example `feat(site): ...`.
+- Do not use vague commit subjects like `update`, `misc`, or `wip`.
+
 ---
 
 ## Decision Log (Why We Made Key Choices)

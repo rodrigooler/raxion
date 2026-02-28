@@ -17,6 +17,12 @@ GitHub: https://github.com/raxion-network/raxion
 License: BUSL 1.1 → MIT 2030-02-20
 ```
 
+### Working Convention (2026-02-28)
+
+- Commit messages now follow Conventional Commits.
+- Approved prefixes: `feat:`, `fix:`, `refactor:`, `chore:`, `docs:`, `test:`.
+- Prefer scoped messages when useful, e.g. `feat(site): ...`.
+
 ### Q2 Execution Notes (2026-02-25)
 
 - Dockerized deploy path added for Anchor/Solana:
