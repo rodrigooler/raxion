@@ -2,11 +2,11 @@ import { announcementPosts, blogPosts, type Post } from "../content/posts";
 import { formatLocalizedDate, localeBasePath, type Locale } from "../../lib/site";
 import type { SiteDictionary } from "../content/site-types";
 
-function PostCard({ href, title, summary, date, eyebrow }: { href: string; title: string; summary: string; date: string; eyebrow: string }) {
+function PostCard({ href, title, summary, date, eyebrow }: Readonly<{ href: string; title: string; summary: string; date: string; eyebrow: string }>) {
   return <a href={href} className="block border border-white/10 bg-white/[0.02] p-5 transition-colors duration-300 hover:border-brand-blue/40 hover:bg-white/[0.04] sm:p-6"><div className="mb-3 font-mono text-[9px] uppercase tracking-widest text-brand-blue">{eyebrow}</div><div className="mb-3 font-display text-xl font-black tracking-tight sm:text-2xl">{title}</div><div className="mb-4 text-sm leading-relaxed text-gray-500">{summary}</div><div className="font-mono text-[10px] uppercase tracking-widest text-gray-600">{date}</div></a>;
 }
 
-export function PostPage({ locale, content, post }: { locale: Locale; content: SiteDictionary; post: Post }) {
+export function PostPage({ locale, content, post }: Readonly<{ locale: Locale; content: SiteDictionary; post: Post }>) {
   const basePath = localeBasePath(locale);
   const sameTypePosts = (post.type === "announcement" ? announcementPosts : blogPosts).filter((item) => item.slug !== post.slug);
   const crossTypePosts = post.type === "announcement" ? blogPosts : announcementPosts;

@@ -77,7 +77,7 @@ export const metadata: Metadata = {
   category: "technology",
 };
 
-export default async function RootLayout({ children }: { children: ReactNode }) {
+export default async function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   const requestHeaders = await headers();
   const htmlLang = normalizeLocale(requestHeaders.get("x-site-locale") ?? undefined);
 

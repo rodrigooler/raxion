@@ -3,7 +3,7 @@ import { localeBasePath, type Locale } from "../../lib/site";
 import type { SiteDictionary } from "../content/site-types";
 import { LocaleSwitcher } from "./locale-switcher";
 
-export function SiteHeader({ locale, content }: { locale: Locale; content: SiteDictionary }) {
+export function SiteHeader({ locale, content }: Readonly<{ locale: Locale; content: SiteDictionary }>) {
   const basePath = localeBasePath(locale);
   const homeHref = basePath || "/";
   return (
@@ -78,7 +78,7 @@ export function SiteHeader({ locale, content }: { locale: Locale; content: SiteD
   );
 }
 
-export function SiteFooter({ locale, content }: { locale: Locale; content: SiteDictionary }) {
+export function SiteFooter({ locale, content }: Readonly<{ locale: Locale; content: SiteDictionary }>) {
   const basePath = localeBasePath(locale);
   return (
     <footer className="border-t border-white/5 px-4 py-8 sm:px-6 sm:py-12">

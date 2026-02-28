@@ -50,7 +50,7 @@ function buildLocalizedHref(pathname: string, locale: Locale): string {
   return `${basePath}${suffix}` || "/";
 }
 
-export function LocaleSwitcher({ locale, content }: { locale: Locale; content: SiteDictionary }) {
+export function LocaleSwitcher({ locale, content }: Readonly<{ locale: Locale; content: SiteDictionary }>) {
   const pathname = usePathname() || "/";
   const [open, setOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -70,11 +70,11 @@ export function LocaleSwitcher({ locale, content }: { locale: Locale; content: S
     }
 
     document.addEventListener("mousedown", handleClick);
-    window.addEventListener("keydown", handleKey);
+    globalThis.addEventListener("keydown", handleKey);
 
     return () => {
       document.removeEventListener("mousedown", handleClick);
-      window.removeEventListener("keydown", handleKey);
+      globalThis.removeEventListener("keydown", handleKey);
     };
   }, []);
 
@@ -117,7 +117,7 @@ export function LocaleSwitcher({ locale, content }: { locale: Locale; content: S
                 onClick={() => {
                   setOpen(false);
                   if (!isActive) {
-                    window.location.assign(buildLocalizedHref(pathname, targetLocale));
+                    globalThis.location.assign(buildLocalizedHref(pathname, targetLocale));
                   }
                 }}
               >

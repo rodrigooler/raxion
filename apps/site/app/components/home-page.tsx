@@ -3,7 +3,7 @@ import { getSiteContent } from "../content/site-dictionary";
 import { ArchitectureSection, HeroSection, Marquee, ProblemSection, RoadmapSection, WhitepaperSection } from "./home-sections";
 import { SiteFooter, SiteHeader } from "./site-shell";
 
-export function HomePage({ locale }: { locale: Locale }) {
+export function HomePage({ locale }: Readonly<{ locale: Locale }>) {
   const content = getSiteContent(locale);
   return (
     <>

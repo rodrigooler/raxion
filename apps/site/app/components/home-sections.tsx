@@ -3,7 +3,13 @@ import { localeBasePath } from "../../lib/site";
 import { getHomeUseCases } from "../content/site-dictionary";
 import type { SiteDictionary } from "../content/site-types";
 
-function Orb({ content }: { content: SiteDictionary }) {
+function getMarqueeAccent(index: number): string {
+  if (index % 3 === 0) return "text-brand-blue";
+  if (index % 3 === 1) return "text-brand-red";
+  return "text-brand-purple";
+}
+
+function Orb({ content }: Readonly<{ content: SiteDictionary }>) {
   return (
     <div className="relative h-56 w-56 sm:h-64 sm:w-64 lg:h-[420px] lg:w-[420px]">
       <div className="absolute inset-0 rounded-full bg-black shadow-[0_0_120px_30px_rgba(255,255,255,0.08)]" />
@@ -22,11 +28,11 @@ function Orb({ content }: { content: SiteDictionary }) {
   );
 }
 
-function HeroMetric({ metric }: { metric: SiteDictionary["metrics"][number] }) {
+function HeroMetric({ metric }: Readonly<{ metric: SiteDictionary["metrics"][number] }>) {
   return <div><div className={`ticker-number font-display text-3xl font-black ${metric.accent ?? ""}`}>{metric.value}<span className="ml-1 text-xl text-white/40">{metric.suffix}</span></div><div className="mt-1 font-mono text-[9px] uppercase tracking-widest text-gray-600">{metric.label}</div><div className="mt-0.5 font-mono text-[8px] text-gray-700">{metric.sublabel}</div></div>;
 }
 
-export function HeroSection({ locale, content }: { locale: Locale; content: SiteDictionary }) {
+export function HeroSection({ locale, content }: Readonly<{ locale: Locale; content: SiteDictionary }>) {
   const basePath = localeBasePath(locale);
   return (
     <section className="min-h-[100svh] px-4 pb-12 pt-40 sm:px-6 sm:pt-44 lg:pt-32">
@@ -43,12 +49,12 @@ export function HeroSection({ locale, content }: { locale: Locale; content: Site
   );
 }
 
-export function Marquee({ content }: { content: SiteDictionary }) {
+export function Marquee({ content }: Readonly<{ content: SiteDictionary }>) {
   const items = content.marqueeItems;
-  return <div className="overflow-hidden border-y border-white/5 bg-white/[0.02] py-4"><div className="flex whitespace-nowrap" style={{ animation: "marquee 22s linear infinite" }}><div className="flex items-center font-mono text-[10px] uppercase tracking-[0.3em] text-gray-600">{[...items, ...items].map((item, index) => <span key={`${item}-${index}`} className="flex items-center"><span className="mx-8">{item}</span><span className={`mx-2 ${index % 3 === 0 ? "text-brand-blue" : index % 3 === 1 ? "text-brand-red" : "text-brand-purple"}`}>◆</span></span>)}</div></div></div>;
+  return <div className="overflow-hidden border-y border-white/5 bg-white/[0.02] py-4"><div className="flex whitespace-nowrap" style={{ animation: "marquee 22s linear infinite" }}><div className="flex items-center font-mono text-[10px] uppercase tracking-[0.3em] text-gray-600">{[...items, ...items].map((item, index) => <span key={`${item}-${index}`} className="flex items-center"><span className="mx-8">{item}</span><span className={`mx-2 ${getMarqueeAccent(index)}`}>◆</span></span>)}</div></div></div>;
 }
 
-export function ProblemSection({ locale, content }: { locale: Locale; content: SiteDictionary }) {
+export function ProblemSection({ locale, content }: Readonly<{ locale: Locale; content: SiteDictionary }>) {
   const localizedUseCases = getHomeUseCases(locale);
   return (
     <section id="problem" className="scroll-mt-32 px-4 py-20 sm:scroll-mt-36 sm:px-6 sm:py-24 lg:py-32">
@@ -62,19 +68,19 @@ export function ProblemSection({ locale, content }: { locale: Locale; content: S
   );
 }
 
-export function ArchitectureSection({ content }: { content: SiteDictionary }) {
+export function ArchitectureSection({ content }: Readonly<{ content: SiteDictionary }>) {
   return (
-    <section id="arch" className="scroll-mt-32 px-4 py-20 sm:scroll-mt-36 sm:px-6 sm:py-24 lg:py-32"><div className="mx-auto max-w-[1400px]"><div className="reveal mb-16 flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between"><h2 className="font-display text-4xl font-black tracking-tighter sm:text-5xl lg:text-7xl">{content.architecture.title} <span className="text-outline">{content.architecture.titleAccent}</span></h2><p className="max-w-sm font-mono text-[10px] uppercase tracking-widest text-gray-500 lg:text-right">{content.architecture.summary}</p></div><div className="grid gap-6 lg:grid-cols-3" id="logic">{content.architecture.cards.map((card, index) => <div key={card.title} className="reveal border border-white/10 bg-white/[0.02] p-6 sm:p-8" style={{ transitionDelay: `${index * 120}ms` }}><div className={`mb-4 font-mono text-[10px] uppercase tracking-widest ${card.accent}`}>{card.title}</div><h3 className="mb-4 font-display text-3xl font-black tracking-tighter">{card.heading}</h3><p className="text-sm leading-relaxed text-gray-500">{card.body}</p></div>)}</div><div className="reveal mt-10 grid gap-6 lg:grid-cols-[1.3fr_0.7fr]"><div className="border border-white/10 bg-black p-6 sm:p-10"><div className="mb-6 font-mono text-[10px] uppercase tracking-widest text-gray-500">{content.architecture.proofTitle}</div><div className="grid gap-8 md:grid-cols-2">{content.architecture.proofItems.map((item) => <div key={item.title}><div className={`mb-3 font-display text-4xl font-black ${item.accent ?? ""}`}>{item.title}</div><p className="font-mono text-xs leading-relaxed text-gray-500">{item.body}</p></div>)}</div></div><div className="bg-white p-6 text-black sm:p-10"><div className="mb-4 font-mono text-[9px] uppercase tracking-widest text-black/40">{content.architecture.economicsEyebrow}</div><div className="font-display text-3xl font-black">{content.architecture.economicsTitle}</div><div className="mt-4 overflow-x-auto bg-black p-4 font-mono text-[9px] leading-relaxed text-white">{content.architecture.economicsLines.map((line, index) => <span key={`${line.label}-${index}`}><span className={line.accent}>{line.label}</span> {line.expression}{index < content.architecture.economicsLines.length - 1 ? <><br /></> : null}</span>)}</div></div></div></div></section>
+    <section id="arch" className="scroll-mt-32 px-4 py-20 sm:scroll-mt-36 sm:px-6 sm:py-24 lg:py-32"><div className="mx-auto max-w-[1400px]"><div className="reveal mb-16 flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between"><h2 className="font-display text-4xl font-black tracking-tighter sm:text-5xl lg:text-7xl">{content.architecture.title} <span className="text-outline">{content.architecture.titleAccent}</span></h2><p className="max-w-sm font-mono text-[10px] uppercase tracking-widest text-gray-500 lg:text-right">{content.architecture.summary}</p></div><div className="grid gap-6 lg:grid-cols-3" id="logic">{content.architecture.cards.map((card, index) => <div key={card.title} className="reveal border border-white/10 bg-white/[0.02] p-6 sm:p-8" style={{ transitionDelay: `${index * 120}ms` }}><div className={`mb-4 font-mono text-[10px] uppercase tracking-widest ${card.accent}`}>{card.title}</div><h3 className="mb-4 font-display text-3xl font-black tracking-tighter">{card.heading}</h3><p className="text-sm leading-relaxed text-gray-500">{card.body}</p></div>)}</div><div className="reveal mt-10 grid gap-6 lg:grid-cols-[1.3fr_0.7fr]"><div className="border border-white/10 bg-black p-6 sm:p-10"><div className="mb-6 font-mono text-[10px] uppercase tracking-widest text-gray-500">{content.architecture.proofTitle}</div><div className="grid gap-8 md:grid-cols-2">{content.architecture.proofItems.map((item) => <div key={item.title}><div className={`mb-3 font-display text-4xl font-black ${item.accent ?? ""}`}>{item.title}</div><p className="font-mono text-xs leading-relaxed text-gray-500">{item.body}</p></div>)}</div></div><div className="bg-white p-6 text-black sm:p-10"><div className="mb-4 font-mono text-[9px] uppercase tracking-widest text-black/40">{content.architecture.economicsEyebrow}</div><div className="font-display text-3xl font-black">{content.architecture.economicsTitle}</div><div className="mt-4 overflow-x-auto bg-black p-4 font-mono text-[9px] leading-relaxed text-white">{content.architecture.economicsLines.map((line, index) => <span key={`${line.label}-${index}`}><span className={line.accent}>{line.label}</span> {line.expression}{index < content.architecture.economicsLines.length - 1 ? <br /> : null}</span>)}</div></div></div></div></section>
   );
 }
 
-export function RoadmapSection({ content }: { content: SiteDictionary }) {
+export function RoadmapSection({ content }: Readonly<{ content: SiteDictionary }>) {
   return (
     <section id="roadmap" className="scroll-mt-32 px-4 py-20 sm:scroll-mt-36 sm:px-6 sm:py-24 lg:py-32"><div className="mx-auto max-w-[1400px]"><div className="reveal mb-16"><div className="mb-4 font-mono text-[10px] uppercase tracking-[0.3em] text-gray-600">{content.roadmap.eyebrow}</div><h2 className="font-display text-4xl font-black tracking-tighter sm:text-5xl lg:text-7xl">{content.roadmap.titleTop} <span className="text-outline">{content.roadmap.titleAccent}</span><br />{content.roadmap.titleBottom}</h2></div><div className="grid gap-px bg-white/5 lg:grid-cols-4">{content.roadmap.phases.map((phase, index) => <div key={phase.title} className={`reveal bg-[#050505] p-6 sm:p-8 ${phase.active ? "border-l-2 border-brand-blue" : "border-l border-white/5"}`} style={{ transitionDelay: `${index * 120}ms` }}><div className="mb-6 flex items-center gap-2"><div className={`h-2 w-2 rounded-full ${phase.active ? "bg-brand-blue shadow-[0_0_6px_#00F0FF]" : "bg-white/10"}`} /><span className={`font-mono text-[9px] uppercase tracking-widest ${phase.active ? "text-brand-blue" : "text-gray-600"}`}>{phase.label}</span></div><div className="mb-2 font-mono text-[9px] text-gray-700">{phase.date}</div><h3 className="mb-4 font-display text-2xl font-black">{phase.title}<br /><span className={phase.accentClass}>{phase.accent}</span></h3><ul className="space-y-2 font-mono text-[10px] text-gray-600">{phase.items.map((item) => <li key={item} className="flex gap-2"><span>{phase.active ? "✓" : "○"}</span><span>{item}</span></li>)}</ul></div>)}</div></div></section>
   );
 }
 
-export function WhitepaperSection({ content }: { content: SiteDictionary }) {
+export function WhitepaperSection({ content }: Readonly<{ content: SiteDictionary }>) {
   return (
     <section id="whitepaper" className="scroll-mt-32 px-4 py-20 sm:scroll-mt-36 sm:px-6 sm:py-24 lg:py-32"><div className="mx-auto max-w-[1400px]"><div className="reveal shimmer-border relative overflow-hidden p-6 sm:p-10 lg:p-24"><div className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-brand-blue/5 blur-3xl" /><div className="pointer-events-none absolute -bottom-20 -left-20 h-64 w-64 rounded-full bg-brand-red/5 blur-3xl" /><div className="relative z-10 flex flex-col gap-10 lg:flex-row lg:items-center lg:justify-between lg:gap-12"><div className="max-w-xl"><div className="mb-4 font-mono text-[10px] uppercase tracking-widest text-brand-blue">{content.whitepaper.eyebrow}</div><h2 className="mb-6 font-display text-4xl font-black tracking-tighter sm:text-5xl lg:text-6xl">{content.whitepaper.title}</h2><p className="text-sm leading-relaxed text-gray-500">{content.whitepaper.body}</p></div><div className="flex w-full flex-col gap-4 lg:w-auto lg:min-w-[240px]"><a href="https://github.com/rodrigooler/raxion/blob/main/WHITEPAPER.md" target="_blank" rel="noreferrer" className="bg-white px-10 py-5 text-center font-display text-base font-black tracking-wide text-black transition-all duration-300 hover:bg-brand-blue">{content.whitepaper.ctas.primary}</a><a href="https://github.com/rodrigooler/raxion" target="_blank" rel="noreferrer" className="border border-white/20 px-10 py-5 text-center font-display text-base font-black tracking-wide transition-all duration-300 hover:border-brand-blue/60 hover:bg-brand-blue/5">{content.whitepaper.ctas.secondary}</a></div></div></div></div></section>
   );

@@ -7,12 +7,12 @@ export function PostIndexPage({
   content,
   type,
   posts,
-}: {
+}: Readonly<{
   locale: Locale;
   content: SiteDictionary;
   type: "announcement" | "blog";
   posts: Post[];
-}) {
+}>) {
   const basePath = localeBasePath(locale);
   const title = type === "announcement" ? content.post.visitAnnouncements : content.post.visitBlog;
   const eyebrow = type === "announcement" ? content.announcementLabel : content.post.blogLabel;
