@@ -111,7 +111,7 @@ Current phase: Phase 1 (Q2 2026) — Devnet implementation and validation.
 Next milestone: Testnet preparation (Q3/Q4 2026).
 
 Key files:
-- Whitepaper: docs/whitepaper/RAXION_Whitepaper_v1.0_EN.md
+- Whitepaper: docs/whitepaper/RAXION_Whitepaper_v0.4_EN.md
 - Core formulas: Chapter 3 of whitepaper
 - Architecture: AGENTS.md
 

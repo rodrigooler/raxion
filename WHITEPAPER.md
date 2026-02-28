@@ -171,7 +171,7 @@ Zero-Knowledge Proofs for Machine Learning (zk-ML) were impractical until 2023�
 
 Three recent developments changed this equation:
 
-**Next-generation ZK frameworks**: Jolt [11] and RISC Zero v1.0 [12] drastically reduced proof generation overhead for generic computation, including ML inference. What once took hours now takes minutes. What took minutes is converging to seconds with ongoing software optimizations.
+**Next-generation ZK frameworks**: Jolt [11] and RISC Zero v0.4 [12] drastically reduced proof generation overhead for generic computation, including ML inference. What once took hours now takes minutes. What took minutes is converging to seconds with ongoing software optimizations.
 
 **Dedicated ZK hardware**: The first generation of ASICs and FPGAs optimized for ZK proof generation is beginning to reach market. Companies like Ingonyama and others are developing hardware that can accelerate proof generation by 10–100x relative to current CPU/GPU implementations.
 
@@ -776,7 +776,7 @@ fn respond(query: Query, memory: &AgentMemory) -> Response {
 }
 ```
 
-**RaxLang Roadmap**: Rust-only on Devnet → RaxLang v0.1 on Testnet → RaxLang v1.0 on Mainnet.
+**RaxLang Roadmap**: Rust-only on Devnet → RaxLang v0.1 on Testnet → RaxLang v0.4 on Mainnet.
 
 ### 2.6.3 zk-ML Integration: Jolt and RISC Zero
 
@@ -1268,14 +1268,14 @@ royalty_A = gas_total(inference_B) × cross_agent_usage_fraction × 0.10
 
 **Deliverables:**
 - [x] Whitepaper v0.1, v0.2, v0.3
-- [ ] **Whitepaper v1.0** (this document)
+- [ ] **Whitepaper v0.4** (this document)
 - [ ] Agave fork technical specification (Neural SVM Runtime v0.1)
 - [ ] Local PoC: 2 architectures processing queries without ZK proof
 - [ ] Initial RISC Zero integration for simple model proof-of-execution
 
 **Success Criteria:**
 ```
-✓ Whitepaper v1.0 published
+✓ Whitepaper v0.4 published
 ✓ PoC demonstrates semantic convergence between 2 architectures in >70% of queries
 ✓ Execution proof generated for simple model
 ✓ At least 3 external developers contributing to repository
@@ -1382,7 +1382,7 @@ $RAX gains real economic value — activating true protocol incentives. This is 
 
 ```
 2026 Q1  ──── Phase 0: Genesis
-               Whitepaper v1.0, local PoC, technical specification
+               Whitepaper v0.4, local PoC, technical specification
 
 2026 Q2  ──── Phase 1 start: Devnet
                Neural SVM Runtime v0.1, PoIQ v0.1, 10 agents
@@ -1400,7 +1400,7 @@ $RAX gains real economic value — activating true protocol incentives. This is 
                $RAX listed on exchanges, on-chain governance active
 
 2027 Q4  ──── Mainnet v1 stabilization
-               RaxLang v1.0, 50+ Smart Agents with RS > 0.80
+               RaxLang v0.4, 50+ Smart Agents with RS > 0.80
 
 2028     ──── Phase 4 start: Mainnet v2
                Sub-second latency, Agent Coordination Networks
@@ -1481,7 +1481,7 @@ For researchers who want to contest the PoIQ formalization: the technical Yellow
 
 [11] Arun, S. et al. "Jolt: SNARKs for Virtual Machines via Lookups." a16z crypto research (2024). jolt.a16zcrypto.com
 
-[12] RISC Zero. "RISC Zero v1.0 — Boundless: A Universal ZK Coprocessor." (2024). risczero.com/news/boundless
+[12] RISC Zero. "RISC Zero v0.4 — Boundless: A Universal ZK Coprocessor." (2024). risczero.com/news/boundless
 
 [13] EZKL. "Machine Learning Proofs — Documentation." (2025). ezkl.xyz/docs
 
@@ -1531,7 +1531,7 @@ For researchers who want to contest the PoIQ formalization: the technical Yellow
 
 ---
 
-*RAXION Whitepaper v1.0 — February 2026*
+*RAXION Whitepaper v0.4 — February 2026*
 *Document License: CC BY 4.0*
 *Code License: BUSL 1.1 → MIT on 02/20/2030*
 

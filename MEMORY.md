@@ -239,7 +239,7 @@ If challenged, finality is resolved only by challenge verification pass.
 
 ## Parameter History
 
-> Track all parameter changes with dates and rationale. Initialized at whitepaper v1.0 values.
+> Track all parameter changes with dates and rationale. Initialized at whitepaper v0.4 values.
 
 ### Active Parameters (as of 2026-02-22)
 
