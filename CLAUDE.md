@@ -26,6 +26,13 @@ Active work:
 
 **Do not** ask Claude to implement Testnet/Mainnet-only scope (GPU proving, full 6 challenge categories, TGE tokenomics) yet.
 
+## Commit Convention
+
+- Use Conventional Commits for all commits.
+- Default prefixes: `feat:`, `fix:`, `refactor:`, `chore:`, `docs:`, `test:`.
+- Use scoped messages when helpful, for example `feat(site): ...`.
+- Do not use vague commit subjects like `update`, `misc`, or `wip`.
+
 ---
 
 ## Decision Log (Why We Made Key Choices)
@@ -111,7 +118,7 @@ Current phase: Phase 1 (Q2 2026) — Devnet implementation and validation.
 Next milestone: Testnet preparation (Q3/Q4 2026).
 
 Key files:
-- Whitepaper: docs/whitepaper/RAXION_Whitepaper_v1.0_EN.md
+- Whitepaper: docs/whitepaper/RAXION_Whitepaper_v0.4_EN.md
 - Core formulas: Chapter 3 of whitepaper
 - Architecture: AGENTS.md
 

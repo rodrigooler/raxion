@@ -17,6 +17,12 @@ GitHub: https://github.com/raxion-network/raxion
 License: BUSL 1.1 → MIT 2030-02-20
 ```
 
+### Working Convention (2026-02-28)
+
+- Commit messages now follow Conventional Commits.
+- Approved prefixes: `feat:`, `fix:`, `refactor:`, `chore:`, `docs:`, `test:`.
+- Prefer scoped messages when useful, e.g. `feat(site): ...`.
+
 ### Q2 Execution Notes (2026-02-25)
 
 - Dockerized deploy path added for Anchor/Solana:
@@ -239,7 +245,7 @@ If challenged, finality is resolved only by challenge verification pass.
 
 ## Parameter History
 
-> Track all parameter changes with dates and rationale. Initialized at whitepaper v1.0 values.
+> Track all parameter changes with dates and rationale. Initialized at whitepaper v0.4 values.
 
 ### Active Parameters (as of 2026-02-22)
 

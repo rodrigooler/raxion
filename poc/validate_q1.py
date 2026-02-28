@@ -152,7 +152,7 @@ def check_unit_tests() -> bool:
 CRITERIA = [
     {
         "id": "Q1-C1",
-        "description": "Whitepaper v1.0 published",
+        "description": "Whitepaper v0.4 published",
         "check": lambda: True,
         "manual": True,
     },
