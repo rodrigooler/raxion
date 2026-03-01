@@ -72,6 +72,9 @@ check "Q2-R1" "raxion-cognitive tests pass" \
 check "Q2-R2" "raxion-poiq tests pass" \
   "cargo test --manifest-path programs/raxion-poiq/Cargo.toml"
 
+check "Q2-R2b" "network load generator compiles" \
+  "cargo build --manifest-path programs/raxion-poiq/Cargo.toml --example network_loadgen"
+
 check "Q2-R3" "risc0-types tests pass" \
   "cargo test -p risc0-types --manifest-path proofs/Cargo.toml"
 
