@@ -44,3 +44,9 @@ export function findAnnouncement(slug: string): Post | undefined {
 export function findBlogPost(slug: string): Post | undefined {
   return blogPosts.find((post) => post.slug === slug);
 }
+
+export function getStaticPostParams(type: Post["type"]): Array<{ slug: string }> {
+  return (type === "announcement" ? announcementPosts : blogPosts).map((post) => ({
+    slug: post.slug,
+  }));
+}

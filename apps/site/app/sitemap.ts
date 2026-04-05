@@ -2,6 +2,8 @@ import type { MetadataRoute } from "next";
 import { allPosts } from "./content/posts";
 import { localeBasePath, locales } from "../lib/site";
 
+export const dynamic = "force-static";
+
 const siteUrl = "https://raxion.network";
 
 function buildUrl(path: string): string {

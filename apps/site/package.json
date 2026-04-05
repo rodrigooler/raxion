@@ -8,32 +8,24 @@
     "npm": ">=10"
   },
   "scripts": {
-    "dev": "vite dev --port 3002",
-    "build": "vite build",
-    "deploy": "vinext deploy",
-    "start": "vinext start --port 3002",
-    "dev:vinext": "vite dev --port 3002",
-    "build:vinext": "vite build",
-    "deploy:dry-run": "vinext deploy --dry-run",
-    "start:vinext": "vite preview --port 3002"
+    "dev": "next dev --port 3002",
+    "build": "next build",
+    "deploy": "npm run build && wrangler pages deploy out --project-name raxion",
+    "start": "npx serve out -p 3002"
   },
   "dependencies": {
+    "next": "16.2.2",
     "react": "19.2.4",
     "react-dom": "19.2.4"
   },
   "devDependencies": {
-    "@cloudflare/vite-plugin": "1.31.0",
     "@tailwindcss/postcss": "4.2.2",
     "@types/node": "25.5.2",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
-    "@vitejs/plugin-rsc": "0.5.21",
     "postcss": "8.5.8",
-    "react-server-dom-webpack": "19.2.4",
     "tailwindcss": "4.2.2",
     "typescript": "6.0.2",
-    "vinext": "0.0.39",
-    "vite": "8.0.3",
     "wrangler": "4.80.0"
   },
   "type": "module"

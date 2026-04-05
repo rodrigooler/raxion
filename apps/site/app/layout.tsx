@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
-import { headers } from "next/headers";
 import type { ReactNode } from "react";
 import "./globals.css";
 import { SiteEffects } from "./site-effects";
-import { normalizeLocale } from "../lib/site";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://raxion.network"),
@@ -77,12 +75,9 @@ export const metadata: Metadata = {
   category: "technology",
 };
 
-export default async function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
-  const requestHeaders = await headers();
-  const htmlLang = normalizeLocale(requestHeaders.get("x-site-locale") ?? undefined);
-
+export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
-    <html lang={htmlLang} suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <body className="overflow-x-hidden bg-black text-white selection:bg-brand-blue selection:text-black">
         <div className="grain" aria-hidden="true" />
         <div id="cursor-ring" className="cursor-ring hidden md:block" aria-hidden="true" />
