@@ -5,14 +5,14 @@
       "slug": "vinext-site-rebuild",
       "date": "2026-02-20",
       "title": {
-        "en": "Site rebuild completed on vinext",
+        "en": "Q3 is 89% complete",
         "pt-BR": "Reconstrucao do site concluida em vinext",
         "zh": "站点已完成 vinext 重构",
         "ja": "サイトの vinext 再構築が完了",
         "es": "Reconstruccion del sitio completada en vinext"
       },
       "summary": {
-        "en": "The public site now runs as a component-based vinext app with a local Tailwind pipeline and a shared visual system.",
+        "en": "Q3 is 89% complete, and Devnet will be ready soon.",
         "pt-BR": "O site publico agora roda como uma app vinext componentizada, com pipeline local de Tailwind e sistema visual compartilhado.",
         "zh": "公共站点现在以组件化 vinext 应用运行，并使用本地 Tailwind 构建管线与共享视觉系统。",
         "ja": "公開サイトは、ローカル Tailwind パイプラインと共有ビジュアルシステムを備えたコンポーネント指向の vinext アプリとして動作します。",
@@ -29,8 +29,8 @@
           },
           "paragraphs": {
             "en": [
-              "The landing page no longer ships as raw HTML. It now renders through reusable React sections inside the vinext app router.",
-              "Tailwind now builds locally through PostCSS, which removes the runtime CDN dependency and keeps styles versioned with the project."
+              "Q3 is 89% complete, and the Devnet launch is close. The remaining work is focused on finishing the rollout and tightening the last integration details.",
+              "We are keeping the delivery path lean so the public site stays fast, static, and easy to update while the network moves toward Devnet readiness."
             ],
             "pt-BR": [
               "A landing page nao e mais entregue como HTML cru. Agora ela renderiza por secoes React reutilizaveis dentro do app router do vinext.",
