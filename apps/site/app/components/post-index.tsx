@@ -1,5 +1,5 @@
 import type { Post } from "../content/posts";
-import { formatLocalizedDate, localeBasePath, type Locale } from "../../lib/site";
+import { formatLocalizedDate, localeBasePath, routeHref, type Locale } from "../../lib/site";
 import type { SiteDictionary } from "../content/site-types";
 
 export function PostIndexPage({
@@ -21,7 +21,7 @@ export function PostIndexPage({
     <main className="relative z-10 px-4 pb-20 pt-40 sm:px-6 sm:pb-24 sm:pt-44">
       <div className="mx-auto max-w-[1200px]">
         <div className="reveal mb-12">
-          <a href={basePath || "/"} className="mb-6 inline-flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.25em] text-gray-500 transition-colors duration-300 hover:text-brand-blue">
+          <a href={routeHref(basePath, "/")} className="mb-6 inline-flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.25em] text-gray-500 transition-colors duration-300 hover:text-brand-blue">
             <span>{"<-"}</span>
             {content.post.backToHome}
           </a>
@@ -32,7 +32,7 @@ export function PostIndexPage({
           {posts.map((post) => (
             <a
               key={post.slug}
-              href={`${basePath}/${type === "announcement" ? "announcements" : "blog"}/${post.slug}`}
+              href={routeHref(basePath, `/${type === "announcement" ? "announcements" : "blog"}/${post.slug}`)}
               className="reveal block border border-white/10 bg-white/[0.02] p-6 transition-colors duration-300 hover:border-brand-blue/40 hover:bg-white/[0.04] sm:p-8"
             >
               <div className="mb-3 font-mono text-[10px] uppercase tracking-widest text-gray-600">{formatLocalizedDate(post.date, locale)}</div>

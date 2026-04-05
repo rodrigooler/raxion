@@ -1,5 +1,5 @@
 import type { Locale } from "../../lib/site";
-import { localeBasePath } from "../../lib/site";
+import { localeBasePath, routeHref } from "../../lib/site";
 import { getHomeUseCases } from "../content/site-dictionary";
 import type { SiteDictionary } from "../content/site-types";
 
@@ -40,7 +40,7 @@ export function HeroSection({ locale, content }: Readonly<{ locale: Locale; cont
         <div className="reveal relative z-10 lg:col-span-7">
           <div className="mb-8 inline-block border border-brand-red px-3 py-1 font-mono text-[10px] uppercase tracking-widest text-brand-red">{content.heroBadge}</div>
           <h1 className="font-display text-[52px] font-black leading-[0.84] tracking-tighter sm:text-[92px] lg:text-[118px]"><span className="block">{content.heroLines[0]}</span><span className="text-outline block">{content.heroLines[1]}</span><span className="block">{content.heroLines[2]}</span><span className="block text-brand-blue">{content.heroLines[3]}</span></h1>
-          <div className="mt-10 flex flex-col gap-8 md:flex-row md:items-start"><div className="max-w-sm font-mono text-sm leading-relaxed text-gray-500"><p className="mb-4">{content.heroNotes[0]}</p><p>{content.heroNotes[1]}</p></div><div className="flex w-full flex-col gap-3 md:w-auto md:min-w-[260px]"><a href={`${basePath}#problem`} className="bg-white px-8 py-4 text-center font-display text-base font-black tracking-wide text-black transition-all duration-300 hover:bg-brand-blue">{content.heroCtas.primary}</a><a href="https://github.com/rodrigooler/raxion" target="_blank" rel="noreferrer" className="border border-white/20 px-8 py-4 text-center font-display text-base font-black tracking-wide transition-all duration-300 hover:border-white/40 hover:bg-white/10">{content.heroCtas.secondary}</a></div></div>
+          <div className="mt-10 flex flex-col gap-8 md:flex-row md:items-start"><div className="max-w-sm font-mono text-sm leading-relaxed text-gray-500"><p className="mb-4">{content.heroNotes[0]}</p><p>{content.heroNotes[1]}</p></div><div className="flex w-full flex-col gap-3 md:w-auto md:min-w-[260px]"><a href={routeHref(basePath, "#problem")} className="bg-white px-8 py-4 text-center font-display text-base font-black tracking-wide text-black transition-all duration-300 hover:bg-brand-blue">{content.heroCtas.primary}</a><a href="https://github.com/rodrigooler/raxion" target="_blank" rel="noreferrer" className="border border-white/20 px-8 py-4 text-center font-display text-base font-black tracking-wide transition-all duration-300 hover:border-white/40 hover:bg-white/10">{content.heroCtas.secondary}</a></div></div>
           <div className="mt-14 grid grid-cols-1 gap-6 border-t border-white/10 pt-8 sm:grid-cols-3 sm:gap-4">{content.metrics.map((metric) => <HeroMetric key={metric.label} metric={metric} />)}</div>
         </div>
         <div className="reveal relative flex justify-center py-12 lg:col-span-5 lg:py-0"><Orb content={content} /></div>

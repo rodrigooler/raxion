@@ -1,15 +1,15 @@
 import { latestAnnouncement } from "../content/posts";
-import { localeBasePath, type Locale } from "../../lib/site";
+import { localeBasePath, routeHref, type Locale } from "../../lib/site";
 import type { SiteDictionary } from "../content/site-types";
 import { LocaleSwitcher } from "./locale-switcher";
 
 export function SiteHeader({ locale, content }: Readonly<{ locale: Locale; content: SiteDictionary }>) {
   const basePath = localeBasePath(locale);
-  const homeHref = basePath || "/";
+  const homeHref = routeHref(basePath, "/");
   return (
     <header className="fixed inset-x-0 top-0 z-50">
       <a
-        href={`${basePath}/announcements/${latestAnnouncement.slug}`}
+        href={routeHref(basePath, `/announcements/${latestAnnouncement.slug}`)}
         className="block w-full border-b border-brand-blue/30 bg-black/95 transition-colors duration-300 hover:bg-brand-blue/10"
       >
         <div className="mx-auto flex max-w-[1800px] items-center justify-center gap-2 px-4 py-3 text-center font-mono text-[9px] uppercase tracking-[0.18em] text-brand-blue sm:gap-3 sm:text-[11px] sm:tracking-[0.22em]">
@@ -27,13 +27,13 @@ export function SiteHeader({ locale, content }: Readonly<{ locale: Locale; conte
           </nav>
           <div className="flex items-center gap-2 sm:gap-3">
             <a
-              href={`${basePath}/blog`}
+              href={routeHref(basePath, "/blog")}
               className="hidden border border-white/10 px-3 py-2 font-mono text-[10px] uppercase tracking-[0.16em] text-gray-300 transition-colors duration-300 hover:border-white/30 hover:text-white md:inline-flex"
             >
               {content.post.blogLabel}
             </a>
             <a
-              href={`${basePath}/announcements`}
+              href={routeHref(basePath, "/announcements")}
               className="hidden border border-white/10 px-3 py-2 font-mono text-[10px] uppercase tracking-[0.16em] text-gray-300 transition-colors duration-300 hover:border-white/30 hover:text-white md:inline-flex"
             >
               {content.post.announcementsLabel}
@@ -57,13 +57,13 @@ export function SiteHeader({ locale, content }: Readonly<{ locale: Locale; conte
                 </div>
                 <div className="mt-3 grid gap-2 border-t border-white/8 pt-3">
                   <a
-                    href={`${basePath}/blog`}
+                    href={routeHref(basePath, "/blog")}
                     className="border border-white/8 px-3 py-3 font-mono text-[10px] uppercase tracking-[0.16em] text-gray-300 transition-colors duration-300 hover:border-white/25 hover:text-white"
                   >
                     {content.post.blogLabel}
                   </a>
                   <a
-                    href={`${basePath}/announcements`}
+                    href={routeHref(basePath, "/announcements")}
                     className="border border-white/8 px-3 py-3 font-mono text-[10px] uppercase tracking-[0.16em] text-gray-300 transition-colors duration-300 hover:border-white/25 hover:text-white"
                   >
                     {content.post.announcementsLabel}
@@ -86,7 +86,7 @@ export function SiteFooter({ locale, content }: Readonly<{ locale: Locale; conte
         <div className="font-display text-2xl font-black tracking-tight">RAXION</div>
         <div className="text-center font-mono text-[9px] uppercase tracking-[0.32em] text-gray-700 md:text-left md:tracking-[0.4em]">{content.footer}</div>
         <div className="flex gap-3">
-          <a href={`${basePath}/blog`} className="flex h-10 w-10 items-center justify-center border border-white/10 bg-white/5 font-mono text-[10px] transition-all duration-300 hover:border-brand-blue hover:text-brand-blue">BL</a>
+          <a href={routeHref(basePath, "/blog")} className="flex h-10 w-10 items-center justify-center border border-white/10 bg-white/5 font-mono text-[10px] transition-all duration-300 hover:border-brand-blue hover:text-brand-blue">BL</a>
           <a href="https://github.com/rodrigooler/raxion" target="_blank" rel="noreferrer" className="flex h-10 w-10 items-center justify-center border border-white/10 bg-white/5 font-mono text-[10px] transition-all duration-300 hover:border-brand-blue hover:text-brand-blue">GH</a>
           <a href="https://github.com/rodrigooler/raxion/blob/main/WHITEPAPER.md" target="_blank" rel="noreferrer" className="flex h-10 w-10 items-center justify-center border border-white/10 bg-white/5 font-mono text-[10px] transition-all duration-300 hover:border-brand-purple hover:text-brand-purple">WP</a>
         </div>

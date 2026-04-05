@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
-import { localeBasePath, locales, type Locale } from "../../lib/site";
+import { localeBasePath, locales, routeHref, type Locale } from "../../lib/site";
 import type { SiteDictionary } from "../content/site-types";
 
 const localeMeta: Record<Locale, { flag: string; shortLabel: string; code: string }> = {
@@ -47,7 +47,7 @@ function stripLocalePrefix(pathname: string): string {
 function buildLocalizedHref(pathname: string, locale: Locale): string {
   const basePath = localeBasePath(locale);
   const suffix = stripLocalePrefix(pathname);
-  return `${basePath}${suffix}` || "/";
+  return routeHref(basePath, suffix || "/");
 }
 
 export function LocaleSwitcher({ locale, content }: Readonly<{ locale: Locale; content: SiteDictionary }>) {

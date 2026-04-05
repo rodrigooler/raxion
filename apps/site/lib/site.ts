@@ -15,6 +15,24 @@ export function localeBasePath(locale: Locale): string {
   return locale === defaultLocale ? "" : `/${locale}`;
 }
 
+export function routeHref(basePath: string, path: string): string {
+  if (path.startsWith("http://") || path.startsWith("https://") || path.startsWith("mailto:")) {
+    return path;
+  }
+
+  if (path.startsWith("#")) {
+    return `${basePath || "/"}${basePath ? "/" : ""}${path}`;
+  }
+
+  if (path === "/" || path === "") {
+    return basePath ? `${basePath}/` : "/";
+  }
+
+  const normalizedBase = basePath || "";
+  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
+  return `${normalizedBase}${normalizedPath}/`;
+}
+
 export type LocalizedText = Record<Locale, string>;
 
 export function pickLocalized<T extends string | string[]>(value: Record<Locale, T>, locale: Locale): T {
