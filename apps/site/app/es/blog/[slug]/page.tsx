@@ -13,16 +13,22 @@ export function generateStaticParams() {
   return getStaticPostParams("blog");
 }
 
-export function generateMetadata({ params }: Readonly<{ params: { slug: string } }>): Metadata {
+export async function generateMetadata({ params }: Readonly<{ params: Promise<{ slug: string }> }>): Promise<Metadata> {
+  const { slug } = await params;
+  const canonical = routeHref("/es", `/blog/${slug}`);
   return {
     alternates: {
-      canonical: routeHref("/es", `/blog/${params.slug}`),
+      canonical,
+    },
+    openGraph: {
+      url: canonical,
     },
   };
 }
 
-export default function Page({ params }: Readonly<{ params: { slug: string } }>) {
-  const post = findBlogPost(params.slug);
+export default async function Page({ params }: Readonly<{ params: Promise<{ slug: string }> }>) {
+  const { slug } = await params;
+  const post = findBlogPost(slug);
   if (!post) notFound();
   const content = getSiteContent("es");
   return <><SiteHeader locale="es" content={content} /><PostPage locale="es" content={content} post={post} /><SiteFooter locale="es" content={content} /></>;

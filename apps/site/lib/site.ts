@@ -31,7 +31,7 @@ export function routeHref(basePath: string, path: string): string {
 
   const normalizedBase = basePath || "";
   const normalizedPath = path.startsWith("/") ? path : `/${path}`;
-  return `${normalizedBase}${normalizedPath}/`;
+  return `${normalizedBase}${normalizedPath.endsWith("/") ? normalizedPath : `${normalizedPath}/`}`;
 }
 
 export function absoluteUrl(path: string): string {
