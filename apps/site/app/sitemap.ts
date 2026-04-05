@@ -1,14 +1,8 @@
 import type { MetadataRoute } from "next";
 import { allPosts } from "./content/posts";
-import { localeBasePath, locales } from "../lib/site";
+import { absoluteUrl, localeBasePath, locales, routeHref } from "../lib/site";
 
 export const dynamic = "force-static";
-
-const siteUrl = "https://raxion.network";
-
-function buildUrl(path: string): string {
-  return new URL(path || "/", siteUrl).toString();
-}
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const routes: MetadataRoute.Sitemap = [];
@@ -17,15 +11,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     const basePath = localeBasePath(locale);
 
     routes.push(
-      { url: buildUrl(basePath || "/") },
-      { url: buildUrl(`${basePath}/blog`) },
-      { url: buildUrl(`${basePath}/announcements`) },
+      { url: absoluteUrl(routeHref(basePath, "/")) },
+      { url: absoluteUrl(routeHref(basePath, "/blog")) },
+      { url: absoluteUrl(routeHref(basePath, "/announcements")) },
     );
 
     for (const post of allPosts) {
-      const postPath = `${basePath}/${post.type === "announcement" ? "announcements" : "blog"}/${post.slug}`;
+      const postPath = routeHref(basePath, `/${post.type === "announcement" ? "announcements" : "blog"}/${post.slug}`);
       routes.push({
-        url: buildUrl(postPath),
+        url: absoluteUrl(postPath),
         lastModified: new Date(post.date),
       });
     }

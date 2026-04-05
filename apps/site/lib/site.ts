@@ -1,6 +1,7 @@
 export const locales = ["en", "pt-BR", "zh", "ja", "es"] as const;
 export type Locale = (typeof locales)[number];
 export const defaultLocale: Locale = "en";
+export const siteUrl = "https://raxion.network";
 
 export function isSupportedLocale(value: string): value is Locale {
   return locales.includes(value as Locale);
@@ -31,6 +32,10 @@ export function routeHref(basePath: string, path: string): string {
   const normalizedBase = basePath || "";
   const normalizedPath = path.startsWith("/") ? path : `/${path}`;
   return `${normalizedBase}${normalizedPath}/`;
+}
+
+export function absoluteUrl(path: string): string {
+  return new URL(routeHref("", path), siteUrl).toString();
 }
 
 export type LocalizedText = Record<Locale, string>;
