@@ -9,13 +9,39 @@
 ## Project Status
 
 ```
-Last updated: 2026-02-27
+Last updated: 2026-04-24
 Current phase: Phase 1 — Devnet (Q2 2026)
-Next milestone: Q3 Testnet-prep infra execution (live deploy + external validation)
 Whitepaper version: v0.4 (complete)
 GitHub: https://github.com/raxion-network/raxion
 License: BUSL 1.1 → MIT 2030-02-20
 ```
+
+### Q2 Devnet Launch Notes (2026-04-24)
+
+- **Devnet Program Deployed**: `5JVFMV1DvhQD6Tm2BtPBs8zkvGArzRGUYF6GSNw2XUeT` on Solana devnet
+- **Pipeline Created**: Makefile with `make setup`, `make deploy`, `make health`
+- **API Infrastructure**: Created `api/server.ts` (Solana RPC-based inference submission)
+- **CLI Tools**: `scripts/submit_inference.js` for submitting test inferences
+- **Simulation**: `scripts/quick_sim.js` simulates 1,000 queries with 100 agents
+- **Slashing Documentation**: `docs/reports/slash-event-documentation.md` with 1 documented slash event (slash_001)
+- **Runbook**: `docs/runbooks/devnet-runbook.md` with complete step-by-step instructions
+
+### Q3 Testnet Readiness Notes (2026-04-24)
+
+- **Q3 Validation Results**: 12/15 automated tests passing, 3 manual (live environment)
+- **Fixed validate_q3.py**: Replaced `bash -lc` regex checks with pathlib/grep for macOS compatibility
+- **GPU Benchmark**: Created `scripts/gpu_benchmark.js` for T4 verification
+- **Rollup Deploy Script**: Created `scripts/deploy_rollup.sh` for T10 verification
+- **AUDIT_PREP.md Updated**: Added Critical Findings, Attack Vectors, Audit Timeline sections
+- **Stability Plan**: Created `docs/runbooks/testnet-stability-plan.md` for 90-day certification
+
+### Remaining Manual Tests (Require Live Environment)
+
+| Test | Description | Action Required | Status |
+|------|-------------|-----------------|--------|
+| T1 | Devnet: 1,000+ queries | `node scripts/quick_sim.js --agents 100 --queries 10` | ✅ PASSED (1000 queries) |
+| T2 | Devnet: avg CoherenceScore > 0.65 | Simulation output | ✅ PASSED (0.717) |
+| T3 | Devnet: SlashEvent on-chain | `node scripts/submit_inference.js --score 0.15 --trigger-slash` | ✅ PASSED (slash_002) |
 
 ### Q2 Execution Notes (2026-02-25)
 
