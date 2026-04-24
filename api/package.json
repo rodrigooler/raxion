@@ -1,0 +1,21 @@
+{
+  "name": "raxion-api",
+  "version": "0.1.0",
+  "description": "RAXION Devnet API Server",
+  "type": "module",
+  "scripts": {
+    "start": "npx tsx api/server.ts",
+    "dev": "npx tsx watch api/server.ts",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "@solana/web3.js": "^1.91.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.7.0",
+    "@types/node": "^20.11.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
