@@ -82,5 +82,5 @@ jobs:
       - name: Explorer build
         run: |
           cd apps/explorer
-          npm ci --prefer-offline --no-audit --fund=false
+          npm install --prefer-offline --no-audit --fund=false
           npm run build
