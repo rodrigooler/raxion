@@ -78,9 +78,12 @@ jobs:
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: "22"
+          cache: "npm"
+          cache-dependency-path: apps/explorer/package-lock.json
 
       - name: Explorer build
         run: |
           cd apps/explorer
-          npm install --prefer-offline --no-audit --fund=false
+          rm -f package-lock.json  # Remove potentially stale lock file
+          npm install
           npm run build
