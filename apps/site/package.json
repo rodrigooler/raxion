@@ -1,0 +1,32 @@
+{
+  "name": "raxion-site",
+  "private": true,
+  "version": "0.1.0",
+  "packageManager": "npm@10.8.2",
+  "engines": {
+    "node": ">=22 <25",
+    "npm": ">=10"
+  },
+  "scripts": {
+    "dev": "next dev --port 3002",
+    "build": "next build",
+    "deploy": "npm run build && wrangler pages deploy out --project-name raxion",
+    "start": "npx serve out -p 3002"
+  },
+  "dependencies": {
+    "next": "16.2.2",
+    "react": "19.2.4",
+    "react-dom": "19.2.4"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "4.2.2",
+    "@types/node": "25.5.2",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "postcss": "8.5.8",
+    "tailwindcss": "4.2.2",
+    "typescript": "6.0.2",
+    "wrangler": "4.80.0"
+  },
+  "type": "module"
+}
