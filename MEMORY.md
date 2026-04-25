@@ -9,12 +9,48 @@
 ## Project Status
 
 ```
-Last updated: 2026-04-24
-Current phase: Phase 1 — Devnet (Q2 2026)
+Last updated: 2026-04-25
+Current phase: Q4 Testnet (Public Testnet Bootstrap)
 Whitepaper version: v0.4 (complete)
-GitHub: https://github.com/raxion-network/raxion
+GitHub: https://github.com/rodrigooler/raxion
 License: BUSL 1.1 → MIT 2030-02-20
+GitHub Milestones: https://github.com/rodrigooler/raxion/milestones
 ```
+
+### Q4 Testnet Roadmap (2026-04-25)
+
+**Status**: Active - Public Testnet Bootstrap Phase
+
+**Milestones Created**:
+- M1: Public Testnet Bootstrap (Due: May 14, 2026) - 8 issues
+- M2: External Agents Live (Due: May 31, 2026) - 3 issues
+- M3: Security Audit Submitted (Due: June 14, 2026) - 4 issues
+- M4: 30-Day Stability Checkpoint (Due: June 29, 2026) - 4 issues
+
+**Branch Protection**: `main` branch protected with:
+- ✅ Q2 Validate + Python Tests (strict)
+- ✅ 1 approval required + code owner review
+- ✅ Block force pushes
+- ✅ Block deletions
+
+### Q3 Testnet Readiness Notes (2026-04-24)
+
+- **CodeRabbit Review Completed**: 7 critical issues resolved
+  - ESM/CommonJS mix in api/server.ts → Converted to ESM
+  - Express methods on http.ServerResponse → Response wrapper
+  - CC formula not normalized → Normalized to [0,1]
+  - is_final returns Option vs bool → Fixed logic
+  - Merkle root without domain separation → Added DOMAIN_STATE_ROOT
+  - Makefile $(pwd) variable → Fixed to $(shell pwd)
+  - raxion-rollup ID collision → New ID: 7R2iZ8qL3mN5pQ9vT6wX1yA4sK8eHjFgDcB0kMmNnOo
+
+- **SonarCloud Cleanup**: All Critical/Major issues resolved
+  - Fixed duplicate imports across 10 locale files
+  - Fixed nested template literals in lib/site.ts
+  - Fixed GPU benchmark return values (sqrt/sin)
+  - Fixed cognitive complexity in devnet_stress_test.py
+
+- **CI Pipeline**: Q2 Validate + Python Tests passing
 
 ### Q2 Devnet Launch Notes (2026-04-24)
 

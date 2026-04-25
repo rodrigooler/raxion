@@ -122,14 +122,14 @@ This is the only valid definition. Do not treat any intermediate state as final.
 ## Development Phases and What Is In Scope
 
 | Phase | Status | In Scope |
+| **Phase** | **Status** | **In Scope** |
 |---|---|---|
 | **Phase 0 — Genesis** (Q1 2026) | ✅ Completed | Whitepaper, Python PoC, RISC Zero basic integration |
-| **Phase 1 — Devnet** (Q2–Q3 2026) | 🟡 Active | Agave integration, PoIQ v0.1, Agent SDK v0.1 |
-| **Phase 2 — Testnet** (Q4 2026) | 🔜 Planned | GPU proofs, all PoIQ layers, RaxLang v0.1 |
+| **Phase 1 — Devnet** (Q2 2026) | ✅ Completed | Agave integration, PoIQ v0.1, Agent SDK v0.1 |
+| **Phase 2 — Testnet** (Q4 2026) | 🟡 **Active** | GPU proofs, all PoIQ layers, RaxLang v0.1 |
 | **Phase 3 — Mainnet v1** (2027) | 🔜 Planned | ZK ASICs, full protocol, $RAX live |
 
-**Current phase is Phase 1 (Devnet).** Do not implement Testnet/Mainnet-only features in this stage.
-
+**Current phase is Phase 2 (Testnet - Q4).** M1 milestone active: Public Testnet Bootstrap.
 ---
 
 ## Commit Convention
