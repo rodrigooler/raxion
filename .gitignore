@@ -61,3 +61,6 @@ apps/explorer/out/
 apps/site/.next/
 apps/site/out/
 .serena/
+
+poc/benchmarks/*.json
+poc/benchmarks/*.csv
