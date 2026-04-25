@@ -1,9 +1,50 @@
 # RAXION
+# RAXION - Sovereign SVM Rollup for Verifiable AI Inference
 
-RAXION is a Sovereign SVM Rollup on Solana focused on one core goal: replace subjective human judgment in decentralized AI with cryptographic verification of inference quality.
+> **🚧 Q4 TESTNET PHASE - ACTIVE DEVELOPMENT 🚧**
+>
+> RAXION is currently in **Phase 4 (Q4 Testnet)** - the public testnet bootstrap phase. The protocol is actively being developed and tested. Breaking changes may occur. For the most up-to-date development status, see our [GitHub Issues](https://github.com/rodrigooler/raxion/issues) and [Milestones](https://github.com/rodrigooler/raxion/milestones).
+>
+> **Current Milestone**: [M1: Public Testnet Bootstrap](https://github.com/rodrigooler/raxion/milestone/1) - Due May 14, 2026
+>
+> **Mainnet Launch**: Target Q4 2026 (subject to 90-day testnet stability checkpoint)
+
+---
+
+## Development Status
+
+| Phase | Status | Timeline | Milestone |
+|-------|--------|----------|-----------|
+| Q1: Genesis | ✅ Complete | Q1 2026 | Whitepaper, Python PoC, RISC Zero basic integration |
+| Q2: Devnet | ✅ Complete | Q2-Q3 2026 | Agave integration, PoIQ v0.1, Agent SDK v0.1 |
+| Q3: Internal Testing | ✅ Complete | Q3 2026 | 12/15 tests passed, code review fixes |
+| **Q4: Public Testnet** | 🔴 **Active** | Q4 2026 | See [Milestones](https://github.com/rodrigooler/raxion/milestones) |
+
+---
+
+## ⚠️ Disclaimer
+
+**THIS PROJECT IS IN ACTIVE DEVELOPMENT.**
+
+- ⚠️ **No Mainnet**: RAXION has **NOT launched on mainnet**. All current deployments are on Solana **devnet or testnet**.
+- ⚠️ **Test Tokens Only**: The $RAX token on testnet has **no real value**. It is for testing purposes only.
+- ⚠️ **Breaking Changes**: The protocol specification may change. Smart contracts are not yet audited.
+- ⚠️ **No Financial Advice**: This is a research and development project. Do not make financial decisions based on this software.
+- ⚠️ **Audit Required**: Before mainnet launch, the codebase will undergo a comprehensive security audit by an external firm.
+- ⚠️ **Testnet Stability**: The 90-day testnet stability checkpoint must be passed before mainnet launch.
+
+**By using this software, you acknowledge that:**
+1. You are interacting with testnet/devnet, not mainnet
+2. The protocol may contain bugs or vulnerabilities
+3. Past performance (on testnet) does not guarantee future results
+4. Token economics and protocol parameters may change
+5. You are responsible for your own due diligence
+
+---
+
+## What Is RAXION
 
 Instead of "who voted for this output?", RAXION asks "can this output's quality be mathematically verified?".
-
 ## Why RAXION
 
 Most decentralized AI systems still rely on human validators and token-weighted opinion.
