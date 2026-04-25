@@ -84,5 +84,6 @@ jobs:
       - name: Explorer build
         run: |
           cd apps/explorer
-          npm ci --ignore-scripts
+          rm -f package-lock.json  # Remove potentially stale lock file
+          npm install
           npm run build
