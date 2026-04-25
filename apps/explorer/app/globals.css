@@ -21,7 +21,7 @@ body {
     radial-gradient(circle at 12% 18%, #1c4267 0%, transparent 45%),
     radial-gradient(circle at 84% 8%, #3d2f59 0%, transparent 38%),
     linear-gradient(180deg, #06101a 0%, #08141f 100%);
-  font-family: var(--font-display), sans-serif;
+  font-family: "Space Grotesk", "Inter", "Segoe UI", sans-serif;
 }
 
 a {
@@ -62,7 +62,7 @@ a:focus-visible {
 .small {
   font-size: 12px;
   color: var(--muted);
-  font-family: var(--font-mono), monospace;
+  font-family: "IBM Plex Mono", "JetBrains Mono", ui-monospace, monospace;
 }
 
 .score-track {
@@ -82,7 +82,7 @@ a:focus-visible {
 .table {
   width: 100%;
   border-collapse: collapse;
-  font-family: var(--font-mono), monospace;
+  font-family: "IBM Plex Mono", "JetBrains Mono", ui-monospace, monospace;
   font-size: 12px;
 }
 

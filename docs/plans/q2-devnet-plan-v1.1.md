@@ -7,7 +7,7 @@ Status: Draft for approval
 ## Goal
 Create an execution-safe Q2 plan aligned with `WHITEPAPER.md` v0.4 and `AGENTS.md` invariants, with deterministic gates and non-flaky validation.
 
-## Inconsistencies Found in v1.0
+## Inconsistencies Found in v0.4
 1. Stake/thread formula usage was mixed with lamport-like constants in examples.
 2. Challenge-failure slash computation in the sample Anchor code would truncate to zero due to float-to-u64 cast.
 3. `scheduler.rs` sample omitted dependencies (`reqwest`, `serde_json`) and used `unwrap()` in library paths.

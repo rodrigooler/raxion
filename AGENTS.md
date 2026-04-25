@@ -132,6 +132,15 @@ This is the only valid definition. Do not treat any intermediate state as final.
 
 ---
 
+## Commit Convention
+
+- Use Conventional Commits for every commit message.
+- Preferred prefixes: `feat:`, `fix:`, `refactor:`, `chore:`, `docs:`, `test:`.
+- Add scope when it increases clarity, for example: `feat(site): ...` or `fix(programs): ...`.
+- Keep the subject line imperative and specific. Avoid vague messages like `update stuff`, `changes`, or `wip`.
+
+---
+
 ## Coding Standards
 
 ### Rust (runtime, programs, SDK)

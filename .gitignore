@@ -33,6 +33,9 @@ poc/benchmarks/results/*
 node_modules/
 apps/explorer/.next/
 apps/explorer/out/
+apps/site/.next/
+apps/site/out/
+apps/site/.wrangler/
 **/package-lock.json
 !apps/explorer/package-lock.json
 

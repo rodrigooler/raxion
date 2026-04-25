@@ -4,27 +4,32 @@
   "version": "0.1.0",
   "packageManager": "npm@10.8.2",
   "engines": {
-    "node": ">=20 <21",
+    "node": ">=22 <25",
     "npm": ">=10"
   },
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "dev": "vite dev --port 3001",
+    "build": "vite build",
+    "start": "vinext start --port 3001",
+    "dev:vinext": "vite dev --port 3001",
+    "build:vinext": "vite build"
   },
   "dependencies": {
-    "@coral-xyz/anchor": "^0.30.1",
-    "@solana/web3.js": "^1.98.4",
-    "borsh": "^2.0.0",
-    "next": "15.1.7",
-    "react": "19.0.0",
-    "react-dom": "19.0.0"
+    "@coral-xyz/anchor": "0.32.1",
+    "@solana/web3.js": "1.98.4",
+    "borsh": "2.0.0",
+    "react": "19.2.4",
+    "react-dom": "19.2.4"
   },
   "devDependencies": {
-    "@types/node": "^22.10.2",
-    "@types/react": "^19.0.2",
-    "@types/react-dom": "^19.0.2",
-    "typescript": "^5.7.2"
-  }
+    "@types/node": "25.5.2",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "@vitejs/plugin-rsc": "0.5.21",
+    "react-server-dom-webpack": "19.2.4",
+    "typescript": "6.0.2",
+    "vinext": "0.0.39",
+    "vite": "8.0.3"
+  },
+  "type": "module"
 }
