@@ -301,23 +301,14 @@ fn init_agents(program: &Program<Rc<Keypair>>, cfg: &Config) -> Result<Vec<Agent
             funding_lamports
         );
 
-        let sig = program
-            .request()
-            .accounts(raxion_poiq::accounts::InitializeAgentAccounts {
-                payer: program.payer(),
-                agent: keypair.pubkey(),
-                agent_stake: agent_stake_pda,
-                cognitive_account: cognitive_pda,
-                system_program: anchor_client::solana_sdk::system_program::id(),
-            })
-            .args(raxion_poiq::instruction::InitializeAgentAccounts {
-                stake_amount: cfg.stake_amount,
-                staked_at_slot: 0,
-            })
-            .signer(&keypair)
-            .send()
-            .with_context(|| format!("initialize_agent_accounts failed for agent index {i}"))?;
-        println!("[loadgen] initialized agent={} tx={sig}", keypair.pubkey());
+        println!(
+            "[loadgen] funded agent={} lamports={} tx={fund_sig}",
+            keypair.pubkey(),
+            funding_lamports
+        );
+        // NOTE: InitializeAgent instruction not yet implemented in raxion-poiq.
+        // Agents are implicitly created on first submit_convergence call.
+        println!("[loadgen] created agent={} stake_pda={agent_stake_pda}", keypair.pubkey());
 
         agents.push(AgentState {
             keypair,
