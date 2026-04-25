@@ -1,0 +1,1303 @@
+{
+  "siteContent": {
+    "en": {
+      "nav": [
+        {
+          "href": "#problem",
+          "label": "Problem"
+        },
+        {
+          "href": "#arch",
+          "label": "Architecture"
+        },
+        {
+          "href": "#logic",
+          "label": "Logic"
+        },
+        {
+          "href": "#roadmap",
+          "label": "Roadmap"
+        },
+        {
+          "href": "#whitepaper",
+          "label": "Whitepaper"
+        }
+      ],
+      "menuLabel": "Menu",
+      "announcementLabel": "Announcement",
+      "readAnnouncement": "Read the announcement",
+      "latestAnnouncementEyebrow": "Latest announcement",
+      "heroBadge": "Q3 2026 - Testnet Active",
+      "heroLines": [
+        "THE",
+        "BLOCK",
+        "CHAIN",
+        "THAT THINKS."
+      ],
+      "heroOrb": {
+        "title": "Sovereign SVM",
+        "subtitle": "Rollup on Solana"
+      },
+      "heroCtas": {
+        "primary": "SEE THE PROBLEM",
+        "secondary": "GITHUB_REPO"
+      },
+      "heroNotes": [
+        "[01] AI inference quality - mathematically proven, not voted.",
+        "[02] No human validators. No cartels. No oracle problem."
+      ],
+      "marqueeItems": [
+        "Proof of Inference Quality",
+        "Cognitive Finality",
+        "Zero Human Judges",
+        "Neural SVM",
+        "zk-ML Verification",
+        "CoherenceScore"
+      ],
+      "metrics": [
+        {
+          "value": "<2",
+          "suffix": "s",
+          "label": "Cognitive Finality",
+          "sublabel": "Mainnet v1 target",
+          "accent": "text-brand-blue"
+        },
+        {
+          "value": "3",
+          "suffix": "arch",
+          "label": "Cross-Validation",
+          "sublabel": "Transformer + SSM + NeuroSym"
+        },
+        {
+          "value": "0",
+          "suffix": "votes",
+          "label": "Human Judges",
+          "sublabel": "Math replaces opinion",
+          "accent": "text-brand-red"
+        }
+      ],
+      "problem": {
+        "eyebrow": "The Root Problem",
+        "titleTop": "WHO JUDGES",
+        "titleAccent": "THE JUDGE?",
+        "beforeLabel": "Without RAXION",
+        "afterLabel": "With RAXION",
+        "intro": "Every decentralized AI network today solves the same problem the same wrong way: it pays humans to judge machine quality. RAXION removes the judge and replaces subjectivity with math.",
+        "structuralEyebrow": "The Structural Failure",
+        "structuralTitle": "The Oracle Problem.",
+        "structuralAccent": "Tokenized.",
+        "structuralBody": "Bittensor did not solve the Oracle Problem. It tokenized it. The oracle is still human judgment, now distorted by economic incentives.",
+        "structuralBody2": "RAXION eliminates the oracle entirely. The math votes.",
+        "chainLabel": "RAXION chain of trust",
+        "trustSteps": [
+          "3x parallel inference (Transformer + SSM + NeuroSym)",
+          "CoherenceScore = 0.4xCS_semantic + 0.6xCC",
+          "zk-ML proof generated -> committed to Solana L1",
+          "Cognitive Finality ✓"
+        ]
+      },
+      "architecture": {
+        "title": "NEURAL",
+        "titleAccent": "SHARDS.",
+        "summary": "A sovereign cognitive runtime built to verify reasoning quality without human consensus.",
+        "cards": [
+          {
+            "title": "01 // PARALLEL_COGNITION",
+            "heading": "Three architectures. One convergent signal.",
+            "body": "Transformer, State-Space, and Neuro-Symbolic agents execute in parallel because their failure modes differ. Agreement becomes evidence.",
+            "accent": "text-brand-blue"
+          },
+          {
+            "title": "02 // ZK_ML",
+            "heading": "Proof of execution plus proof of quality.",
+            "body": "RISC Zero proves execution. Jolt proves the quality path. Cognitive Finality only exists when both proof layers verify and coherence crosses threshold.",
+            "accent": "text-brand-red"
+          },
+          {
+            "title": "03 // NATIVE_MEMORY",
+            "heading": "Hot-state on-chain. Cold-state by hash.",
+            "body": "Agents keep fast, compressed, protocol-owned memory in SVM state and anchor larger context in external storage with integrity commitments.",
+            "accent": "text-brand-purple"
+          }
+        ],
+        "proofTitle": "Proof of Inference Quality",
+        "proofItems": [
+          {
+            "title": "0.4 x CS_semantic",
+            "body": "Semantic agreement across three pairwise comparisons."
+          },
+          {
+            "title": "0.6 x CC",
+            "body": "Causal coherence across premise consistency, conclusion alignment, and entailment.",
+            "accent": "text-brand-blue"
+          }
+        ],
+        "economicsEyebrow": "Economic Energy",
+        "economicsTitle": "Proof of Inference Quality",
+        "economicsLines": [
+          {
+            "label": "reward",
+            "expression": "= f(CoherenceScore, RS, stake)",
+            "accent": "text-brand-blue"
+          },
+          {
+            "label": "slash",
+            "expression": "= chronic_divergence x penalty",
+            "accent": "text-brand-red"
+          },
+          {
+            "label": "threads",
+            "expression": "= log2(stake/1000) x 8 + 1",
+            "accent": "text-brand-purple"
+          }
+        ]
+      },
+      "roadmap": {
+        "eyebrow": "Development Phases",
+        "titleTop": "FROM",
+        "titleAccent": "GENESIS",
+        "titleBottom": "TO MAINNET.",
+        "phases": [
+          {
+            "label": "Completed",
+            "date": "Q1 2026",
+            "title": "Phase 0",
+            "accent": "Genesis",
+            "accentClass": "text-gray-500",
+            "active": false,
+            "items": [
+              "Whitepaper complete",
+              "CoherenceScore in Rust + Python",
+              "RISC Zero proof-of-execution"
+            ]
+          },
+          {
+            "label": "Completed",
+            "date": "Q2 2026",
+            "title": "Phase 1",
+            "accent": "Devnet",
+            "accentClass": "text-gray-400",
+            "active": false,
+            "items": [
+              "Agave integration",
+              "PoIQ v0.1 on-chain",
+              "Rust Smart Agent SDK"
+            ]
+          },
+          {
+            "label": "Active Now",
+            "date": "Q3 2026",
+            "title": "Phase 2",
+            "accent": "Testnet",
+            "accentClass": "text-brand-blue",
+            "active": true,
+            "items": [
+              "GPU proof acceleration",
+              "Full challenge categories",
+              "RaxLang beta"
+            ]
+          },
+          {
+            "label": "Next",
+            "date": "2027",
+            "title": "Phase 3",
+            "accent": "Mainnet v1",
+            "accentClass": "text-gray-600",
+            "active": false,
+            "items": [
+              "ZK ASIC first-gen",
+              "PoIQ v1 formal audit",
+              "On-chain governance"
+            ]
+          }
+        ]
+      },
+      "whitepaper": {
+        "eyebrow": "RAXION Whitepaper v0.4 | February 2026",
+        "title": "The era of proofs begins.",
+        "body": "Full protocol architecture, zk-ML proof mechanics, PoIQ formulas, token mechanics, and the roadmap from genesis to mainnet.",
+        "ctas": {
+          "primary": "READ WHITEPAPER",
+          "secondary": "VIEW GITHUB"
+        }
+      },
+      "footer": "Built for the post-subjectivity era c 2026",
+      "post": {
+        "backToHome": "Back to site",
+        "authorLabel": "Author",
+        "publishedLabel": "Published",
+        "relatedLabel": "More from RAXION",
+        "blogLabel": "Blog",
+        "announcementsLabel": "Announcements",
+        "visitBlog": "Visit blog",
+        "visitAnnouncements": "Visit announcements"
+      },
+      "localeLabel": "Language",
+      "localeNames": {
+        "en": "English",
+        "pt-BR": "Portugues (Brasil)",
+        "zh": "中文",
+        "ja": "日本語",
+        "es": "Espanol"
+      }
+    },
+    "pt-BR": {
+      "nav": [
+        {
+          "href": "#problem",
+          "label": "Problema"
+        },
+        {
+          "href": "#arch",
+          "label": "Arquitetura"
+        },
+        {
+          "href": "#logic",
+          "label": "Logica"
+        },
+        {
+          "href": "#roadmap",
+          "label": "Roadmap"
+        },
+        {
+          "href": "#whitepaper",
+          "label": "Whitepaper"
+        }
+      ],
+      "menuLabel": "Menu",
+      "announcementLabel": "Anuncio",
+      "readAnnouncement": "Ler o anuncio",
+      "latestAnnouncementEyebrow": "Ultimo anuncio",
+      "heroBadge": "Q3 2026 - Testnet Ativa",
+      "heroLines": [
+        "A",
+        "BLOCK",
+        "CHAIN",
+        "QUE PENSA."
+      ],
+      "heroOrb": {
+        "title": "SVM soberana",
+        "subtitle": "Rollup na Solana"
+      },
+      "heroCtas": {
+        "primary": "VER O PROBLEMA",
+        "secondary": "GITHUB_REPO"
+      },
+      "heroNotes": [
+        "[01] Qualidade de inferencia de IA - provada matematicamente, nao votada.",
+        "[02] Sem validadores humanos. Sem carteis. Sem problema do oraculo."
+      ],
+      "marqueeItems": [
+        "Prova de Qualidade de Inferencia",
+        "Finalidade Cognitiva",
+        "Zero juizes humanos",
+        "SVM neural",
+        "Verificacao zk-ML",
+        "CoherenceScore"
+      ],
+      "metrics": [
+        {
+          "value": "<2",
+          "suffix": "s",
+          "label": "Finalidade Cognitiva",
+          "sublabel": "Meta da Mainnet v1",
+          "accent": "text-brand-blue"
+        },
+        {
+          "value": "3",
+          "suffix": "arq",
+          "label": "Validacao cruzada",
+          "sublabel": "Transformer + SSM + NeuroSym"
+        },
+        {
+          "value": "0",
+          "suffix": "votos",
+          "label": "Juizes humanos",
+          "sublabel": "A matematica substitui opiniao",
+          "accent": "text-brand-red"
+        }
+      ],
+      "problem": {
+        "eyebrow": "O Problema Raiz",
+        "titleTop": "QUEM JULGA",
+        "titleAccent": "O JUIZ?",
+        "beforeLabel": "Sem RAXION",
+        "afterLabel": "Com RAXION",
+        "intro": "Toda rede de IA descentralizada hoje resolve o mesmo problema do mesmo jeito errado: paga humanos para julgar a qualidade das maquinas. A RAXION remove o juiz e troca subjetividade por matematica.",
+        "structuralEyebrow": "A Falha Estrutural",
+        "structuralTitle": "O Problema do Oraculo.",
+        "structuralAccent": "Tokenizado.",
+        "structuralBody": "A Bittensor nao resolveu o Problema do Oraculo. Ela tokenizou esse problema. O oraculo continua sendo julgamento humano, agora distorcido por incentivos economicos.",
+        "structuralBody2": "A RAXION elimina o oraculo por completo. A matematica vota.",
+        "chainLabel": "Cadeia de confianca da RAXION",
+        "trustSteps": [
+          "3x inferencia paralela (Transformer + SSM + NeuroSym)",
+          "CoherenceScore = 0.4xCS_semantic + 0.6xCC",
+          "Prova zk-ML gerada -> commitada na Solana L1",
+          "Finalidade Cognitiva ✓"
+        ]
+      },
+      "architecture": {
+        "title": "FRAGMENTOS",
+        "titleAccent": "NEURAIS.",
+        "summary": "Um runtime cognitivo soberano construido para verificar qualidade de raciocinio sem consenso humano.",
+        "cards": [
+          {
+            "title": "01 // PARALLEL_COGNITION",
+            "heading": "Tres arquiteturas. Um sinal convergente.",
+            "body": "Agentes Transformer, State-Space e Neuro-Symbolic executam em paralelo porque seus modos de falha sao diferentes. Convergencia vira evidencia.",
+            "accent": "text-brand-blue"
+          },
+          {
+            "title": "02 // ZK_ML",
+            "heading": "Prova de execucao mais prova de qualidade.",
+            "body": "RISC Zero prova a execucao. Jolt prova o caminho de qualidade. A Finalidade Cognitiva so existe quando as duas camadas verificam e a coerencia cruza o threshold.",
+            "accent": "text-brand-red"
+          },
+          {
+            "title": "03 // NATIVE_MEMORY",
+            "heading": "Memoria quente on-chain. Memoria fria por hash.",
+            "body": "Agentes mantem memoria rapida, comprimida e do proprio protocolo no estado da SVM, enquanto contexto maior fica em armazenamento externo com compromissos de integridade.",
+            "accent": "text-brand-purple"
+          }
+        ],
+        "proofTitle": "Prova de Qualidade de Inferencia",
+        "proofItems": [
+          {
+            "title": "0.4 x CS_semantic",
+            "body": "Convergencia semantica em tres comparacoes pareadas."
+          },
+          {
+            "title": "0.6 x CC",
+            "body": "Coerencia causal entre consistencia de premissas, alinhamento de conclusao e entailment.",
+            "accent": "text-brand-blue"
+          }
+        ],
+        "economicsEyebrow": "Energia Economica",
+        "economicsTitle": "Prova de Qualidade de Inferencia",
+        "economicsLines": [
+          {
+            "label": "recompensa",
+            "expression": "= f(CoherenceScore, RS, stake)",
+            "accent": "text-brand-blue"
+          },
+          {
+            "label": "penalidade",
+            "expression": "= chronic_divergence x penalty",
+            "accent": "text-brand-red"
+          },
+          {
+            "label": "linhas",
+            "expression": "= log2(stake/1000) x 8 + 1",
+            "accent": "text-brand-purple"
+          }
+        ]
+      },
+      "roadmap": {
+        "eyebrow": "Fases de Desenvolvimento",
+        "titleTop": "DE",
+        "titleAccent": "GENESE",
+        "titleBottom": "ATE A MAINNET.",
+        "phases": [
+          {
+            "label": "Concluido",
+            "date": "Q1 2026",
+            "title": "Fase 0",
+            "accent": "Genese",
+            "accentClass": "text-gray-500",
+            "active": false,
+            "items": [
+              "Whitepaper completo",
+              "CoherenceScore em Rust + Python",
+              "Prova de execucao do RISC Zero"
+            ]
+          },
+          {
+            "label": "Concluido",
+            "date": "Q2 2026",
+            "title": "Fase 1",
+            "accent": "Devnet",
+            "accentClass": "text-gray-400",
+            "active": false,
+            "items": [
+              "Integracao com Agave",
+              "PoIQ v0.1 em cadeia",
+              "SDK Rust para Smart Agents"
+            ]
+          },
+          {
+            "label": "Ativo agora",
+            "date": "Q3 2026",
+            "title": "Fase 2",
+            "accent": "Testnet",
+            "accentClass": "text-brand-blue",
+            "active": true,
+            "items": [
+              "Aceleracao de provas por GPU",
+              "Categorias completas de desafio",
+              "RaxLang beta"
+            ]
+          },
+          {
+            "label": "Proximo",
+            "date": "2027",
+            "title": "Fase 3",
+            "accent": "Mainnet v1",
+            "accentClass": "text-gray-600",
+            "active": false,
+            "items": [
+              "ZK ASIC de primeira geracao",
+              "Auditoria formal do PoIQ v1",
+              "Governanca on-chain"
+            ]
+          }
+        ]
+      },
+      "whitepaper": {
+        "eyebrow": "RAXION Whitepaper v0.4 | Fevereiro 2026",
+        "title": "A era das provas comeca.",
+        "body": "Arquitetura completa do protocolo, mecanica zk-ML, formulas PoIQ, tokenomics e roadmap da genese ao mainnet.",
+        "ctas": {
+          "primary": "LER WHITEPAPER",
+          "secondary": "VER GITHUB"
+        }
+      },
+      "footer": "Construido para a era pos-subjetividade c 2026",
+      "post": {
+        "backToHome": "Back to site",
+        "authorLabel": "Author",
+        "publishedLabel": "Published",
+        "relatedLabel": "More from RAXION",
+        "blogLabel": "Blog",
+        "announcementsLabel": "Anuncios",
+        "visitBlog": "Visitar blog",
+        "visitAnnouncements": "Ver anuncios"
+      },
+      "localeLabel": "Idioma",
+      "localeNames": {
+        "en": "English",
+        "pt-BR": "Portugues (Brasil)",
+        "zh": "中文",
+        "ja": "日本語",
+        "es": "Espanol"
+      }
+    },
+    "zh": {
+      "nav": [
+        {
+          "href": "#problem",
+          "label": "问题"
+        },
+        {
+          "href": "#arch",
+          "label": "架构"
+        },
+        {
+          "href": "#logic",
+          "label": "逻辑"
+        },
+        {
+          "href": "#roadmap",
+          "label": "路线图"
+        },
+        {
+          "href": "#whitepaper",
+          "label": "白皮书"
+        }
+      ],
+      "menuLabel": "菜单",
+      "announcementLabel": "公告",
+      "readAnnouncement": "阅读公告",
+      "latestAnnouncementEyebrow": "最新公告",
+      "heroBadge": "2026 Q3 - 测试网进行中",
+      "heroLines": [
+        "会",
+        "思",
+        "考",
+        "的链。"
+      ],
+      "heroOrb": {
+        "title": "主权 SVM",
+        "subtitle": "基于 Solana 的 Rollup"
+      },
+      "heroCtas": {
+        "primary": "查看问题",
+        "secondary": "GITHUB_REPO"
+      },
+      "heroNotes": [
+        "[01] AI 推理质量由数学证明，而不是投票。",
+        "[02] 没有人类验证者，没有卡特尔，没有预言机问题。"
+      ],
+      "marqueeItems": [
+        "推理质量证明",
+        "认知终局性",
+        "零人类裁判",
+        "神经 SVM",
+        "zk-ML 验证",
+        "CoherenceScore"
+      ],
+      "metrics": [
+        {
+          "value": "<2",
+          "suffix": "秒",
+          "label": "认知终局性",
+          "sublabel": "Mainnet v1 目标",
+          "accent": "text-brand-blue"
+        },
+        {
+          "value": "3",
+          "suffix": "架构",
+          "label": "交叉验证",
+          "sublabel": "Transformer + SSM + NeuroSym"
+        },
+        {
+          "value": "0",
+          "suffix": "投票",
+          "label": "人类裁判",
+          "sublabel": "数学替代意见",
+          "accent": "text-brand-red"
+        }
+      ],
+      "problem": {
+        "eyebrow": "根本问题",
+        "titleTop": "谁来判断",
+        "titleAccent": "判断者？",
+        "beforeLabel": "没有 RAXION",
+        "afterLabel": "有了 RAXION",
+        "intro": "今天的去中心化 AI 网络都在用同一种错误方式解决同一个问题：付费让人类判断机器质量。RAXION 去掉裁判，用数学取代主观。",
+        "structuralEyebrow": "结构性失效",
+        "structuralTitle": "预言机问题。",
+        "structuralAccent": "被代币化了。",
+        "structuralBody": "Bittensor 没有解决预言机问题，它只是把问题代币化了。预言机仍然是人类判断，只是现在被经济激励扭曲。",
+        "structuralBody2": "RAXION 彻底移除预言机。数学投票。",
+        "chainLabel": "RAXION 信任链",
+        "trustSteps": [
+          "3 路并行推理 (Transformer + SSM + NeuroSym)",
+          "CoherenceScore = 0.4xCS_semantic + 0.6xCC",
+          "zk-ML 证明生成 -> 提交到 Solana L1",
+          "认知终局性 ✓"
+        ]
+      },
+      "architecture": {
+        "title": "神经",
+        "titleAccent": "分片。",
+        "summary": "一个主权认知运行时，用于在没有人类共识的情况下验证推理质量。",
+        "cards": [
+          {
+            "title": "01 // PARALLEL_COGNITION",
+            "heading": "三种架构。一个收敛信号。",
+            "body": "Transformer、State-Space 与 Neuro-Symbolic 代理并行执行，因为它们的失效模式不同。收敛因此成为证据。",
+            "accent": "text-brand-blue"
+          },
+          {
+            "title": "02 // ZK_ML",
+            "heading": "执行证明加质量证明。",
+            "body": "RISC Zero 证明执行过程，Jolt 证明质量路径。只有当两层证明都通过且一致性跨过阈值时，认知终局性才成立。",
+            "accent": "text-brand-red"
+          },
+          {
+            "title": "03 // NATIVE_MEMORY",
+            "heading": "热状态在链上，冷状态以哈希引用。",
+            "body": "代理把快速、压缩且由协议控制的记忆保存在 SVM 状态中，并把更大的上下文放到外部存储，通过完整性承诺绑定。",
+            "accent": "text-brand-purple"
+          }
+        ],
+        "proofTitle": "推理质量证明",
+        "proofItems": [
+          {
+            "title": "0.4 x CS_semantic",
+            "body": "三组两两比较得到的语义收敛。"
+          },
+          {
+            "title": "0.6 x CC",
+            "body": "前提一致性、结论对齐与蕴含关系构成的因果一致性。",
+            "accent": "text-brand-blue"
+          }
+        ],
+        "economicsEyebrow": "经济能量",
+        "economicsTitle": "推理质量证明",
+        "economicsLines": [
+          {
+            "label": "奖励",
+            "expression": "= f(CoherenceScore, RS, stake)",
+            "accent": "text-brand-blue"
+          },
+          {
+            "label": "罚没",
+            "expression": "= chronic_divergence x penalty",
+            "accent": "text-brand-red"
+          },
+          {
+            "label": "线程",
+            "expression": "= log2(stake/1000) x 8 + 1",
+            "accent": "text-brand-purple"
+          }
+        ]
+      },
+      "roadmap": {
+        "eyebrow": "开发阶段",
+        "titleTop": "从",
+        "titleAccent": "创世",
+        "titleBottom": "到主网。",
+        "phases": [
+          {
+            "label": "已完成",
+            "date": "Q1 2026",
+            "title": "阶段 0",
+            "accent": "创世",
+            "accentClass": "text-gray-500",
+            "active": false,
+            "items": [
+              "白皮书已完成",
+              "Rust + Python CoherenceScore",
+              "RISC Zero 执行证明"
+            ]
+          },
+          {
+            "label": "已完成",
+            "date": "Q2 2026",
+            "title": "阶段 1",
+            "accent": "开发网",
+            "accentClass": "text-gray-400",
+            "active": false,
+            "items": [
+              "Agave 集成",
+              "PoIQ v0.1 上链",
+              "Rust 智能代理 SDK"
+            ]
+          },
+          {
+            "label": "当前进行中",
+            "date": "Q3 2026",
+            "title": "阶段 2",
+            "accent": "测试网",
+            "accentClass": "text-brand-blue",
+            "active": true,
+            "items": [
+              "GPU 证明加速",
+              "完整挑战类型",
+              "RaxLang 测试版"
+            ]
+          },
+          {
+            "label": "下一步",
+            "date": "2027",
+            "title": "阶段 3",
+            "accent": "主网 v1",
+            "accentClass": "text-gray-600",
+            "active": false,
+            "items": [
+              "第一代 ZK ASIC",
+              "PoIQ v1 正式审计",
+              "链上治理"
+            ]
+          }
+        ]
+      },
+      "whitepaper": {
+        "eyebrow": "RAXION 白皮书 v0.4 | 2026 年 2 月",
+        "title": "证明时代开始了。",
+        "body": "完整协议架构、zk-ML 机制、PoIQ 公式、代币机制以及从创世到主网的路线图。",
+        "ctas": {
+          "primary": "阅读白皮书",
+          "secondary": "查看 GITHUB"
+        }
+      },
+      "footer": "为后主观时代而建 c 2026",
+      "post": {
+        "backToHome": "Back to site",
+        "authorLabel": "Author",
+        "publishedLabel": "Published",
+        "relatedLabel": "More from RAXION",
+        "blogLabel": "博客",
+        "announcementsLabel": "公告",
+        "visitBlog": "访问博客",
+        "visitAnnouncements": "查看公告"
+      },
+      "localeLabel": "语言",
+      "localeNames": {
+        "en": "English",
+        "pt-BR": "Portugues (Brasil)",
+        "zh": "中文",
+        "ja": "日本語",
+        "es": "Espanol"
+      }
+    },
+    "ja": {
+      "nav": [
+        {
+          "href": "#problem",
+          "label": "問題"
+        },
+        {
+          "href": "#arch",
+          "label": "アーキテクチャ"
+        },
+        {
+          "href": "#logic",
+          "label": "ロジック"
+        },
+        {
+          "href": "#roadmap",
+          "label": "ロードマップ"
+        },
+        {
+          "href": "#whitepaper",
+          "label": "ホワイトペーパー"
+        }
+      ],
+      "menuLabel": "メニュー",
+      "announcementLabel": "お知らせ",
+      "readAnnouncement": "お知らせを読む",
+      "latestAnnouncementEyebrow": "最新のお知らせ",
+      "heroBadge": "2026年Q3 - テストネット進行中",
+      "heroLines": [
+        "考",
+        "え",
+        "る",
+        "チェーン。"
+      ],
+      "heroOrb": {
+        "title": "主権 SVM",
+        "subtitle": "Solana 上の Rollup"
+      },
+      "heroCtas": {
+        "primary": "課題を見る",
+        "secondary": "GITHUB_REPO"
+      },
+      "heroNotes": [
+        "[01] AI 推論品質は投票ではなく数理で証明される。",
+        "[02] 人間のバリデータなし。カルテルなし。オラクル問題なし。"
+      ],
+      "marqueeItems": [
+        "推論品質証明",
+        "認知ファイナリティ",
+        "人間の裁定ゼロ",
+        "ニューラル SVM",
+        "zk-ML 検証",
+        "CoherenceScore"
+      ],
+      "metrics": [
+        {
+          "value": "<2",
+          "suffix": "秒",
+          "label": "認知ファイナリティ",
+          "sublabel": "メインネット v1 目標",
+          "accent": "text-brand-blue"
+        },
+        {
+          "value": "3",
+          "suffix": "系統",
+          "label": "交差検証",
+          "sublabel": "Transformer + SSM + NeuroSym"
+        },
+        {
+          "value": "0",
+          "suffix": "票",
+          "label": "人間の裁定",
+          "sublabel": "数学が意見を置き換える",
+          "accent": "text-brand-red"
+        }
+      ],
+      "problem": {
+        "eyebrow": "根本問題",
+        "titleTop": "誰が",
+        "titleAccent": "審判を裁くのか？",
+        "beforeLabel": "RAXION なし",
+        "afterLabel": "RAXION あり",
+        "intro": "現在の分散型 AI ネットワークは同じ問題を同じ誤った方法で解いています。人間に機械の品質を判定させているのです。RAXION は裁定者を取り除き、主観を数学に置き換えます。",
+        "structuralEyebrow": "構造的失敗",
+        "structuralTitle": "オラクル問題。",
+        "structuralAccent": "トークン化された。",
+        "structuralBody": "Bittensor はオラクル問題を解決していません。単にトークン化しただけです。オラクルは依然として人間の判断であり、経済的インセンティブで歪められています。",
+        "structuralBody2": "RAXION はオラクルを完全に排除します。数学が投票します。",
+        "chainLabel": "RAXION の信頼チェーン",
+        "trustSteps": [
+          "3 系統の並列推論 (Transformer + SSM + NeuroSym)",
+          "CoherenceScore = 0.4xCS_semantic + 0.6xCC",
+          "zk-ML 証明を生成 -> Solana L1 にコミット",
+          "認知ファイナリティ ✓"
+        ]
+      },
+      "architecture": {
+        "title": "ニューラル",
+        "titleAccent": "シャード。",
+        "summary": "人間の合意なしで推論品質を検証するための主権的な認知ランタイム。",
+        "cards": [
+          {
+            "title": "01 // PARALLEL_COGNITION",
+            "heading": "三つのアーキテクチャ。ひとつの収束信号。",
+            "body": "Transformer、State-Space、Neuro-Symbolic の各エージェントは失敗モードが異なるため並列実行されます。収束はそのまま証拠になります。",
+            "accent": "text-brand-blue"
+          },
+          {
+            "title": "02 // ZK_ML",
+            "heading": "実行証明と品質証明。",
+            "body": "RISC Zero は実行を証明し、Jolt は品質経路を証明します。両方の証明レイヤーが通り、一貫性が閾値を超えたときだけ認知ファイナリティが成立します。",
+            "accent": "text-brand-red"
+          },
+          {
+            "title": "03 // NATIVE_MEMORY",
+            "heading": "ホットステートはオンチェーン、コールドステートはハッシュ参照。",
+            "body": "エージェントは高速で圧縮されたプロトコル所有メモリを SVM 状態に保持し、より大きな文脈は外部ストレージに置いて整合性コミットで結びます。",
+            "accent": "text-brand-purple"
+          }
+        ],
+        "proofTitle": "推論品質証明",
+        "proofItems": [
+          {
+            "title": "0.4 x CS_semantic",
+            "body": "三つのペア比較から得る意味的収束。"
+          },
+          {
+            "title": "0.6 x CC",
+            "body": "前提整合性、結論整列、含意関係から成る因果的一貫性。",
+            "accent": "text-brand-blue"
+          }
+        ],
+        "economicsEyebrow": "経済エネルギー",
+        "economicsTitle": "推論品質証明",
+        "economicsLines": [
+          {
+            "label": "報酬",
+            "expression": "= f(CoherenceScore, RS, stake)",
+            "accent": "text-brand-blue"
+          },
+          {
+            "label": "スラッシュ",
+            "expression": "= chronic_divergence x penalty",
+            "accent": "text-brand-red"
+          },
+          {
+            "label": "スレッド",
+            "expression": "= log2(stake/1000) x 8 + 1",
+            "accent": "text-brand-purple"
+          }
+        ]
+      },
+      "roadmap": {
+        "eyebrow": "開発フェーズ",
+        "titleTop": "GENESIS",
+        "titleAccent": "から",
+        "titleBottom": "MAINNET へ。",
+        "phases": [
+          {
+            "label": "完了",
+            "date": "Q1 2026",
+            "title": "フェーズ 0",
+            "accent": "ジェネシス",
+            "accentClass": "text-gray-500",
+            "active": false,
+            "items": [
+              "ホワイトペーパー公開",
+              "Rust + Python の CoherenceScore",
+              "RISC Zero 実行証明"
+            ]
+          },
+          {
+            "label": "完了",
+            "date": "Q2 2026",
+            "title": "フェーズ 1",
+            "accent": "開発ネット",
+            "accentClass": "text-gray-400",
+            "active": false,
+            "items": [
+              "Agave 統合",
+              "PoIQ v0.1 をオンチェーン化",
+              "Rust Smart Agent SDK"
+            ]
+          },
+          {
+            "label": "進行中",
+            "date": "Q3 2026",
+            "title": "フェーズ 2",
+            "accent": "テストネット",
+            "accentClass": "text-brand-blue",
+            "active": true,
+            "items": [
+              "GPU による証明高速化",
+              "完全なチャレンジ分類",
+              "RaxLang ベータ"
+            ]
+          },
+          {
+            "label": "次",
+            "date": "2027",
+            "title": "フェーズ 3",
+            "accent": "メインネット v1",
+            "accentClass": "text-gray-600",
+            "active": false,
+            "items": [
+              "第一世代 ZK ASIC",
+              "PoIQ v1 正式監査",
+              "オンチェーンガバナンス"
+            ]
+          }
+        ]
+      },
+      "whitepaper": {
+        "eyebrow": "RAXION Whitepaper v0.4 | 2026年2月",
+        "title": "証明の時代が始まる。",
+        "body": "完全なプロトコル構造、zk-ML、PoIQ 数式、トークン設計、ジェネシスからメインネットまでのロードマップ。",
+        "ctas": {
+          "primary": "ホワイトペーパーを読む",
+          "secondary": "GITHUB を見る"
+        }
+      },
+      "footer": "ポスト主観時代のために構築 c 2026",
+      "post": {
+        "backToHome": "Back to site",
+        "authorLabel": "Author",
+        "publishedLabel": "Published",
+        "relatedLabel": "More from RAXION",
+        "blogLabel": "ブログ",
+        "announcementsLabel": "お知らせ",
+        "visitBlog": "ブログへ",
+        "visitAnnouncements": "お知らせ一覧"
+      },
+      "localeLabel": "言語",
+      "localeNames": {
+        "en": "English",
+        "pt-BR": "Portugues (Brasil)",
+        "zh": "中文",
+        "ja": "日本語",
+        "es": "Espanol"
+      }
+    },
+    "es": {
+      "nav": [
+        {
+          "href": "#problem",
+          "label": "Problema"
+        },
+        {
+          "href": "#arch",
+          "label": "Arquitectura"
+        },
+        {
+          "href": "#logic",
+          "label": "Logica"
+        },
+        {
+          "href": "#roadmap",
+          "label": "Roadmap"
+        },
+        {
+          "href": "#whitepaper",
+          "label": "Whitepaper"
+        }
+      ],
+      "menuLabel": "Menu",
+      "announcementLabel": "Anuncio",
+      "readAnnouncement": "Leer el anuncio",
+      "latestAnnouncementEyebrow": "Ultimo anuncio",
+      "heroBadge": "Q3 2026 - Testnet activa",
+      "heroLines": [
+        "LA",
+        "BLOCK",
+        "CHAIN",
+        "QUE PIENSA."
+      ],
+      "heroOrb": {
+        "title": "SVM soberana",
+        "subtitle": "Rollup sobre Solana"
+      },
+      "heroCtas": {
+        "primary": "VER EL PROBLEMA",
+        "secondary": "GITHUB_REPO"
+      },
+      "heroNotes": [
+        "[01] Calidad de inferencia de IA - probada matematicamente, no votada.",
+        "[02] Sin validadores humanos. Sin carteles. Sin problema del oraculo."
+      ],
+      "marqueeItems": [
+        "Prueba de Calidad de Inferencia",
+        "Finalidad cognitiva",
+        "Cero jueces humanos",
+        "SVM neural",
+        "Verificacion zk-ML",
+        "CoherenceScore"
+      ],
+      "metrics": [
+        {
+          "value": "<2",
+          "suffix": "s",
+          "label": "Finalidad cognitiva",
+          "sublabel": "Objetivo de Mainnet v1",
+          "accent": "text-brand-blue"
+        },
+        {
+          "value": "3",
+          "suffix": "arq",
+          "label": "Validacion cruzada",
+          "sublabel": "Transformer + SSM + NeuroSym"
+        },
+        {
+          "value": "0",
+          "suffix": "votos",
+          "label": "Jueces humanos",
+          "sublabel": "La matematica reemplaza opinion",
+          "accent": "text-brand-red"
+        }
+      ],
+      "problem": {
+        "eyebrow": "El problema raiz",
+        "titleTop": "QUIEN JUZGA",
+        "titleAccent": "AL JUEZ?",
+        "beforeLabel": "Sin RAXION",
+        "afterLabel": "Con RAXION",
+        "intro": "Toda red de IA descentralizada hoy resuelve el mismo problema de la misma forma equivocada: paga a humanos para juzgar la calidad de la maquina. RAXION elimina al juez y reemplaza subjetividad por matematica.",
+        "structuralEyebrow": "La falla estructural",
+        "structuralTitle": "El problema del oraculo.",
+        "structuralAccent": "Tokenizado.",
+        "structuralBody": "Bittensor no resolvio el problema del oraculo. Lo tokenizo. El oraculo sigue siendo juicio humano, ahora distorsionado por incentivos economicos.",
+        "structuralBody2": "RAXION elimina por completo al oraculo. La matematica vota.",
+        "chainLabel": "Cadena de confianza de RAXION",
+        "trustSteps": [
+          "3 inferencias en paralelo (Transformer + SSM + NeuroSym)",
+          "CoherenceScore = 0.4xCS_semantic + 0.6xCC",
+          "Prueba zk-ML generada -> commit en Solana L1",
+          "Finalidad cognitiva ✓"
+        ]
+      },
+      "architecture": {
+        "title": "FRAGMENTOS",
+        "titleAccent": "NEURALES.",
+        "summary": "Un runtime cognitivo soberano construido para verificar calidad de razonamiento sin consenso humano.",
+        "cards": [
+          {
+            "title": "01 // PARALLEL_COGNITION",
+            "heading": "Tres arquitecturas. Una senal convergente.",
+            "body": "Agentes Transformer, State-Space y Neuro-Symbolic ejecutan en paralelo porque sus modos de falla son distintos. La convergencia se vuelve evidencia.",
+            "accent": "text-brand-blue"
+          },
+          {
+            "title": "02 // ZK_ML",
+            "heading": "Prueba de ejecucion mas prueba de calidad.",
+            "body": "RISC Zero prueba la ejecucion. Jolt prueba la ruta de calidad. La Finalidad Cognitiva solo existe cuando ambas capas verifican y la coherencia supera el umbral.",
+            "accent": "text-brand-red"
+          },
+          {
+            "title": "03 // NATIVE_MEMORY",
+            "heading": "Memoria caliente on-chain. Memoria fria por hash.",
+            "body": "Los agentes guardan memoria rapida, comprimida y propiedad del protocolo dentro del estado de la SVM, mientras el contexto grande vive en almacenamiento externo con compromisos de integridad.",
+            "accent": "text-brand-purple"
+          }
+        ],
+        "proofTitle": "Prueba de Calidad de Inferencia",
+        "proofItems": [
+          {
+            "title": "0.4 x CS_semantic",
+            "body": "Convergencia semantica a traves de tres comparaciones por pares."
+          },
+          {
+            "title": "0.6 x CC",
+            "body": "Coherencia causal entre consistencia de premisas, alineacion de conclusion y entailment.",
+            "accent": "text-brand-blue"
+          }
+        ],
+        "economicsEyebrow": "Energia economica",
+        "economicsTitle": "Prueba de Calidad de Inferencia",
+        "economicsLines": [
+          {
+            "label": "recompensa",
+            "expression": "= f(CoherenceScore, RS, stake)",
+            "accent": "text-brand-blue"
+          },
+          {
+            "label": "penalizacion",
+            "expression": "= chronic_divergence x penalty",
+            "accent": "text-brand-red"
+          },
+          {
+            "label": "hilos",
+            "expression": "= log2(stake/1000) x 8 + 1",
+            "accent": "text-brand-purple"
+          }
+        ]
+      },
+      "roadmap": {
+        "eyebrow": "Fases de desarrollo",
+        "titleTop": "DE",
+        "titleAccent": "GENESIS",
+        "titleBottom": "A MAINNET.",
+        "phases": [
+          {
+            "label": "Completado",
+            "date": "Q1 2026",
+            "title": "Fase 0",
+            "accent": "Genesis",
+            "accentClass": "text-gray-500",
+            "active": false,
+            "items": [
+              "Whitepaper completo",
+              "CoherenceScore en Rust + Python",
+              "Prueba de ejecucion de RISC Zero"
+            ]
+          },
+          {
+            "label": "Completado",
+            "date": "Q2 2026",
+            "title": "Fase 1",
+            "accent": "Devnet",
+            "accentClass": "text-gray-400",
+            "active": false,
+            "items": [
+              "Integracion con Agave",
+              "PoIQ v0.1 en cadena",
+              "SDK de Smart Agents en Rust"
+            ]
+          },
+          {
+            "label": "Activo ahora",
+            "date": "Q3 2026",
+            "title": "Fase 2",
+            "accent": "Testnet",
+            "accentClass": "text-brand-blue",
+            "active": true,
+            "items": [
+              "Aceleracion de pruebas por GPU",
+              "Categorias completas de desafio",
+              "RaxLang beta"
+            ]
+          },
+          {
+            "label": "Siguiente",
+            "date": "2027",
+            "title": "Fase 3",
+            "accent": "Mainnet v1",
+            "accentClass": "text-gray-600",
+            "active": false,
+            "items": [
+              "Primera generacion de ZK ASIC",
+              "Auditoria formal de PoIQ v1",
+              "Gobernanza on-chain"
+            ]
+          }
+        ]
+      },
+      "whitepaper": {
+        "eyebrow": "RAXION Whitepaper v0.4 | Febrero 2026",
+        "title": "Empieza la era de las pruebas.",
+        "body": "Arquitectura completa del protocolo, mecanica zk-ML, formulas PoIQ, tokenomics y roadmap desde genesis hasta mainnet.",
+        "ctas": {
+          "primary": "LEER WHITEPAPER",
+          "secondary": "VER GITHUB"
+        }
+      },
+      "footer": "Construido para la era post-subjetividad c 2026",
+      "post": {
+        "backToHome": "Back to site",
+        "authorLabel": "Author",
+        "publishedLabel": "Published",
+        "relatedLabel": "More from RAXION",
+        "blogLabel": "Blog",
+        "announcementsLabel": "Anuncios",
+        "visitBlog": "Visitar blog",
+        "visitAnnouncements": "Ver anuncios"
+      },
+      "localeLabel": "Idioma",
+      "localeNames": {
+        "en": "English",
+        "pt-BR": "Portugues (Brasil)",
+        "zh": "中文",
+        "ja": "日本語",
+        "es": "Espanol"
+      }
+    }
+  },
+  "homeUseCases": {
+    "en": [
+      [
+        "Use Case 01 - Smart Contract Security",
+        "You deploy a $10M DeFi protocol. You pay an auditor with a direct incentive to approve your launch. You ship. You get hacked.",
+        "Three heterogeneous agents independently inspect the code. If they converge on the same exploit path, that result is mathematically proven on-chain."
+      ],
+      [
+        "Use Case 02 - Medical Research",
+        "Five LLMs return five different answers about drug interaction risk. There is no objective confidence layer, so teams fall back to slow human review.",
+        "RAXION computes a CoherenceScore across complementary architectures. High confidence is derived, not claimed, and can be verified by any node."
+      ],
+      [
+        "Use Case 03 - Decentralized AI Markets",
+        "Validator incentives drift toward social consensus and cartel behavior. Rewards go to whoever pleases the judges, not whoever is right.",
+        "Rewards bind to proof-backed inference quality. Challenges are deterministic. Slashing is automatic. Subjective scoring is removed."
+      ]
+    ],
+    "pt-BR": [
+      [
+        "Caso 01 - Seguranca de Smart Contracts",
+        "Voce lanca um protocolo DeFi de US$10M. Paga um auditor incentivado a aprovar seu launch. Voce publica. Voce e hackeado.",
+        "Tres agentes heterogeneos inspecionam o codigo de forma independente. Se convergirem no mesmo vetor de exploracao, o resultado e provado on-chain."
+      ],
+      [
+        "Caso 02 - Pesquisa Medica",
+        "Cinco LLMs retornam cinco respostas diferentes sobre risco de interacao medicamentosa. Sem camada objetiva de confianca, a equipe volta para revisao humana lenta.",
+        "A RAXION calcula um CoherenceScore entre arquiteturas complementares. Alta confianca e derivada, nao declarada, e qualquer no pode verificar."
+      ],
+      [
+        "Caso 03 - Mercados de IA Descentralizada",
+        "Os incentivos de validadores derivam para consenso social e cartelizacao. As recompensas vao para quem agrada os juizes, nao para quem esta certo.",
+        "As recompensas se ligam a qualidade de inferencia provada. Os desafios sao deterministicos. O slashing e automatico. A pontuacao subjetiva desaparece."
+      ]
+    ],
+    "zh": [
+      [
+        "场景 01 - 智能合约安全",
+        "你部署一个 1000 万美元的 DeFi 协议，并支付一个有动力批准上线的审计方。你上线，然后被黑。",
+        "三个异构代理独立检查代码。若它们在同一攻击路径上收敛，结果会被数学证明并提交链上。"
+      ],
+      [
+        "场景 02 - 医学研究",
+        "五个 LLM 对药物相互作用给出五个不同答案。没有客观置信层，团队只能回到缓慢的人类审查。",
+        "RAXION 在互补架构之间计算 CoherenceScore。高置信度是推导出来的，不是宣称出来的，任何节点都能验证。"
+      ],
+      [
+        "场景 03 - 去中心化 AI 市场",
+        "验证者激励会滑向社会共识与卡特尔行为。奖励流向取悦裁判的人，而不是正确的人。",
+        "奖励绑定到有证明支持的推理质量。挑战是确定性的。惩罚自动执行。主观评分被移除。"
+      ]
+    ],
+    "ja": [
+      [
+        "ユースケース 01 - スマートコントラクト監査",
+        "1,000 万ドル規模の DeFi を公開し、ローンチ承認に利害を持つ監査人へ支払う。公開し、ハックされる。",
+        "3 つの異種エージェントが独立にコードを検査し、同じ攻撃経路に収束すれば、その結果はオンチェーンで数理的に証明される。"
+      ],
+      [
+        "ユースケース 02 - 医療研究",
+        "5 つの LLM が薬物相互作用について 5 つの異なる回答を返す。客観的な信頼レイヤーがなく、遅い人手レビューに戻るしかない。",
+        "RAXION は補完的なアーキテクチャ間で CoherenceScore を算出する。高信頼は主張ではなく導出され、どのノードでも検証できる。"
+      ],
+      [
+        "ユースケース 03 - 分散型 AI マーケット",
+        "バリデータのインセンティブは社会的合意やカルテル行動へ傾く。報酬は正しい者ではなく、審判を満足させる者に流れる。",
+        "報酬は証明に裏付けられた推論品質に結び付く。チャレンジは決定的で、スラッシングは自動。主観的な採点は排除される。"
+      ]
+    ],
+    "es": [
+      [
+        "Caso 01 - Seguridad de Smart Contracts",
+        "Despliegas un protocolo DeFi de US$10M. Pagas a un auditor con incentivo directo para aprobar el lanzamiento. Publicas. Te hackean.",
+        "Tres agentes heterogeneos inspeccionan el codigo de forma independiente. Si convergen en la misma ruta de explotacion, el resultado queda probado on-chain."
+      ],
+      [
+        "Caso 02 - Investigacion medica",
+        "Cinco LLM devuelven cinco respuestas distintas sobre riesgo de interaccion farmacologica. Sin una capa objetiva de confianza, el equipo vuelve a revision humana lenta.",
+        "RAXION calcula un CoherenceScore entre arquitecturas complementarias. La alta confianza se deriva, no se declara, y cualquier nodo puede verificarla."
+      ],
+      [
+        "Caso 03 - Mercados de IA descentralizada",
+        "Los incentivos de validadores derivan hacia consenso social y comportamiento cartelizado. Las recompensas van a quien satisface a los jueces, no a quien tiene razon.",
+        "Las recompensas se atan a calidad de inferencia respaldada por pruebas. Los desafios son deterministas. El slashing es automatico. Se elimina la puntuacion subjetiva."
+      ]
+    ]
+  },
+  "availableLocales": [
+    "en",
+    "pt-BR",
+    "zh",
+    "ja",
+    "es"
+  ]
+}

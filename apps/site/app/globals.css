@@ -1,0 +1,166 @@
+@import url("https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=JetBrains+Mono:wght@300;400;500&family=Inter:wght@300;400&display=swap");
+@import "tailwindcss";
+
+@theme {
+  --color-brand-red: #ff003c;
+  --color-brand-blue: #00f0ff;
+  --color-brand-purple: #7000ff;
+
+  --font-display: "Syne", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+  --font-sans: "Inter", sans-serif;
+
+  --animate-float: float 10s ease-in-out infinite;
+  --animate-marquee: marquee 22s linear infinite;
+  --animate-shimmer: shimmer 6s linear infinite;
+  --animate-scan: scan 3s linear infinite;
+  --animate-pulse-slow: pulse 8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-black text-white antialiased;
+    background-image:
+      radial-gradient(circle at 12% 18%, rgba(255, 0, 60, 0.08) 0%, transparent 32%),
+      radial-gradient(circle at 78% 24%, rgba(0, 240, 255, 0.08) 0%, transparent 28%),
+      radial-gradient(circle at 50% 65%, rgba(112, 0, 255, 0.05) 0%, transparent 40%),
+      linear-gradient(180deg, #040404 0%, #050505 100%);
+  }
+}
+
+@layer components {
+  .grain {
+    position: fixed;
+    inset: -50%;
+    width: 200%;
+    height: 200%;
+    background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+    opacity: 0.04;
+    pointer-events: none;
+    z-index: 40;
+  }
+
+  .lens-flare {
+    background: radial-gradient(circle at center, var(--tw-gradient-from) 0%, transparent 70%);
+    filter: blur(60px);
+    mix-blend-mode: screen;
+  }
+
+  .text-outline {
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.16);
+    color: transparent;
+  }
+
+  .shimmer-border {
+    position: relative;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .shimmer-border::after {
+    content: "";
+    position: absolute;
+    inset: -50%;
+    background: linear-gradient(45deg, transparent, rgba(0, 240, 255, 0.08), transparent);
+    transform: rotate(45deg);
+    animation: shimmer 6s linear infinite;
+    pointer-events: none;
+  }
+
+  .cursor-ring {
+    width: 20px;
+    height: 20px;
+    border: 1px solid #00f0ff;
+    border-radius: 9999px;
+    position: fixed;
+    pointer-events: none;
+    z-index: 60;
+    transform: translate(-50%, -50%);
+    transition: width 0.2s, height 0.2s, border-color 0.2s;
+    mix-blend-mode: difference;
+  }
+
+  .cursor-ring.hover {
+    width: 40px;
+    height: 40px;
+    border-color: #ff003c;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: opacity 0.9s cubic-bezier(0.23, 1, 0.32, 1), transform 0.9s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  html[data-motion="ready"] .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+
+  html[data-motion="ready"] .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .problem-card {
+    border: 1px solid rgba(255, 0, 60, 0.15);
+    background: rgba(255, 0, 60, 0.03);
+    transition: border-color 0.3s, background 0.3s;
+  }
+
+  .problem-card:hover {
+    border-color: rgba(255, 0, 60, 0.3);
+    background: rgba(255, 0, 60, 0.06);
+  }
+
+  .solution-card {
+    border: 1px solid rgba(0, 240, 255, 0.15);
+    background: rgba(0, 240, 255, 0.03);
+    transition: border-color 0.3s, background 0.3s;
+  }
+
+  .solution-card:hover {
+    border-color: rgba(0, 240, 255, 0.3);
+    background: rgba(0, 240, 255, 0.06);
+  }
+
+  .ticker-number {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .blink::after {
+    content: "_";
+    animation: blink 1s step-end infinite;
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  33% { transform: translate(10px, -20px) rotate(1deg); }
+  66% { transform: translate(-15px, 10px) rotate(-1deg); }
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%) rotate(45deg); }
+  100% { transform: translateX(100%) rotate(45deg); }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
