@@ -17,8 +17,8 @@ SOLANA_CONFIG="${HOME}/.config/solana/id.json"
 WALLET_PUBKEY="$(solana-keygen pubkey "${SOLANA_CONFIG}" 2>/dev/null || echo "")"
 
 if [[ -z "$WALLET_PUBKEY" ]]; then
-    echo "ERROR: Cannot read wallet from ${SOLANA_CONFIG}"
-    echo "Create wallet with: solana-keygen new"
+    echo "ERROR: Cannot read wallet from ${SOLANA_CONFIG}" >&2
+    echo "Create wallet with: solana-keygen new" >&2
     exit 1
 fi
 
@@ -30,8 +30,8 @@ if [[ "$CHECK_ONLY" == "true" ]]; then
 fi
 
 if [[ -z "$AMOUNT" ]]; then
-    echo "Usage: $0 <amount>   (e.g., $0 2)"
-    echo "       $0 --check     (check balance)"
+    echo "Usage: $0 <amount>   (e.g., $0 2)" >&2
+    echo "       $0 --check     (check balance)" >&2
     exit 1
 fi
 
@@ -55,13 +55,13 @@ RESPONSE=$(curl -s -X POST "https://api.devnet.solana.com" \
 
 ERROR=$(echo "$RESPONSE" | jq -r '.error.message // empty')
 if [[ -n "$ERROR" ]]; then
-    echo "ERROR: $ERROR"
+    echo "ERROR: $ERROR" >&2
     exit 1
 fi
 
 TX_HASH=$(echo "$RESPONSE" | jq -r '.result // empty')
 if [[ -z "$TX_HASH" ]]; then
-    echo "ERROR: No transaction hash returned"
+    echo "ERROR: No transaction hash returned" >&2
     exit 1
 fi
 

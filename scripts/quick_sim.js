@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-const fs = require("fs");
+const fs = require("node:fs");
 const RESULTS_DIR = "poc/benchmarks/devnet_results";
 fs.mkdirSync(RESULTS_DIR, { recursive: true });
 const TEST_QUERIES = [
@@ -10,7 +10,7 @@ const TEST_QUERIES = [
 function simulateCoherenceScore(query) {
   const variance = 0.15;
   const score = query.expectedCoherence + (Math.random() * variance * 2 - variance);
-  return Math.max(0.0, Math.min(1.0, score));
+  return Math.max(0, Math.min(1, score));
 }
 function getCategory(score) {
   if (score < 0.3) return "REJECTED";
@@ -35,7 +35,6 @@ async function runSimulation(agents = 100, queriesPerAgent = 10) {
       });
     }
   }
-  const totalTime = (Date.now() - startTime) / 1000;
   console.log("\n" + "=".repeat(60) + "\n  Results\n" + "=".repeat(60));
   const avgScore = results.reduce((s, r) => s + r.coherenceScore, 0) / results.length;
   const finalRate = (results.filter(r => r.isFinal).length / results.length) * 100;
@@ -56,7 +55,7 @@ async function runSimulation(agents = 100, queriesPerAgent = 10) {
 const args = process.argv.slice(2);
 let agents = 100, queries = 10;
 for (let i = 0; i < args.length; i++) {
-  if (args[i] === "--agents" || args[i] === "-a") agents = parseInt(args[++i], 10);
-  if (args[i] === "--queries" || args[i] === "-q") queries = parseInt(args[++i], 10);
+  if (args[i] === "--agents" || args[i] === "-a") agents = Number.parseInt(args[++i], 10);
+  if (args[i] === "--queries" || args[i] === "-q") queries = Number.parseInt(args[++i], 10);
 }
 runSimulation(agents, queries).then(() => process.exit(0)).catch(e => { console.error(e); process.exit(1); });

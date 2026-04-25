@@ -7,15 +7,7 @@ import {
   Connection,
   Keypair,
   PublicKey,
-  SystemProgram,
-  Transaction,
 } from "@solana/web3.js";
-import {
-  AnchorProvider,
-  Program,
-  Wallet,
-  web3,
-} from "@coral-xyz/anchor";
 
 // Program ID from Anchor.toml
 const PROGRAM_ID = new PublicKey(
@@ -28,7 +20,7 @@ const RPC_URL =
 
 // IdlType for InferenceRecord (simplified)
 interface InferenceRecord {
-  agent: web3.PublicKey;
+  agent: PublicKey;
   inferenceId: number;
   slot: number;
   coherenceScore: number;
@@ -121,23 +113,22 @@ export async function POST(request: NextRequest) {
     }
 
     // Get a recent blockhash
-    const { blockhash, lastValidBlockHeight } =
-      await connection.getLatestBlockhash("confirmed");
+    const { blockhash } = await connection.getLatestBlockhash("confirmed");
 
     // Generate inference ID (using timestamp + random for uniqueness)
     const inference_id = BigInt(
       Date.now() * 1000 + Math.floor(Math.random() * 1000)
     );
 
-    // Calculate output hashes
-    const output_hash_t = hashToBytes32(output_t || "transformer_output");
-    const output_hash_s = hashToBytes32(output_s || "ssm_output");
-    const proof_hash = hashToBytes32(
-      `proof_${inference_id}_${coherence_score}`
-    );
+    // Calculate output hashes (for documentation purposes)
+    // In production, these would be calculated by the actual model inference
+    const outputHashT = hashToBytes32(output_t || "transformer_output");
+    const outputHashS = hashToBytes32(output_s || "ssm_output");
+    const proofHash = hashToBytes32(`proof_${inference_id}_${coherence_score}`);
 
-    // Derive PDA for inference record
-    const [inferenceRecord] = PublicKey.findProgramAddressSync(
+    // Derive PDA for inference record (for documentation purposes)
+    // In production, the full Anchor serialization would be done client-side
+    const inferenceRecord = PublicKey.findProgramAddressSync(
       [
         Buffer.from("inference"),
         signer.publicKey.toBuffer(),
@@ -146,9 +137,7 @@ export async function POST(request: NextRequest) {
       PROGRAM_ID
     );
 
-    // Create simple instruction data (simplified - in production use @coral-xyz/anchor)
-    // This is a minimal version - the full Anchor serialization would be done client-side
-    const instructionData = Buffer.alloc(8 + 4 + 32 + 32 + 32); // Simplified
+    const instructionData = Buffer.alloc(8 + 4 + 32 + 32 + 32);
 
     // For now, return what we would have submitted
     // Full implementation would use Anchor's provider to build and send the transaction
@@ -157,14 +146,12 @@ export async function POST(request: NextRequest) {
       success: true,
       inference_id: inference_id.toString(),
       coherence_score,
-      category:
-        coherence_score < 0.3
-          ? "REJECTED"
-          : coherence_score < 0.6
-          ? "LOW_CONFIDENCE"
-          : coherence_score < 0.85
-          ? "STANDARD"
-          : "HIGH_COHERENCE",
+      category: (() => {
+        if (coherence_score < 0.3) return "REJECTED";
+        if (coherence_score < 0.6) return "LOW_CONFIDENCE";
+        if (coherence_score < 0.85) return "STANDARD";
+        return "HIGH_COHERENCE";
+      })(),
       is_final: coherence_score >= 0.6,
       tx_sig: `simulated_${blockhash.slice(0, 16)}`, // Simulated for now
       message:
@@ -174,8 +161,10 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(response);
   } catch (error) {
     console.error("Inference submission error:", error);
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
+
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : "Unknown error" },
+      { error: errorMessage },
       { status: 500 }
     );
   }

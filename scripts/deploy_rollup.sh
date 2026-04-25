@@ -18,27 +18,28 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m'
 
-log_info() { echo -e "${GREEN}[INFO]${NC} $1"; }
-log_warn() { echo -e "${YELLOW}[WARN]${NC} $1"; }
-log_error() { echo -e "${RED}[ERROR]${NC} $1"; }
+log_info() { echo -e "${GREEN}[INFO]${NC} $1"; return 0; }
+log_warn() { echo -e "${YELLOW}[WARN]${NC} $1"; return 0; }
+log_error() { echo -e "${RED}[ERROR]${NC} $1" >&2; }
 
 # Check prerequisites
 check_prereq() {
     log_info "Checking prerequisites..."
-    
+
     if ! command -v solana &> /dev/null; then
         log_error "solana CLI not found. Install from https://docs.solanalabs.com/cli/install"
         exit 1
     fi
-    
+
     if ! command -v anchor &> /dev/null; then
         log_warn "anchor CLI not found. Using Docker..."
         USE_DOCKER=true
     else
         USE_DOCKER=false
     fi
-    
+
     log_info "solana CLI version: $(solana --version)"
+    return 0
 }
 
 # Verify program is deployed
@@ -58,48 +59,53 @@ verify_deployment() {
 
 # Build and deploy
 deploy() {
+    local program_path="programs/raxion-rollup"
+    local deploy_binary="${program_path}/target/deploy/raxion_rollup.so"
+    local network_url="https://api.${NETWORK}.solana.com"
+
     log_info "Building Sovereign Rollup program..."
-    
-    if [ "$USE_DOCKER" = true ]; then
+
+    if [[ "$USE_DOCKER" == true ]]; then
         docker run --rm -v "$(pwd)":/app -w /app \
             cryptoplexity/anchor-cli:latest \
-            program build programs/raxion-rollup
+            program build "$program_path"
     else
         anchor build --program-name raxion-rollup
     fi
-    
+
     log_info "Deploying to $NETWORK..."
-    
+
     # Deploy using solana program deploy
     # Note: State root commitment is a data account, not a program
     # The program must be deployed separately
-    
-    if [ "$USE_DOCKER" = true ]; then
+
+    if [[ "$USE_DOCKER" == true ]]; then
         docker run --rm -v "$(pwd)":/app -w /app \
-            -e SOLANA_URL="https://api.${NETWORK}.solana.com" \
+            -e SOLANA_URL="$network_url" \
             cryptoplexity/anchor-cli:latest \
-            program deploy programs/raxion-rollup/target/deploy/raxion_rollup.so
+            program deploy "$deploy_binary"
     else
         solana program deploy \
             --url "$NETWORK" \
-            programs/raxion-rollup/target/deploy/raxion_rollup.so
+            "$deploy_binary"
     fi
-}
 
+    return 0
+}
 # Initialize state commitment account
 init_state_commitment() {
     log_info "Initializing first state commitment..."
-    
+
     # Generate a mock state root for devnet
     STATE_ROOT=$(openssl rand -hex 32)
     NEURAL_SVM_SLOT=$(solana slot --url "$NETWORK")
-    
+
     # Call the program to create state commitment
     # Note: In production, this would be done via SDK/CLI
     log_info "Mock state root: $STATE_ROOT"
     log_info "Neural SVM slot: $NEURAL_SVM_SLOT"
     log_info "L1 Solana slot: $(solana slot --url "$NETWORK")"
-    
+
     # For now, log the expected instruction
     log_info "Expected instruction:"
     log_info "  Instruction: commit_state_root"
@@ -107,12 +113,14 @@ init_state_commitment() {
     log_info "    - sequencer (signer)"
     log_info "    - state_commitment (PDA: state_root + slot)"
     log_info "    - system_program"
+
+    return 0
 }
 
 # Verify on-chain state
 verify_state() {
     log_info "Verifying state commitments..."
-    
+
     # Query recent transactions involving the program
     log_info "Recent transactions:"
     solana confirm \
@@ -120,6 +128,8 @@ verify_state() {
             head -5 | awk '{print $1}') \
         --url "$NETWORK" 2>/dev/null || \
         log_info "No transactions yet (expected for fresh deploy)"
+
+    return 0
 }
 
 # Main

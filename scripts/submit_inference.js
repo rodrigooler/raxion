@@ -21,8 +21,7 @@ const {
   Transaction,
   SystemProgram,
 } = require("@solana/web3.js");
-const anchor = require("@coral-xyz/anchor");
-const readline = require("readline");
+const readline = require("node:readline");
 
 // Configuration
 const PROGRAM_ID = new PublicKey(
@@ -46,8 +45,8 @@ function loadWallet() {
   }
 
   // Try default Solana wallet path
-  const fs = require("fs");
-  const path = require("path");
+  const fs = require("node:fs");
+  const path = require("node:path");
   const walletPath = path.join(process.env.HOME || "/root", ".config/solana/id.json");
 
   if (fs.existsSync(walletPath)) {
@@ -69,7 +68,7 @@ function loadWallet() {
 
 // Generate deterministic hash from input
 function sha256Hex(input) {
-  const crypto = require("crypto");
+  const crypto = require("node:crypto");
   return crypto.createHash("sha256").update(input).digest("hex");
 }
 
@@ -88,11 +87,11 @@ function parseArgs() {
   for (let i = 0; i < args.length; i++) {
     const arg = args[i];
     if (arg === "--score" || arg === "-s") {
-      result.score = parseFloat(args[++i]);
+      result.score = Number.parseFloat(args[++i]);
     } else if (arg === "--trigger-slash" || arg === "-t") {
       result.triggerSlash = true;
     } else if (arg === "--batch" || arg === "-b") {
-      result.batch = parseInt(args[++i], 10);
+      result.batch = Number.parseInt(args[++i], 10);
     } else if (arg === "--output-t") {
       result.outputT = args[++i];
     } else if (arg === "--output-s") {
@@ -152,11 +151,6 @@ function buildSubmitConvergenceInstruction(programId, payer, inferenceId, cohere
   // This is a simplified version - the real Anchor IDL would handle serialization
   // For devnet validation, we'll simulate the transaction structure
 
-  // Derive PDA for inference record
-  const inferenceSeed = Buffer.from("inference");
-  const agentBuffer = payer.publicKey.toBuffer();
-  const inferenceIdBuffer = Buffer.from(inferenceId.toString(16), "hex");
-
   // Simplified instruction data layout:
   // [8 bytes: discriminator] [8: inference_id] [4: score] [32: proof_hash] [32: output_t] [32: output_s]
   const data = Buffer.alloc(8 + 8 + 4 + 32 + 32 + 32);
@@ -209,10 +203,14 @@ async function submitInference(wallet, score, outputT, outputS) {
   const outputHashT = sha256Hex(outputT);
   const outputHashS = sha256Hex(outputS);
 
+  const category = score < 0.3 ? "REJECTED" :
+    score < 0.6 ? "LOW_CONFIDENCE" :
+    score < 0.85 ? "STANDARD" : "HIGH_COHERENCE";
+
   console.log(`\n=== Submitting Inference ===`);
   console.log(`Inference ID: ${inferenceId}`);
   console.log(`Coherence Score: ${score.toFixed(3)}`);
-  console.log(`Category: ${score < 0.3 ? "REJECTED" : score < 0.6 ? "LOW_CONFIDENCE" : score < 0.85 ? "STANDARD" : "HIGH_COHERENCE"}`);
+  console.log(`Category: ${category}`);
   console.log(`Expected Final: ${score >= 0.6 ? "YES" : "NO"}`);
 
   // For devnet testing, we'll use a simulated transaction
@@ -224,7 +222,7 @@ async function submitInference(wallet, score, outputT, outputS) {
     console.log(`Connected to devnet at slot ${slot}`);
 
     // Get recent blockhash
-    const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash();
+    const { blockhash } = await connection.getLatestBlockhash();
 
     // Create a simple transfer transaction as a placeholder
     // In production, this would be the actual Anchor instruction
@@ -253,11 +251,11 @@ async function submitInference(wallet, score, outputT, outputS) {
       success: true,
       inference_id: inferenceId,
       coherence_score: score,
-      category: score < 0.3 ? "REJECTED" : score < 0.6 ? "LOW_CONFIDENCE" : score < 0.85 ? "STANDARD" : "HIGH_COHERENCE",
+      category: category,
       is_final: score >= 0.6,
       tx_sig: `sim_${blockhash.slice(0, 16)}_${Date.now()}`,
       simulation: simulation.value.logs ? "ok" : "no logs",
-      explorer_url: `https://explorer.solana.com/tx/sim_${blockhash.slice(0, 16)}?cluster=devnet`,
+      explorer_url: String.raw`https://explorer.solana.com/tx/sim_${blockhash.slice(0, 16)}?cluster=devnet`,
     };
 
     console.log(`\n=== Result ===`);

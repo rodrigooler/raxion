@@ -7,6 +7,7 @@ set -euo pipefail
 RPC_URL="${SOLANA_RPC_URL:-https://api.devnet.solana.com}"
 PROGRAM_ID="${POIQ_PROGRAM_ID:-5JVFMV1DvhQD6Tm2BtPBs8zkvGArzRGUYF6GSNw2XUeT}"
 EXPLORER_URL="https://explorer.solana.com"
+DIVIDER="========================================"
 
 PASS=0
 FAIL=0
@@ -18,9 +19,10 @@ check() {
         echo "[PASS] $name: $result"
         PASS=$((PASS + 1))
     else
-        echo "[FAIL] $name: $result"
+        echo "[FAIL] $name: $result" >&2
         FAIL=$((FAIL + 1))
     fi
+    return 0
 }
 
 rpc_call() {
@@ -29,11 +31,12 @@ rpc_call() {
     curl -s -X POST "$RPC_URL" \
         -H "Content-Type: application/json" \
         -d "{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"$method\",\"params\":$params}"
+    return 0
 }
 
-echo "========================================"
+echo "$DIVIDER"
 echo "  RAXION Devnet Health Check"
-echo "========================================"
+echo "$DIVIDER"
 echo ""
 echo "RPC: $RPC_URL"
 echo "Program: $PROGRAM_ID"
@@ -42,7 +45,7 @@ echo ""
 # 1. Solana RPC Health
 echo "[1] Solana Network"
 HEALTH=$(rpc_call "getHealth" "[]")
-HEALTH_RESULT=$(echo "$HEALTH" | jq -r '.result // .error.message // "ERROR"' 2>/dev/null || echo "ERROR")
+HEALTH_RESULT=$(echo "$HEALTH" | jq -r '.result // .error.message // "ERROR"' 2>&1 || echo "ERROR")
 if [[ "$HEALTH_RESULT" == "ok" ]]; then
     check "Solana RPC" "OK"
 else
@@ -53,7 +56,7 @@ fi
 echo ""
 echo "[2] Network State"
 SLOT=$(rpc_call "getSlot" "[]")
-SLOT_NUM=$(echo "$SLOT" | jq -r '.result // "ERROR"' 2>/dev/null || echo "ERROR")
+SLOT_NUM=$(echo "$SLOT" | jq -r '.result // "ERROR"' 2>&1 || echo "ERROR")
 if [[ "$SLOT_NUM" != "ERROR" ]]; then
     check "Current Slot" "OK (slot $SLOT_NUM)"
 else
@@ -70,7 +73,7 @@ if [[ "$PROGRAM_EXISTS" == "true" ]]; then
     OWNER=$(echo "$PROGRAM_INFO" | jq -r '.result.value.owner // "unknown"' 2>/dev/null || echo "unknown")
     check "Program Deployed" "OK"
     echo "     Owner: $OWNER"
-    echo "     Link: $EXPLORER_URL/account/$PROGRAM_ID?cluster=devnet"
+    echo "     Link: ${EXPLORER_URL}/account/${PROGRAM_ID}?cluster=devnet"
 else
     check "Program Deployed" "NOT FOUND"
     echo "     Deploy with: make deploy"
@@ -103,26 +106,26 @@ if command -v solana-keygen >/dev/null 2>&1; then
         if [[ -n "$WALLET_PUBKEY" ]]; then
             echo "     Wallet: $WALLET_PUBKEY"
             if command -v solana >/dev/null 2>&1; then
-                BALANCE=$(solana balance --url devnet 2>/dev/null | awk '{print $1}' || echo "ERROR")
+                BALANCE=$(solana balance --url devnet 2>&1 | awk '{print $1}' || echo "ERROR")
                 echo "     Balance: $BALANCE SOL"
             fi
         else
-            echo "     [WARN] Cannot read wallet"
+            echo "     [WARN] Cannot read wallet" >&2
         fi
     else
-        echo "     [WARN] No wallet at ~/.config/solana/id.json"
+        echo "     [WARN] No wallet at ~/.config/solana/id.json" >&2
         echo "     Deploy will create wallet inside Docker"
     fi
 else
-    echo "     [INFO] Solana CLI not installed locally"
+    echo "     [INFO] Solana CLI not installed locally" >&2
     echo "     Wallet management happens inside Docker"
 fi
 
 # Summary
 echo ""
-echo "========================================"
+echo "$DIVIDER"
 echo "  Summary"
-echo "========================================"
+echo "$DIVIDER"
 echo "Passed: $PASS"
 echo "Failed: $FAIL"
 echo ""

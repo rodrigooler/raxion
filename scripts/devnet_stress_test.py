@@ -61,11 +61,11 @@ def now_iso() -> str:
     return datetime.now(timezone.utc).isoformat()
 
 
-def percentile(values: list[float], p: float) -> float:
-    if not values:
+def percentile(sorted_values: list[float], p: float) -> float:
+    if not sorted_values:
         return 0.0
-    idx = min(len(values) - 1, int(len(values) * p))
-    return sorted(values)[idx]
+    idx = min(len(sorted_values) - 1, int(len(sorted_values) * p))
+    return sorted_values[idx]
 
 
 async def submit_query(
@@ -106,6 +106,64 @@ async def submit_query(
         )
 
 
+def _get_valid_scores(results: list[QueryResult]) -> list[float]:
+    """Extract coherence scores from results that have no errors."""
+    return [r.coherence_score for r in results if not r.error]
+
+
+def _compute_avg_score(scores: list[float]) -> float:
+    """Compute the average score, returning 0.0 for empty input."""
+    return statistics.mean(scores) if scores else 0.0
+
+
+def _compute_progress_stats(results: list[QueryResult], errors: int) -> tuple[int, int, float]:
+    """Compute progress statistics for a batch of results."""
+    done = len(results)
+    ok = done - errors
+    valid_scores = _get_valid_scores(results)
+    avg_score = _compute_avg_score(valid_scores)
+    return done, ok, avg_score
+
+
+def _build_stats_dict(
+    results: list[QueryResult],
+    scores: list[float],
+    challenged: int,
+    latencies: list[float],
+    base_url: str,
+    n: int,
+) -> dict[str, Any]:
+    """Build the statistics dictionary from query results."""
+    errors = sum(1 for r in results if r.error)
+    has_results = n > 0
+    error_rate = (errors / n) if has_results else 1.0
+    challenge_rate = (challenged / n) if has_results else 0.0
+    final_count = sum(1 for r in results if r.is_final)
+
+    avg_score = statistics.mean(scores) if scores else 0.0
+    sorted_latencies = sorted(latencies) if latencies else []
+
+    return {
+        "base_url": base_url,
+        "total_queries": n,
+        "successful": len(scores),
+        "errors": errors,
+        "protocol_failure_rate": error_rate,
+        "avg_coherence_score": avg_score,
+        "median_coherence_score": statistics.median(scores) if scores else 0.0,
+        "pct_final": (final_count / n * 100.0) if has_results else 0.0,
+        "challenged_count": challenged,
+        "observed_challenge_rate": challenge_rate,
+        "avg_latency_ms": statistics.mean(latencies) if latencies else 0.0,
+        "p90_latency_ms": percentile(sorted_latencies, 0.90),
+        "p99_latency_ms": percentile(sorted_latencies, 0.99),
+        "q2_c1_no_protocol_failure": error_rate < 0.01,
+        "q2_c2_avg_cs_above_0_65": avg_score >= 0.65,
+        "q2_c3_challenge_rate_1_5pct": 0.010 <= challenge_rate <= 0.025,
+        "timestamp": now_iso(),
+    }
+
+
 async def run_stress_test(base_url: str, n: int = 1000, concurrency: int = 5) -> dict[str, Any]:
     queries = build_queries(n)
     results: list[QueryResult] = []
@@ -128,36 +186,14 @@ async def run_stress_test(base_url: str, n: int = 1000, concurrency: int = 5) ->
         if result.error:
             errors += 1
         if len(results) % 100 == 0:
-            done = len(results)
-            ok = done - errors
-            valid_scores = [r.coherence_score for r in results if not r.error]
-            avg_score = statistics.mean(valid_scores) if valid_scores else 0.0
+            done, ok, avg_score = _compute_progress_stats(results, errors)
             print(f"  [{done}/{n}] OK={ok} Errors={errors} AvgCS={avg_score:.3f}")
 
     scores = [r.coherence_score for r in results if not r.error]
     challenged = sum(1 for r in results if r.is_challenged)
     latencies = [r.latency_ms for r in results if not r.error]
 
-    avg_score = statistics.mean(scores) if scores else 0.0
-    stats = {
-        "base_url": base_url,
-        "total_queries": n,
-        "successful": len(scores),
-        "errors": errors,
-        "protocol_failure_rate": (errors / n) if n else 1.0,
-        "avg_coherence_score": avg_score,
-        "median_coherence_score": statistics.median(scores) if scores else 0.0,
-        "pct_final": (sum(1 for r in results if r.is_final) / n * 100.0) if n else 0.0,
-        "challenged_count": challenged,
-        "observed_challenge_rate": (challenged / n) if n else 0.0,
-        "avg_latency_ms": statistics.mean(latencies) if latencies else 0.0,
-        "p90_latency_ms": percentile(latencies, 0.90),
-        "p99_latency_ms": percentile(latencies, 0.99),
-        "q2_c1_no_protocol_failure": (errors / n) < 0.01 if n else False,
-        "q2_c2_avg_cs_above_0_65": avg_score >= 0.65,
-        "q2_c3_challenge_rate_1_5pct": 0.010 <= (challenged / n) <= 0.025 if n else False,
-        "timestamp": now_iso(),
-    }
+    stats = _build_stats_dict(results, scores, challenged, latencies, base_url, n)
 
     out_file = RESULTS_DIR / f"stress_test_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
     with out_file.open("w", encoding="utf-8") as fh:

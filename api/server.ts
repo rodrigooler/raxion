@@ -7,10 +7,8 @@
 
 import {
   Connection,
-  Keypair,
   PublicKey,
   Transaction,
-  SystemProgram,
 } from "@solana/web3.js";
 
 // Configuration
@@ -22,7 +20,7 @@ const CONFIG = {
   RAXION_PROGRAM_ID: process.env.RAXION_PROGRAM_ID || "5JVFMV1DvhQD6Tm2BtPBs8zkvGArzRGUYF6GSNw2XUeT",
 
   // Server
-  PORT: parseInt(process.env.PORT || "3001", 10),
+  PORT: Number.parseInt(process.env.PORT || "3001", 10),
   HOST: process.env.HOST || "0.0.0.0",
 };
 
@@ -54,14 +52,12 @@ async function createInferenceTransaction(
   coherenceScore,
   inferenceData
 ) {
-  const programId = new PublicKey(CONFIG.RAXION_PROGRAM_ID);
-
   // For demo purposes, we create a simple transfer transaction
   // In production, this would call the actual RAXION program
   const transaction = new Transaction();
 
   // Add a simple memo instruction to simulate on-chain call
-  const inferenceId = `inf_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+  const inferenceId = `inf_${Date.now()}_${Math.random().toString(36).slice(2, 11)}`;
 
   // Log the inference submission
   console.log(`[API] Submitting inference ${inferenceId}`);
@@ -99,15 +95,13 @@ async function submitInference(req, res) {
     // Validate agent pubkey format
     try {
       new PublicKey(agentPubkey);
-    } catch {
+    } catch (error) {
+      console.error(`[API] Invalid agentPubkey format:`, error);
       return res.status(400).json({ error: "Invalid agentPubkey format" });
     }
 
     // Create and submit transaction
     const connection = new Connection(CONFIG.RPC_URL);
-
-    // Get recent blockhash
-    const { blockhash } = await connection.getLatestBlockhash();
 
     // Simulate transaction submission
     const result = await createInferenceTransaction(
@@ -232,7 +226,7 @@ async function getStats(req, res) {
 
 // Simple HTTP server implementation (no external deps)
 function startServer() {
-  const http = require("http");
+  const http = require("node:http");
 
   const server = http.createServer((req, res) => {
     // CORS headers
@@ -265,7 +259,7 @@ function startServer() {
         try {
           req.body = JSON.parse(body);
           submitInference(req, res);
-        } catch (e) {
+        } catch {
           res.writeHead(400);
           res.end(JSON.stringify({ error: "Invalid JSON" }));
         }

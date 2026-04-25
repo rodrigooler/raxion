@@ -21,8 +21,8 @@ const {
   Keypair,
   PublicKey,
 } = require("@solana/web3.js");
-const fs = require("fs");
-const path = require("path");
+const fs = require("node:fs");
+const path = require("node:path");
 
 // Configuration
 const PROGRAM_ID = new PublicKey(
@@ -118,24 +118,27 @@ async function testInferenceRecords(connection) {
   });
 }
 
+function getCoherenceCategory(score) {
+  if (score < 0.3) return "REJECTED";
+  if (score < 0.6) return "LOW_CONFIDENCE";
+  if (score < 0.85) return "STANDARD";
+  return "HIGH_COHERENCE";
+}
+
 async function testCoherenceScoring() {
   // Test coherence score categorization
   const categories = [
-    { score: 0.15, expected: "REJECTED", threshold: 0.3 },
-    { score: 0.30, expected: "LOW_CONFIDENCE", threshold: 0.6 },
-    { score: 0.45, expected: "LOW_CONFIDENCE", threshold: 0.6 },
-    { score: 0.60, expected: "STANDARD", threshold: 0.85 },
-    { score: 0.75, expected: "STANDARD", threshold: 0.85 },
-    { score: 0.90, expected: "HIGH_COHERENCE", threshold: 1.0 },
+    { score: 0.15, expected: "REJECTED" },
+    { score: 0.30, expected: "LOW_CONFIDENCE" },
+    { score: 0.45, expected: "LOW_CONFIDENCE" },
+    { score: 0.60, expected: "STANDARD" },
+    { score: 0.75, expected: "STANDARD" },
+    { score: 0.90, expected: "HIGH_COHERENCE" },
   ];
 
   for (const cat of categories) {
     test(`Coherence ${cat.score} -> ${cat.expected}`, () => {
-      let actual;
-      if (cat.score < 0.3) actual = "REJECTED";
-      else if (cat.score < 0.6) actual = "LOW_CONFIDENCE";
-      else if (cat.score < 0.85) actual = "STANDARD";
-      else actual = "HIGH_COHERENCE";
+      const actual = getCoherenceCategory(cat.score);
       return actual === cat.expected;
     });
   }
@@ -246,7 +249,7 @@ async function runTests(options = {}) {
     rpcUrl: RPC_URL,
     passed: results.passed,
     failed: results.failed,
-    passRate: parseFloat(passRate),
+    passRate: Number.parseFloat(passRate),
     tests: results.tests,
   };
 

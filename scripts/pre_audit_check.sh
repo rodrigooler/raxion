@@ -16,6 +16,7 @@ check() {
     sed -n '1,80p' /tmp/raxion_preaudit.log
     FAIL=$((FAIL + 1))
   fi
+  return 0
 }
 
 if command -v anchor >/dev/null 2>&1; then

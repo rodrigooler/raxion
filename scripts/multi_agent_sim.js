@@ -12,7 +12,6 @@
 
 const {
   Connection,
-  Keypair,
   PublicKey,
 } = require("@solana/web3.js");
 
@@ -72,11 +71,11 @@ function parseArgs() {
   for (let i = 0; i < args.length; i++) {
     const arg = args[i];
     if (arg === "--agents" || arg === "-a") {
-      result.agents = parseInt(args[++i], 10);
+      result.agents = Number.parseInt(args[++i], 10);
     } else if (arg === "--queries" || arg === "-q") {
-      result.queriesPerAgent = parseInt(args[++i], 10);
+      result.queriesPerAgent = Number.parseInt(args[++i], 10);
     } else if (arg === "--concurrent" || arg === "-c") {
-      result.concurrent = parseInt(args[++i], 10);
+      result.concurrent = Number.parseInt(args[++i], 10);
     } else if (arg === "--output" || arg === "-o") {
       result.outputFile = args[++i];
     } else if (arg === "--help" || arg === "-h") {
@@ -111,7 +110,7 @@ function simulateCoherenceScore(query) {
   // Add some randomness around the expected coherence
   const variance = 0.15;
   const score = query.expectedCoherence + (Math.random() * variance * 2 - variance);
-  return Math.max(0.0, Math.min(1.0, score));
+  return Math.max(0, Math.min(1, score));
 }
 
 // Simulate a single inference
@@ -127,20 +126,24 @@ async function simulateInference(connection, agentId, queryId, query) {
   const latencyMs = Date.now() - startTime;
   const isChallenged = Math.random() < 0.015; // 1.5% challenge rate
 
+  let category;
+  if (coherenceScore < 0.3) {
+    category = "REJECTED";
+  } else if (coherenceScore < 0.6) {
+    category = "LOW_CONFIDENCE";
+  } else if (coherenceScore < 0.85) {
+    category = "STANDARD";
+  } else {
+    category = "HIGH_COHERENCE";
+  }
+
   return {
     agentId,
     queryId,
     query: query.text,
     difficulty: query.difficulty,
     coherenceScore,
-    category:
-      coherenceScore < 0.3
-        ? "REJECTED"
-        : coherenceScore < 0.6
-        ? "LOW_CONFIDENCE"
-        : coherenceScore < 0.85
-        ? "STANDARD"
-        : "HIGH_COHERENCE",
+    category,
     isFinal: coherenceScore >= 0.6 && !isChallenged,
     isChallenged,
     latencyMs,
@@ -322,7 +325,7 @@ async function runSimulation(options) {
 
   // Save results
   if (outputFile) {
-    const fs = require("fs");
+    const fs = require("node:fs");
     const report = {
       timestamp: new Date().toISOString(),
       options,

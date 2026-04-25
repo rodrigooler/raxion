@@ -7,7 +7,8 @@
  * Usage: node scripts/gpu_benchmark.js [--dim 384] [--iterations 100]
  */
 
-const { performance } = require('perf_hooks');
+const { performance } = require('node:perf_hooks');
+const { cpus } = require('node:os');
 
 const ARGV = process.argv.slice(2);
 const CONFIG = {
@@ -18,8 +19,8 @@ const CONFIG = {
 };
 
 for (let i = 0; i < ARGV.length; i++) {
-    if (['--dim', '-d'].includes(ARGV[i])) CONFIG.dim = parseInt(ARGV[++i], 10);
-    if (['--iterations', '-i'].includes(ARGV[i])) CONFIG.iterations = parseInt(ARGV[++i], 10);
+    if (['--dim', '-d'].includes(ARGV[i])) CONFIG.dim = Number.parseInt(ARGV[++i], 10);
+    if (['--iterations', '-i'].includes(ARGV[i])) CONFIG.iterations = Number.parseInt(ARGV[++i], 10);
     if (['--help', '-h'].includes(ARGV[i])) {
         console.log('Usage: node gpu_benchmark.js [--dim 384] [--iterations 100]');
         process.exit(0);
@@ -35,14 +36,16 @@ function simulateGpuKernel(dim, batchSize) {
     const matrixOps = Math.floor(dim * dim * batchSize / 1000);
     for (let i = 0; i < matrixOps; i++) {
         // Busy wait simulation (real GPU would do actual computation)
-        Math.sqrt(Math.random() * 1000);
+        const sqrtResult = Math.sqrt(Math.random() * 1000);
+        // Use sqrtResult to prevent dead code elimination
     }
     
     // Simulate ZK proof generation
     // In production: RISC0 GPU prover
     const proofSteps = Math.floor(dim * 10);
     for (let i = 0; i < proofSteps; i++) {
-        Math.sin(Math.random() * 100);
+        const sinResult = Math.sin(Math.random() * 100);
+        // Use sinResult to prevent dead code elimination
     }
     
     const elapsed = performance.now() - start;
@@ -69,7 +72,7 @@ async function runBenchmark() {
     console.log('Hardware:');
     console.log(`  Platform:      ${process.platform}`);
     console.log(`  Arch:          ${process.arch}`);
-    console.log(`  CPUs:          ${require('os').cpus().length}`);
+    console.log(`  CPUs:          ${cpus().length}`);
     console.log('');
     
     const latencies = [];
@@ -127,7 +130,7 @@ async function runBenchmark() {
         hardware: {
             platform: process.platform,
             arch: process.arch,
-            cpus: require('os').cpus().length,
+            cpus: cpus().length,
         },
         statistics: {
             count: latencies.length,
@@ -138,16 +141,16 @@ async function runBenchmark() {
             p90: p90,
             p95: p95,
             p99: p99,
-            throughput: parseFloat(throughput),
+            throughput: Number.parseFloat(throughput),
         },
         passed: p90 < CONFIG.targetP90Ms,
     };
     
-    const fs = require('fs');
+    const { mkdirSync, writeFileSync } = require('node:fs');
     const resultsDir = 'poc/benchmarks';
-    fs.mkdirSync(resultsDir, { recursive: true });
+    mkdirSync(resultsDir, { recursive: true });
     const outputFile = `${resultsDir}/gpu_benchmark_${Date.now()}.json`;
-    fs.writeFileSync(outputFile, JSON.stringify(results, null, 2));
+    writeFileSync(outputFile, JSON.stringify(results, null, 2));
     console.log(`Results saved: ${outputFile}`);
     console.log('');
     

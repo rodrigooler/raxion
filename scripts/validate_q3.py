@@ -44,7 +44,7 @@ def check_dissent() -> bool:
     dissent_keywords = ["submit_dissent", "DissentSubmitted", "qualifies_for_dissent"]
     found = False
     for keyword in dissent_keywords:
-        success, output = run_cmd_output(["sh", "-c", f"grep -r '{keyword}' programs/raxion-poiq/src/ || true"])
+        _, output = run_cmd_output(["sh", "-c", f"grep -r '{keyword}' programs/raxion-poiq/src/ || true"])
         if keyword in output:
             found = True
             break
