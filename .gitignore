@@ -64,3 +64,4 @@ apps/site/out/
 
 poc/benchmarks/*.json
 poc/benchmarks/*.csv
+poc/benchmarks/devnet_results/
