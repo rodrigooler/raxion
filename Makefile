@@ -84,7 +84,7 @@ docker-shell: _prereqs
 	@echo ""
 	docker run --rm -it \
 		--platform linux/amd64 \
-		-v "$(pwd)":/work \
+		-v "$$(pwd)":/work \
 		-v "$(HOME)/.config/solana":/home/raxion/.config/solana \
 		-e HOME=/home/raxion \
 		-e CARGO_HOME=/work/.cargo-home \

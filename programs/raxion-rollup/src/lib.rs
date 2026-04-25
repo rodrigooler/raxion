@@ -1,8 +1,13 @@
 //! RAXION Sovereign Rollup — state root commitments.
+//!
+//! Program ID: 7R2iZ8qL3mN5pQ9vT6wX1yA4sK8eHjFgDcB0kMmNnOo
+//! Note: Different from raxion-poiq (5JVFMV1DvhQD6Tm2BtPBs8zkvGArzRGUYF6GSNw2XUeT)
 
 use anchor_lang::prelude::*;
 
-declare_id!("5JVFMV1DvhQD6Tm2BtPBs8zkvGArzRGUYF6GSNw2XUeT");
+// RAXION Sovereign Rollup State Root Commitment Program
+// Unique program ID for state root commitments (separate from raxion-poiq)
+declare_id!("7R2iZ8qL3mN5pQ9vT6wX1yA4sK8eHjFgDcB0kMmNnOo");
 
 #[program]
 pub mod raxion_rollup {

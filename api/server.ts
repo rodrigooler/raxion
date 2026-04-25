@@ -10,6 +10,7 @@ import {
   PublicKey,
   Transaction,
 } from "@solana/web3.js";
+import http from "node:http";
 
 // Configuration
 const CONFIG = {
@@ -73,6 +74,23 @@ async function createInferenceTransaction(
 }
 
 /**
+ * Send JSON response using native http.ServerResponse
+ */
+function sendJson(res, statusCode, data) {
+  res.writeHead(statusCode, {
+    "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type",
+  });
+  res.end(JSON.stringify(data));
+}
+
+function sendError(res, statusCode, error, message) {
+  sendJson(res, statusCode, { error, ...(message ? { message } : {}) });
+}
+
+/**
  * Submit inference endpoint
  */
 async function submitInference(req, res) {
@@ -81,15 +99,15 @@ async function submitInference(req, res) {
 
     // Validate inputs
     if (!agentPubkey) {
-      return res.status(400).json({ error: "Missing agentPubkey" });
+      return sendError(res, 400, "Missing agentPubkey");
     }
 
     if (coherenceScore === undefined || coherenceScore < 0 || coherenceScore > 1) {
-      return res.status(400).json({ error: "Invalid coherenceScore (must be 0-1)" });
+      return sendError(res, 400, "Invalid coherenceScore (must be 0-1)");
     }
 
     if (!query) {
-      return res.status(400).json({ error: "Missing query" });
+      return sendError(res, 400, "Missing query");
     }
 
     // Validate agent pubkey format
@@ -97,7 +115,7 @@ async function submitInference(req, res) {
       new PublicKey(agentPubkey);
     } catch (error) {
       console.error(`[API] Invalid agentPubkey format:`, error);
-      return res.status(400).json({ error: "Invalid agentPubkey format" });
+      return sendError(res, 400, "Invalid agentPubkey format");
     }
 
     // Create and submit transaction
@@ -125,14 +143,10 @@ async function submitInference(req, res) {
 
     console.log(`[API] Inference ${result.inferenceId} submitted successfully`);
 
-    res.json(response_);
+    sendJson(res, 200, response_);
   } catch (error) {
     console.error(`[API] Error submitting inference:`, error);
-    res.status(500).json({
-      success: false,
-      error: "Failed to submit inference",
-      message: error.message,
-    });
+    sendError(res, 500, "Failed to submit inference", error.message);
   }
 }
 
@@ -144,7 +158,7 @@ async function getInference(req, res) {
     const { inferenceId } = req.params;
 
     if (!inferenceId) {
-      return res.status(400).json({ error: "Missing inferenceId" });
+      return sendError(res, 400, "Missing inferenceId");
     }
 
     // For demo, we return mock data
@@ -152,7 +166,7 @@ async function getInference(req, res) {
     const connection = new Connection(CONFIG.RPC_URL);
     const slot = await connection.getSlot();
 
-    res.json({
+    sendJson(res, 200, {
       inferenceId,
       slot,
       status: "confirmed",
@@ -163,10 +177,7 @@ async function getInference(req, res) {
     });
   } catch (error) {
     console.error(`[API] Error getting inference:`, error);
-    res.status(500).json({
-      success: false,
-      error: "Failed to get inference",
-    });
+    sendError(res, 500, "Failed to get inference", error.message);
   }
 }
 
@@ -182,7 +193,7 @@ async function healthCheck(req, res) {
       connection.getProgramAccounts(new PublicKey(CONFIG.RAXION_PROGRAM_ID)),
     ]);
 
-    res.json({
+    sendJson(res, 200, {
       status: "healthy",
       rpc: "connected",
       slot,
@@ -190,10 +201,7 @@ async function healthCheck(req, res) {
       programAccounts: programAccounts.length,
     });
   } catch (error) {
-    res.status(503).json({
-      status: "unhealthy",
-      error: error.message,
-    });
+    sendError(res, 503, "Failed to get health status", error.message);
   }
 }
 
@@ -205,7 +213,7 @@ async function getStats(req, res) {
     const connection = new Connection(CONFIG.RPC_URL);
     const slot = await connection.getSlot();
 
-    res.json({
+    sendJson(res, 200, {
       network: "devnet",
       slot,
       programId: CONFIG.RAXION_PROGRAM_ID,
@@ -217,17 +225,12 @@ async function getStats(req, res) {
       },
     });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      error: error.message,
-    });
+    sendError(res, 500, "Failed to get stats", error.message);
   }
 }
 
 // Simple HTTP server implementation (no external deps)
 function startServer() {
-  const http = require("node:http");
-
   const server = http.createServer((req, res) => {
     // CORS headers
     res.setHeader("Access-Control-Allow-Origin", "*");
