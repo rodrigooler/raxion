@@ -52,3 +52,11 @@ Desktop.ini
 **/*-keypair.json
 **/wallet*.json
 **/keypair*.json
+
+# MCP Configurations (contain credentials)
+sonarqube-mcp.json
+
+apps/explorer/.next/
+apps/explorer/out/
+apps/site/.next/
+apps/site/out/
