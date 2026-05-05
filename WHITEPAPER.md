@@ -1,5 +1,5 @@
-# RAXION Whitepaper — Version 0.4
-**February 2026**
+# RAXION Whitepaper — Version 0.5
+**May 2026**
 
 **RAXION Network** — The first sovereign Layer-1 where intelligence is not voted — it is mathematically proven.
 
@@ -64,7 +64,7 @@ For most AI inference tasks, no such external resolution exists in real time. Qu
 
 **Claim 2:** A system with n validators cannot guarantee deep domain expertise across all domains simultaneously for arbitrary query distributions.
 
-**Claim 3:** When validator expertise is insufficient, economic incentives push evaluations toward popularity rather than correctness — documented in behavioral economics as systematic epistemic cowardice [Ariely & Loewenstein, 2006] [30].
+**Claim 3:** When validator expertise is insufficient, economic incentives push evaluations toward popularity rather than correctness — documented in behavioral economics and financial market research as herding behavior — the systematic tendency of agents with reputational or economic exposure to align their judgments with perceived group consensus rather than independent assessment [Scharfstein & Stein, 1990] [30].
 
 The joint consequence: **no stake-weighted human voting system can reliably produce accurate quality assessments for open-domain AI inference at scale.** This is not a failure of implementation. It is a structural consequence of the problem definition.
 
@@ -205,6 +205,57 @@ Other projects tried adapting the Proof of Work model to inference: miners produ
 Some architectures attempt to solve the problem by importing ground-truth from external sources: curated datasets, public benchmarks, competition results. This works for domains with clear objective evaluation (mathematics, code with unit tests, games with defined terminal states). But it is radically insufficient for most real intelligence tasks, and creates new problems: who manages the datasets? Can they be manipulated? What happens when the benchmark leaks into the training set?
 
 None of these approaches internalizes truth in the network's own mathematics. All ultimately depend on some external source of authority — whether a human judge, a governance committee, or a third-party curated dataset.
+
+### 1.4.4 The Current Competitive Landscape
+
+Examining the decentralized AI infrastructure sector as of mid-2026 reveals four distinct technical categories. Each addresses a real and legitimate problem. None eliminates the Oracle Problem at its root.
+
+**Category 1 — Economic Consensus Networks**
+
+*Representative: Allora Network*
+
+Allora Network coordinates worker nodes to submit predictions, aggregating results through reputation-weighted consensus. The architecture performs well in domains with unambiguous external resolution — financial forecasting, prediction markets — where eventual ground-truth exists and retrospective accuracy measurement is straightforward.
+
+The Oracle Problem persists structurally for open-domain AI inference: when resolution is absent or delayed, quality evaluation defaults to reputation metrics that themselves require external validation. Allora's "self-improving" mechanism improves accuracy only in domains where improvement is measurable by external outcomes. For open-domain reasoning tasks, it inherits the same subjective evaluation dependency as Bittensor.
+
+**Category 2 — Optimistic ML Verification**
+
+*Representative: Ora Protocol (opML)*
+
+Ora Protocol's Optimistic Machine Learning model is architecturally coherent: publish the inference result on-chain, assume correctness, allow challenges during a contestation window analogous to Optimistic Rollups. This reduces on-chain verification gas cost substantially relative to immediate ZK proofs.
+
+Two structural limitations are relevant. First, the contestation window — typically 7 days for non-trivial fraud proofs — means incorrect outputs are available for downstream consumption and further inference for up to a week. In chained reasoning systems where one agent's output becomes another agent's context, a single unchallenged error can propagate before any challenge resolves. Second, opML proves *execution* — that a specific model with specific weights ran correctly — not *quality*. A deliberately mistuned or adversarially fine-tuned model generates valid execution proofs for consistently incorrect outputs.
+
+**Category 3 — Decentralized Compute Markets**
+
+*Representative: Gensyn*
+
+Gensyn addresses the decentralized ML training problem — distributing the computational cost of training large models across GPU operator networks with cryptographic verification of training contributions. This is a legitimate and important problem.
+
+It is, however, entirely orthogonal to inference quality verification. A model trained efficiently on a Gensyn-style decentralized network still requires a separate quality layer for its inference outputs. Gensyn provides the supply side of compute; it does not provide a protocol for evaluating what that compute produces.
+
+**Category 4 — On-Chain AI Coprocessors**
+
+*Representative: Ritual Network (Infernet)*
+
+Ritual's Infernet product enables smart contracts to call AI model inference on demand, with results returned on-chain. The architecture is pragmatic for its target use case: extending the capability of on-chain applications with off-chain AI compute.
+
+What Infernet does not provide is a trust-minimized quality verification layer. The model is assumed to be correctly operated by its declared operator. For applications where the model operator and contract deployer are the same party or have an established trust relationship, this assumption is workable. For adversarial environments requiring trustless quality guarantees — the decentralized AI use case — the assumption is insufficient.
+
+**The Structural Gap**
+
+The following table maps each approach against the four properties a trustless decentralized AI quality layer must provide:
+
+| Protocol | Proves Execution | Verifies Quality | Eliminates Oracle | Immediate Finality |
+|---|---|---|---|---|
+| Bittensor / Yuma Consensus | No | Via human vote | No | No |
+| Allora Network | No | Via reputation consensus | No | No |
+| Ora Protocol (opML) | Yes | No | No | No (contestation window) |
+| Gensyn | Yes (training) | N/A (training only) | Partial | N/A |
+| Ritual Infernet | No | No | No | Yes |
+| **RAXION PoIQ** | **Yes** | **Yes** | **Yes** | **Yes** |
+
+RAXION is the only protocol in this landscape that provides all four properties simultaneously. The combination — immediate cryptographic proof that a quality threshold was reached through independent multi-architecture evaluation — has not been implemented elsewhere because it required the convergence of ZK hardware, next-generation proving frameworks, and a parallelism-native blockchain substrate that became feasible only in 2025–2026.
 
 ---
 
@@ -787,6 +838,12 @@ The Neural SVM implements a hybrid HNSW (Hierarchical Navigable Small World) ind
 - Strengths: formal logical reasoning, auditability, resistance to obvious factual errors
 - Characteristic biases: formalization bias, completeness bias, sensitivity to symbolic component quality
 
+The Neuro-Symbolic component in RAXION implements a two-stage pipeline. The **neural extraction stage** parses natural language inputs into formal structured representations — entities, relations, and propositions expressed as logical predicates. The **symbolic inference stage** then applies sound deductive reasoning rules over the extracted proposition graph to derive conclusions. Every inference step in the symbolic stage is a traceable logical derivation, producing outputs that are inherently auditable in a way that purely neural architectures are not.
+
+This architecture is structurally independent from the failure modes of the Transformer and SSM components: where Transformers fail on tasks requiring strict multi-step deductive closure beyond their pattern-completion tendency, and SSMs fail on retrieval tasks requiring non-local context access, Neuro-Symbolic systems fail on tasks requiring statistical generalization from ambiguous or underspecified linguistic input. The three failure domains have limited overlap for the query types RAXION targets — formal analysis, technical reasoning, structured synthesis.
+
+Any Neuro-Symbolic implementation registered as a RAXION architecture must pass a standardized capability benchmark suite published in the Devnet technical specification, which includes minimum thresholds on formal reasoning tasks (MATH_FORMAL, LOGIC_SAT) and verifiable output auditability requirements. This prevents registration of hybrid models that label themselves Neuro-Symbolic but behave as purely neural systems.
+
 ### 2.4.2 The Convergence Mechanism: Epistemic Coherence
 
 **Step 1 — Semantic Alignment**: Outputs from the three architectures are projected into a common representation space using high-dimensional embeddings. Cosine distance measures superficial semantic similarity.
@@ -882,6 +939,29 @@ fn respond(query: Query, memory: &AgentMemory) -> Response {
 | Mainnet v1 | Full execution proof | <2s | ZK ASICs + Sovereign Rollup |
 | Mainnet v1 | Inference proof (Jolt) | <500ms | Jolt (ZK ASIC) |
 | Mainnet v2 | Aggregated proof (batch) | <200ms | Recursive proof + ASICs |
+
+**Technical Path to <5s Cognitive Finality at Mainnet v1:**
+
+Achieving end-to-end Cognitive Finality under 5 seconds requires the following breakdown to hold simultaneously:
+
+```
+ML inference (3 architectures, parallel):       0.5–1.5s
+Execution proofs (3× RISC Zero, parallel):      1.0–2.0s  [ZK ASIC target]
+Quality proof (Jolt, matrix operations):         0.3–0.5s  [Jolt ASIC target]
+STARK → Groth16 compression:                     0.3–0.5s  [Groth16 batch]
+Nova IVC fold (4 proofs → 1):                   <0.1s     [~10K mult gates, ref. [37]]
+On-chain verification + state write:             <0.5s     [Solana 400ms slot]
+
+Total (critical path):                           2.7–5.1s
+```
+
+Three key observations:
+
+**Parallelism is required, not optional.** The three execution proofs must be generated concurrently — if run sequentially, they alone exceed the 5s target at current GPU speeds. The Cognitive Scheduler assigns each architecture's proof generation to independent hardware.
+
+**EZKL-class frameworks close the Devnet-to-Testnet gap.** EZKL benchmarks [42] document 65.88× faster proof generation than RISC Zero's generic zkVM for inference-specific circuits, with 98% reduction in peak memory. Applying EZKL-class optimizations to the Jolt quality proof path is the primary lever for the Devnet (15–40s) to Testnet (3–8s) transition.
+
+**ZK ASIC availability is an external dependency.** The Mainnet v1 <5s target assumes first-generation ZK acceleration hardware (Ingonyama and comparable vendors [28]) is commercially available by 2027. This is the single most significant schedule risk in the latency roadmap. The Testnet phase (2026) uses GPU-accelerated software provers exclusively and does not depend on ASIC availability — providing a buffer period to assess hardware timelines before the Mainnet prerequisite gate.
 
 ---
 
@@ -990,6 +1070,22 @@ inference_share = inference_gas_in_period × compute_weight(operator)
 
 compute_weight = stake_weight(0.4) × uptime_weight(0.4) × latency_weight(0.2)
 ```
+
+**Infrastructure Requirements by Architecture Type:**
+
+| Architecture | Minimum Hardware | Primary Cost Driver | Relative Intensity |
+|---|---|---|---|
+| Transformer | GPU ≥ 24GB VRAM | GPU amortization + proof generation | High |
+| SSM (Mamba-class) | GPU ≥ 16GB VRAM | GPU amortization + proof generation | Medium |
+| Neuro-Symbolic | CPU or GPU ≥ 8GB VRAM | CPU / memory | Low–Medium |
+
+The Neuro-Symbolic architecture type has meaningfully lower hardware requirements than the neural architectures, creating an accessible entry point for smaller operators and improving network decentralization.
+
+**Operator Break-even Model (Mainnet v1 reference scenario):**
+
+At Mainnet v1 network utilization of 10,000 inferences/day across all operators, a single registered operator holding 5% of the compute_weight for their architecture type handles approximately 500 inferences/day. At a blended gas rate of ~0.08 RAX per simple inference, inference_share yields approximately 40 RAX/day — before the base_availability_reward, which provides a utilization-independent floor.
+
+Profitability depends on three factors the protocol cannot control: network utilization growth rate, $RAX market price, and infrastructure costs in the operator's geography. The 50,000 RAX minimum stake is designed to align operator incentives with network health rather than as a barrier to entry: at Devnet-era $RAX prices, this represents a meaningful commitment without requiring institutional capital.
 
 **Slashing for operators** (distinct from agent slashing):
 
@@ -1711,14 +1807,14 @@ The dominant Nash equilibrium is honest, high-quality inference. The 30% premium
 
 **Deliverables:**
 - [x] Whitepaper v0.1, v0.2, v0.3
-- [ ] **Whitepaper v0.4** (this document)
+- [x] **Whitepaper v0.5** (this document)
 - [ ] Agave fork technical specification (Neural SVM Runtime v0.1)
 - [ ] Local PoC: 2 architectures processing queries without ZK proof
 - [ ] Initial RISC Zero integration for simple model proof-of-execution
 
 **Success Criteria:**
 ```
-✓ Whitepaper v0.4 published
+✓ Whitepaper v0.5 published
 ✓ PoC demonstrates semantic convergence between 2 architectures in >70% of queries
 ✓ Execution proof generated for simple model
 ✓ At least 3 external developers contributing to repository
@@ -2093,15 +2189,15 @@ challenge_seed = HASH(slot_hash || inf_id || stake_seed)
 
 [29] Guo, C. et al. "On Calibration of Modern Neural Networks." ICML 2017.
 
-[30] Ariely, D. & Loewenstein, G. "The Heat of the Moment." Journal of Behavioral Decision Making 19(2), 87–98 (2006).
+[30] Scharfstein, D.S. & Stein, J.C. "Herd Behavior and Investment." American Economic Review 80(3), 465–479 (1990).
 
-[31] Placeholder Ventures. "Token Economics Design Principles." Research Report (2024).
+[31] Weyl, E.G. & Posner, E.A. "Radical Markets: Uprooting Capitalism and Democracy for a Just Society." Princeton University Press (2018).
 
-[32] Ethereum Research Forum. "Logarithmic Bonding Curves for Resource Allocation." (2023). ethresear.ch
+[32] Myerson, R.B. "Optimal Auction Design." Mathematics of Operations Research 6(1), 58–73 (1981).
 
-[33] Multicoin Capital. "Deflationary Token Mechanics in Protocol Design." Research Report (2024).
+[33] Buterin, V. "EIP-1559: Fee market change for ETH 1.0 chain." Ethereum Improvement Proposals #1559. github.com/ethereum/EIPs/blob/master/EIPS/eip-1559.md (2019).
 
-[34] a16z crypto. "On-Chain Governance Best Practices." (2024).
+[34] Buterin, V. "Moving beyond coin voting governance." vitalik.ca/general/2021/08/16/voting3.html (2021).
 
 [35] Giza Protocol. "On-Chain ML Inference — Documentation." (2025). gizatech.xyz
 
