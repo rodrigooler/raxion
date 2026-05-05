@@ -22,6 +22,72 @@ The result is **Cognitive Finality** — irreversible mathematical truth at scal
 
 ---
 
+# Chapter 0: Formal Problem Statement
+
+> *"Before you can solve a problem, you must prove that it is the problem."*
+
+---
+
+## 0.1 The Oracle Problem: A Formal Definition
+
+In distributed systems theory, an **oracle** is a computational abstraction that provides a distributed system with information it cannot derive from its own state [Chandra & Toueg, 1996] [43]. The oracle is necessary when a class of problems is unsolvable by the system alone, providing the external signal that makes the problem tractable.
+
+For collective intelligence, the Oracle Problem takes the following precise form:
+
+**Definition 1 (Collective Intelligence Oracle Problem):** Let A = {a₁, a₂, ..., aₙ} be a set of intelligent agents operating in a distributed system S. Let Q ∈ 𝒬 be a query, and O_i = aᵢ(Q) the output of agent i. Let q: 𝒪ⁿ → ℝ be a quality function that assigns a real-valued score to any set of outputs. The Oracle Problem states:
+
+> The quality function q cannot be computed within S without either:
+> (a) access to an external ground-truth T(Q) for each query Q, or
+> (b) a trusted entity O_trusted that computes q on behalf of S — an oracle.
+
+This definition implies that any system claiming to evaluate inference quality without an external ground-truth must either import an oracle (delegating the trust problem to a third party) or internalize ground-truth within the system's own mathematics. Bittensor imports an oracle — the set of human validators with economic stake. RAXION internalizes ground-truth through mathematical convergence among heterogeneous architectures.
+
+---
+
+## 0.2 Why Social Consensus Cannot Solve the Oracle Problem
+
+Arrow's Impossibility Theorem (1951) establishes that no rank-order voting system can simultaneously satisfy three reasonable fairness conditions: unanimity, independence of irrelevant alternatives, and non-dictatorship [Arrow, 1951] [44]. While Arrow's theorem applies specifically to preference aggregation, its core insight extends to any system that aggregates individual judgments under strategic incentives:
+
+**No mechanism that aggregates n individual quality evaluations can guarantee that the aggregate is more accurate than individual evaluations in all cases — without external grounding.**
+
+Economic incentives improve accuracy in domains with eventual external resolution (prediction markets work when there is a clear settlement event). But they cannot create ground-truth from social consensus alone. For most open-domain AI inference tasks (analysis, synthesis, reasoning), no external settlement event exists.
+
+---
+
+## 0.3 What Makes AI Quality Verification Structurally Different
+
+Financial systems have external ground-truth: market prices, realized returns, objective settlement. This is why prediction markets work for financial data — resolution is external and unambiguous.
+
+For most AI inference tasks, no such external resolution exists in real time. Quality is a function of the reasoning process itself. This creates a three-part impossibility for human-judgment systems:
+
+**Claim 1:** Accurate quality assessment of open-domain AI inference requires deep domain expertise in the evaluated domain.
+
+**Claim 2:** A system with n validators cannot guarantee deep domain expertise across all domains simultaneously for arbitrary query distributions.
+
+**Claim 3:** When validator expertise is insufficient, economic incentives push evaluations toward popularity rather than correctness — documented in behavioral economics as systematic epistemic cowardice [Ariely & Loewenstein, 2006] [30].
+
+The joint consequence: **no stake-weighted human voting system can reliably produce accurate quality assessments for open-domain AI inference at scale.** This is not a failure of implementation. It is a structural consequence of the problem definition.
+
+---
+
+## 0.4 Formal Statement of RAXION's Central Bet
+
+RAXION's entire architecture rests on a single empirically falsifiable hypothesis:
+
+> **The Diversity Hypothesis:** Given three AI systems with structurally distinct architectures (Transformer, State-Space Model, Neuro-Symbolic), their failure sets F_T, F_S, F_N — the sets of queries on which each produces an incorrect response — are sufficiently non-overlapping that:
+>
+> ```
+> P(error | convergence(O_T, O_S, O_N) > θ) << P(error | any single O_i)
+> ```
+
+This hypothesis is **not** claimed to be universally true. It is claimed to be true for a broad enough class of practical inference tasks that the resulting system is more reliable than alternatives based on human judgment with economic stake.
+
+Chapter 2.9 provides empirical grounding for this hypothesis drawn from controlled experiments in the literature. Chapter 5 specifies exactly when and how it will be tested on Devnet.
+
+The Diversity Hypothesis is the falsifiable core of RAXION. If Devnet data shows that the three architectures fail systematically on the same queries, the convergence mechanism does not work as designed — and the whitepaper says so explicitly. This document does not obscure that risk.
+
+---
+
 # Chapter 1: The Crisis of Subjectivity
 
 > *"The question is not whether machines can think. The question is whether the systems that organize them can tell the truth."*
@@ -171,11 +237,11 @@ Zero-Knowledge Proofs for Machine Learning (zk-ML) were impractical until 2023�
 
 Three recent developments changed this equation:
 
-**Next-generation ZK frameworks**: Jolt [11] and RISC Zero v0.4 [12] drastically reduced proof generation overhead for generic computation, including ML inference. What once took hours now takes minutes. What took minutes is converging to seconds with ongoing software optimizations.
+**Next-generation ZK frameworks**: Jolt [11] and RISC Zero [12] drastically reduced proof generation overhead for generic computation, including ML inference. What once took hours now takes minutes. What took minutes is converging to seconds with ongoing software optimizations.
 
 **Dedicated ZK hardware**: The first generation of ASICs and FPGAs optimized for ZK proof generation is beginning to reach market. Companies like Ingonyama and others are developing hardware that can accelerate proof generation by 10–100x relative to current CPU/GPU implementations.
 
-**Solana as substrate**: The Solana Virtual Machine, with its native parallelism and account architecture, offers the ideal substrate for executing thousands of Cognition Threads simultaneously and storing zk-ML proofs as native state. The SIMD-286 upgrade [9], launched in February 2026, further expands on-chain compute capabilities relevant to this use case.
+**Solana as substrate**: The Solana Virtual Machine, with its native parallelism and account architecture, offers the ideal substrate for executing thousands of Cognition Threads simultaneously and storing zk-ML proofs as native state. The SIMD-0286 upgrade [9], which increases the maximum block compute budget to 100M compute units, expands network throughput capacity relevant to this use case.
 
 The moment to build RAXION is now precisely because the convergence of these three technologies makes feasible what was previously impossible.
 
@@ -491,7 +557,7 @@ The choice of Solana as DA layer and economic security substrate was motivated b
 
 **Native Parallelism**: The SVM's execution model was designed from the start for aggressive parallelism. The runtime identifies dependencies between transactions and executes independent ones simultaneously. For RAXION, where Cognition Threads from different agents are by definition independent of each other, this parallelism is essential — not a marginal benefit.
 
-**Throughput and Cost**: With 50,000+ TPS under normal conditions and transaction fees on the order of fractions of a cent, Solana allows RAXION to generate and store zk-ML proofs for thousands of inferences per day without gas costs making the system economically unviable.
+**Throughput and Cost**: With theoretical capacity exceeding 50,000 TPS and transaction fees on the order of fractions of a cent, Solana allows RAXION to generate and store zk-ML proofs for thousands of inferences per day without gas costs making the system economically unviable.
 
 **Tool Ecosystem**: Solana's DA, indexing, and contract development infrastructure is mature enough that RAXION does not need to reinvent basic primitives. This allows engineering effort to concentrate on genuinely new parts — the cognitive scheduler, zk-ML integration, and Native Memory Accounts.
 
@@ -627,6 +693,27 @@ INPUT QUERY
 - **State Isolation**: Parallel threads cannot modify the same state simultaneously
 - **Convergence Determinism**: Given the same set of parallel thread outputs, the Convergence Engine always produces the same aggregated result
 - **Fault Isolation**: A thread's failure does not block the others
+
+### 2.2.3 Availability Model: Nominal, Degraded, and Emergency States
+
+The three-architecture requirement creates an availability dependency that must be explicitly addressed. The Cognitive Scheduler operates in three modes:
+
+| Mode | Condition | CoherenceScore Cap | Premium Reward Available | Slashing Active |
+|---|---|---|---|---|
+| **Nominal** | All 3 architectures available | 1.0 | Yes (×1.5) | Yes |
+| **Degraded** | Exactly 2 architectures available | 0.80 (HIGH_CONFIDENCE impossible) | No | Yes |
+| **Emergency Halt** | 1 or 0 architectures available | N/A | No | Suspended |
+
+In **Degraded Mode**, the CoherenceScore formula adapts to a pairwise computation:
+
+```
+CS_semantic_degraded(O_i, O_j) = sim(O_i, O_j)      // single pairwise similarity
+CoherenceScore_degraded = 0.4 × CS_semantic_degraded + 0.6 × CC_pairwise
+```
+
+This allows the network to continue serving inferences with reduced confidence guarantees, rather than halting entirely when one architecture is temporarily unavailable. All outputs produced in Degraded Mode carry a `DEGRADED_MODE` flag in their proof metadata. **Emergency Halt suspends slashing** — preventing an adversary from deliberately triggering an availability attack to cause cascading slashing of legitimate agents.
+
+Operator-caused Degraded Mode events are cross-referenced with Compute Operator records (Section 2.8) and may trigger Compute Operator SLA penalties.
 
 ---
 
@@ -852,6 +939,140 @@ fn respond(query: Query, memory: &AgentMemory) -> Response {
 
 ---
 
+## 2.8 Compute Layer Architecture: Decentralizing Inference Compute
+
+### 2.8.1 The Hidden Centralization Problem
+
+RAXION's verification layer is decentralized: zk-ML proofs are verified on-chain, Cognitive Finality is immutable, and no central authority approves outputs. But verification being decentralized does not mean inference is decentralized.
+
+Running high-quality Transformer, SSM, and Neuro-Symbolic systems simultaneously requires significant computational resources — multiple high-memory GPUs, reliable infrastructure, and continuous operation. If a small number of operators control this compute, the network's cognitive outputs are effectively centralized at the execution layer even when verification is decentralized. This is a structural risk that RAXION addresses with a dedicated Compute Operator role.
+
+### 2.8.2 Compute Operators: A Dedicated Protocol Role
+
+A **Compute Operator** is any network participant that hosts one or more of the three RAXION reference architectures and offers compute capacity to the Cognitive Scheduler. Unlike Smart Agents (which define cognitive logic), Compute Operators provide raw inference infrastructure.
+
+**Registration structure:**
+```rust
+ComputeOperatorRegistration {
+    operator_pubkey: Pubkey,
+    architecture:    ArchitectureType,   // Transformer | SSM | NeuroSymbolic
+    stake:           u64,                // minimum 50,000 RAX (slashable)
+    hardware_class:  HardwareClass,      // A100 | H100 | Custom | CPU_Degraded
+    geographic_region: Region,
+    declared_latency_p99: u32,           // milliseconds
+    availability_sla: u8,               // declared uptime %, minimum 95
+}
+```
+
+**Mandatory minimum requirements:**
+- 50,000 RAX staked as slashable collateral
+- Hardware sufficient to serve declared latency SLA
+- Minimum 95% uptime SLA, verified on-chain via periodic availability challenges
+
+### 2.8.3 Diversity Enforcement: Architecture Quotas
+
+The Cognitive Scheduler enforces diversity at the network level:
+
+| Constraint | Limit | Enforcement Mechanism |
+|---|---|---|
+| Minimum active operators per architecture type | 3 | Scheduler halts to Degraded Mode if not met |
+| Maximum single-operator share per architecture type | 25% of compute capacity | Registration rejected above limit |
+| Maximum geographic concentration per architecture | 40% per region | Soft cap: excess capacity penalized in reward weight |
+
+These constraints prevent any single operator from dominating a specific architecture type, which would reduce the three-architecture convergence to a single operator's model.
+
+### 2.8.4 Compute Operator Economics
+
+```
+compute_revenue = base_availability_reward + inference_share
+
+inference_share = inference_gas_in_period × compute_weight(operator)
+
+compute_weight = stake_weight(0.4) × uptime_weight(0.4) × latency_weight(0.2)
+```
+
+**Slashing for operators** (distinct from agent slashing):
+
+| Violation | Slash |
+|---|---|
+| Missed inference assignment (beyond declared P99 latency) | 0.1% of stake |
+| Declared latency exceeded in >5% of assignments in 24h | 0.5% of stake |
+| Availability SLA below declared value for 48h continuous | 2.0% of stake |
+| Fraudulent hardware declaration (detected via ZK latency attestation) | 10% of stake |
+
+### 2.8.5 Hardware Attestation
+
+To prevent operators from declaring high-performance hardware while running inferior infrastructure, RAXION implements periodic **ZK Latency Attestation**: the operator generates a deterministic computation with known hardware-specific latency bounds. A proof that this computation completed within the declared window can only be produced by hardware of the declared class.
+
+Slashed operator stake follows the same distribution as agent slashing: 40% redistributed to high-uptime operators, 30% burned, 20% to the Protocol Insurance Fund, 10% to the challenger.
+
+---
+
+## 2.9 The Architecture Diversity Guarantee: Empirical Foundation
+
+### 2.9.1 The Central Question
+
+The Cross-Validation Neural mechanism (Section 2.4) rests on a claim: Transformer, SSM, and Neuro-Symbolic architectures have structurally different failure sets. If this claim is false — if all three fail on the same queries because they share training corpora — then convergence certifies correlated error rather than approximating truth.
+
+This section provides empirical grounding for this claim and formally states what RAXION does and does not guarantee.
+
+### 2.9.2 Empirical Evidence: Failure Divergence Persists Across Identical Training Data
+
+The most rigorous available evidence comes from Waleffe et al. (2024) at NVIDIA Research [36], who trained 8B-parameter Mamba, Mamba-2, and Transformer models on **identical datasets of up to 3.5 trillion tokens**, controlling for data distribution.
+
+Key findings from that controlled comparison:
+
+| Task Category | Transformer | Mamba / SSM |
+|---|---|---|
+| Copying and retrieval (Phonebook Lookup) | Strong | **Significantly weaker** |
+| Few-shot in-context learning (5-shot MMLU) | Strong | **Weaker** |
+| Long-context reasoning | Strong | **Weaker** |
+| Standard language modeling | Comparable | Comparable or better |
+| Sequential state tracking | Baseline | **Stronger** |
+
+**Critical finding**: Performance divergences persist even when both architectures train on identical data. The failure modes are **architectural**, not distributional. An architecture's characteristic failure set is structurally determined by its inductive biases, not only by what data it saw.
+
+Neuro-Symbolic systems contribute a third complementary failure profile: they maintain strong accuracy on out-of-distribution formal reasoning tasks where neural architectures degrade, but are brittle in uncertain or ambiguous environments and depend heavily on symbolic knowledge base quality [Garcez & Lamb, 2023; Neuro-Symbolic AI Systematic Review, 2025] [19] [40].
+
+### 2.9.3 Formal Statement of the Diversity Guarantee
+
+**Definition (Architecture Failure Set):** For an architecture A and query distribution 𝒟, the failure set F_A is:
+
+```
+F_A = { Q ∈ 𝒟 : P(A(Q) is semantically incorrect) > ε }
+
+where ε = 0.15 (protocol parameter, governable)
+```
+
+**The RAXION Diversity Guarantee:** For T (Transformer), S (SSM), N (Neuro-Symbolic) trained on comparable distributions:
+
+```
+E[|F_T ∩ F_S ∩ F_N|] / E[|𝒟|]  <<  min(E[|F_T|], E[|F_S|], E[|F_N|]) / E[|𝒟|]
+```
+
+In prose: the probability that all three architectures fail simultaneously on a given query is significantly smaller than the probability that any individual architecture fails.
+
+**What the guarantee does NOT claim:**
+- That F_T ∩ F_S ∩ F_N is empty (it is not — see Section 2.9.4)
+- That convergence implies factual correctness (it does not — see Section 3.5.2)
+- That the guarantee holds uniformly across all query domains
+
+### 2.9.4 Domains Where the Guarantee Is Weaker
+
+**Severely underrepresented domains:** If a domain is absent from all three architectures' training sets, all three may produce correlated low-quality outputs. Stochastic Verification (Layer 2) provides partial mitigation: MATH_FORMAL and LOGIC_SAT challenges test formal reasoning that is domain-agnostic and resistant to corpus gaps.
+
+**Adversarially crafted queries:** A sophisticated adversary who understands all three architectures' failure modes could in principle craft queries designed to elicit convergent incorrect answers. This attack surface is analyzed in Appendix A, §A.6.
+
+### 2.9.5 Maintaining Diversity Over Time
+
+As model capabilities converge across architecture families, RAXION must actively maintain architectural diversity:
+
+- **Architecture certification:** New architecture types must demonstrate empirically distinct failure sets from certified types via a formal protocol proposal with a 30-day public validation period including benchmark disclosure.
+- **Periodic diversity audits:** The CoherenceScore distribution is monitored on-chain. If the distribution suggests architectures converging (average CS_semantic rising toward 1.0 across all query types over a 30-day window), this triggers a governance review of the architecture mix.
+- **Hybrid architecture policy:** Hybrid models (e.g., 70% Transformer / 30% SSM) are classified under the majority type. Models with architecturally balanced composition require a new architecture certification process.
+
+---
+
 # Chapter 3: The Protocol of Truth (zk-ML + PoIQ)
 
 > *"A mathematical proof is not a well-founded opinion. It is a statement that, if incorrect, can be falsified by anyone with a pencil and paper. That is what we want for truth on the blockchain."*
@@ -936,7 +1157,7 @@ CoherenceScore(O_T, O_S, O_N) = α × CS_semantic + β × CC
 ```
 CoherenceScore ∈ [0.0, 0.3)  → REJECTION
     - Output discarded
-    - Immediate slashing: 5% of each divergent agent's stake
+    - Immediate slashing: up to 1% of each divergent agent's stake (proportional to divergence; see Layer 3 formula)
 
 CoherenceScore ∈ [0.3, 0.6)  → MODERATE DIVERGENCE
     - Output accepted with LOW_CONFIDENCE flag
@@ -1006,6 +1227,29 @@ challenge_result ∈ {1.0 (correct), 0.0 (incorrect), -0.5 (timeout)}
 reward_multiplier = 1.0 + max(0, RS - 0.7) × 2.0
 RS = 0.95 → multiplier = 1.50x
 RS < 0.50 → agent in "probation" (rewards reduced 50%)
+
+### 3.3.4 Reliability Score Bootstrap Protocol
+
+New agents entering the network face a cold-start problem: they have no RS history, but the reward multiplier formula disadvantages agents with RS below 0.70. Without a bootstrap protocol, new agents are economically penalized during a period when their RS is unformed.
+
+RAXION addresses this with a three-phase bootstrap:
+
+**Phase 1 — Grace Period (inferences 1–20):**
+- RS initialized at 0.50 (neutral: no penalty, no premium)
+- Slashing for CoherenceScore < 0.3 suspended
+- Stochastic verification applies normally (building RS history)
+- Reward multiplier fixed at 1.0× (no penalty, no bonus)
+
+**Phase 2 — Reputation Building (inferences 21–100):**
+- Standard RS update formula activates: RS_new = 0.9×RS_old + 0.1×challenge_result
+- Slashing activates at 50% of normal rates (conservative ramp-up)
+- Reward multiplier formula applies normally
+
+**Phase 3 — Full Participation (inference 101+):**
+- All protocol parameters apply at full rates
+- RS is sufficiently informed by challenge history to be reliable
+
+**Voluntary Fast-Track:** Agents may optionally request 5 consecutive back-to-back challenges during Phase 1 by submitting a `BootstrapChallengeRequest` transaction. Passing all 5 immediately elevates the agent to Phase 3 with an initial RS of 0.70. This incentivizes high-quality agents to self-certify quickly without forcing all agents through a slow ramp.
 ```
 
 ---
@@ -1016,7 +1260,8 @@ RS < 0.50 → agent in "probation" (rewards reduced 50%)
 
 **Trigger 1 — Immediate Rejection (CoherenceScore < 0.3):**
 ```
-slash_immediate(A_i) = stake(A_i) × 0.01 × (1 - CoherenceScore / 0.3)
+slash_immediate(A_i) = stake(A_i) × 0.01 × max(0, 1 - CoherenceScore / 0.3)
+// domain: applies only when CoherenceScore < 0.3
 ```
 
 **Trigger 2 — Challenge Failure:**
@@ -1133,7 +1378,7 @@ An adversary could train models to produce close embeddings even when outputs ar
 ║  RS_new = 0.9×RS_old + 0.1×challenge_result                    ║
 ╠══════════════════════════════════════════════════════════════════╣
 ║  LAYER 3: SLASHING FOR CHRONIC DIVERGENCE                       ║
-║  slash_immediate = stake × 0.01 × (1 - CS/0.3)                ║
+║  slash_immediate = stake × 0.01 × max(0, 1 - CS/0.3)          ║
 ║  slash_challenge = stake × 0.02 × chronic_multiplier           ║
 ║  slash_chronic   = stake × 0.05 (RS < 0.40 for 72h)           ║
 ║  Destination: 40% redistrib | 30% burn | 20% fund | 10% ch    ║
@@ -1143,6 +1388,126 @@ An adversary could train models to produce close embeddings even when outputs ar
 ║  VERIFY(π_poiq) = ACCEPT → commit → Solana L1                 ║
 ╚══════════════════════════════════════════════════════════════════╝
 ```
+
+---
+
+## 3.8 Proof Aggregation: Composing Heterogeneous ZK Systems
+
+### 3.8.1 The Heterogeneous Composition Challenge
+
+The PoIQ protocol generates proofs from two systems with incompatible algebraic structures:
+
+- **π_exec (×3):** RISC Zero — zkSTARK using the FRI polynomial commitment scheme
+- **π_quality:** EZKL — zkSNARK based on Halo2 with logUp lookup arguments [42]
+
+A STARK proof cannot be directly embedded in a SNARK circuit without a translation layer. Aggregating them requires a two-step composition protocol. The notation `π_poiq = AGGREGATE(π_exec×3, π_quality)` in Section 3.2 refers to this specific protocol.
+
+**Why use two different systems at all?** EZKL (Halo2-based) is 65.88× faster than RISC Zero and uses 98% less memory for ML inference operations [42]. For the quality proof (CoherenceScore computation), EZKL is optimal. For the execution proof (proving that specific agent code with specific weights produced a specific output), RISC Zero's general-purpose zkVM is necessary. The architecture uses each system where it is strongest.
+
+### 3.8.2 Step 1: STARK-to-SNARK Compression
+
+RISC Zero's production implementation includes a built-in STARK-to-SNARK compression step: the zkSTARK execution proof is recursively verified inside a Groth16 circuit [Groth, EUROCRYPT 2016] [25], producing a compact constant-size SNARK. After compression, each π_exec is:
+
+- **Constant size:** ~200 bytes, regardless of computation length
+- **Constant verification cost:** algebraically compatible with Halo2/PLONK-based systems
+- **No new trusted setup:** RISC Zero's Groth16 compression uses a one-time trusted setup performed during protocol genesis
+
+After this step, all three π_exec proofs are Groth16 SNARKs in the same algebraic structure as π_quality.
+
+### 3.8.3 Step 2: IVC Aggregation via Nova Folding
+
+With all four proofs in compatible form, RAXION uses **Nova** (Kothapalli, Setty & Tzialla, CRYPTO 2022) [37], a recursive zero-knowledge argument from folding schemes, to produce the final π_poiq.
+
+Nova's defining property: **constant recursion overhead**, dominated by two group scalar multiplications, with a verifier circuit of approximately 10,000 multiplication gates. This is the smallest recursion overhead in the published literature, making it efficient for aggregating an arbitrary number of proofs without proportionally increasing cost.
+
+```
+// Nova IVC aggregation
+π_poiq = Nova.IVC.fold([
+    Groth16.compress(π_exec_T),
+    Groth16.compress(π_exec_S),
+    Groth16.compress(π_exec_N),
+    π_quality
+])
+
+VERIFY(π_poiq, public_inputs) → {ACCEPT, REJECT}
+// single constant-size proof verifiable by any network node
+```
+
+### 3.8.4 Proof Latency Budget with Composition Overhead
+
+The full aggregation adds overhead on top of individual proof generation. All π_exec proofs are generated in parallel (they are independent by construction):
+
+| Component | Devnet (CPU) | Testnet (GPU) | Mainnet v1 (ASIC) |
+|---|---|---|---|
+| π_exec × 3 (parallel, RISC Zero) | 15–40s | 3–8s | <1.5s |
+| STARK→SNARK compression ×3 (parallel) | 5–15s | 1–3s | <300ms |
+| π_quality (EZKL/Halo2) | 3–10s | 0.5–2s | <200ms |
+| Nova IVC aggregation | 2–5s | <1s | <100ms |
+| **Total (parallel execution)** | **~25–60s** | **~5–12s** | **<2s** |
+
+Total latency is bounded by the slowest architecture, not the sum of all proofs.
+
+### 3.8.5 Batch Aggregation (Mainnet v2)
+
+For high-throughput scenarios, multiple π_poiq proofs from different inferences are recursively aggregated into a single batch proof using **Plonky2** (Polygon Zero, 2022) [38], which achieves recursive proof generation in ~170ms and compresses any proof to ~43KB. A single batch proof covers k inferences:
+
+```
+π_batch = Plonky2.aggregate([π_poiq_1, π_poiq_2, ..., π_poiq_k])
+// one proof verifying k inferences → one L1 commitment
+```
+
+This reduces Solana L1 commitment cost by a factor of k, making per-inference settlement costs economically negligible at scale.
+
+---
+
+## 3.9 Governance Attack Surface and Mitigations
+
+### 3.9.1 The Residual Oracle Problem
+
+Chapter 1.5.4 established that RAXION does not depend on external oracles for real-time inference verification. However, an honest analysis must acknowledge a residual oracle dependency: **the challenge category set**.
+
+The six stochastic verification categories are defined in the protocol and can be modified via on-chain governance. Governance that controls challenge categories controls what "quality" means for Layer 2 verification — reintroducing the oracle problem at the governance layer rather than eliminating it.
+
+This is not a hypothetical risk. The **Tornado Cash governance attack of May 2023** demonstrated concretely how on-chain governance can be captured [Composable Security, 2023] [39]:
+
+- The attacker submitted a proposal that appeared identical to a previously approved benign proposal
+- The proposal contained a hidden `selfdestruct` function
+- Using 1.2 million fake votes against 70,000 legitimate, the attacker captured the DAO
+- $2.17 million in TORN tokens were drained before the community could respond
+
+RAXION's governance design directly addresses each vulnerability in this attack vector.
+
+### 3.9.2 The Immutable Core: Four Ungovernable Categories
+
+RAXION partitions challenge categories into two tiers. The Immutable Core is **hardcoded at the runtime level in the Neural SVM fork**. No governance vote, regardless of quorum or timelock, can remove or modify these four categories:
+
+| Category | Why Immutable |
+|---|---|
+| `MATH_FORMAL` | Mathematical truth is the clearest available objective ground-truth |
+| `LOGIC_SAT` | Boolean satisfiability is decidable and definitionally unambiguous |
+| `CODE_EXECUTION` | Deterministic code with fixed inputs is verifiable by any node |
+| `CRYPTO_VERIFY` | Cryptographic verification is correct or incorrect by definition |
+
+These four categories cover the verification space where ground-truth is unambiguous and cannot be socially constructed away. Any agent that consistently fails these categories is producing wrong outputs, regardless of what governance says.
+
+### 3.9.3 Governable Extensions
+
+| Action | Required Quorum | Timelock | Reversibility |
+|---|---|---|---|
+| Add new extended category | 20% of supply | 21 days | Irreversible once active |
+| Deprecate extended category | 30% of supply | 60-day sunset period | Cannot affect Immutable Core |
+| Modify category parameters | 15% of supply | 14 days | 90-day rollback window |
+| Modify Immutable Core | **Impossible** | N/A | N/A |
+
+### 3.9.4 Four Governance Safeguards Against Tornado Cash-Style Attacks
+
+**1. Proposal Execution Simulation:** All governance proposals that include executable code must submit a formal simulation certificate, generated by an auditing smart contract that executes the proposal on a fork of current state and publishes the complete state diff on-chain before voting begins. Voters see exactly what a proposal does before casting votes.
+
+**2. Stake-Snapshot Voting:** Voting power is computed from a stake snapshot taken 24 hours before proposal submission. This prevents flash-loan-style vote manipulation where an attacker borrows governance tokens temporarily to pass a proposal.
+
+**3. Minority Veto:** A 15% minority stake can veto any governance proposal during the timelock period via an on-chain veto transaction. This requires a cartel to control 85% of participating stake to push through a proposal over objections, significantly above the threshold exploited in the Tornado Cash scenario.
+
+**4. Time-Locked Activation:** Even after a proposal passes, mandatory timelocks (7–30 days, parameter-dependent) allow the community to detect and challenge malicious proposals before they take effect.
 
 ---
 
@@ -1255,6 +1620,84 @@ royalty_A = gas_total(inference_B) × cross_agent_usage_fraction × 0.10
 | 2028 | 56M | 65M | -9M |
 | 2029 | 42M | 90M | -48M |
 | 2030 | 32M | 110M | -78M |
+
+---
+
+## 4.4 Game Theory Analysis: Rational Behavior Under PoIQ
+
+### 4.4.1 Defining the Agent's Strategy Space
+
+A rational Smart Agent under PoIQ has a strategy defined by two variables:
+
+- **Inference quality q ∈ [0, 1]:** the true quality of the output produced
+- **Computational effort e ∈ [0, 1]:** resources invested, which correlates with quality but can be decoupled
+
+A gaming strategy decouples q from e: an agent might invest minimum effort while producing outputs that appear to converge with other architectures. Under Bittensor's human-judgment system, this decoupling is trivially exploitable (proxying GPT-4 appears high-quality to validators who cannot verify provenance). Under PoIQ, this decoupling is structurally harder because stochastic verification challenges formal reasoning, not surface appearance.
+
+### 4.4.2 Formal Payoff Analysis
+
+Let:
+```
+R_base   = base inference reward (RAX)
+g        = gas cost per inference (RAX)
+s        = agent stake (RAX)
+p_c      = challenge probability = 0.015
+p_fail   = P(gaming agent fails challenge | gaming strategy)
+f        = slash_challenge = s × 0.02 (first failure)
+```
+
+**Honest strategy (q ≈ 1.0, RS ≈ 0.85):**
+```
+E[payoff_honest] = R_base × 1.30 - g
+```
+(reward_multiplier at RS=0.85 = 1.0 + (0.85-0.70)×2.0 = 1.30×)
+
+**Gaming strategy (q ≈ 0.62, barely above rejection threshold):**
+```
+E[payoff_gaming] = R_base × 1.0 - g - p_c × p_fail × f × chronic_multiplier
+```
+
+**Nash equilibrium condition** — honest dominates gaming:
+```
+R_base × 1.30 - g  >  R_base × 1.0 - g - p_c × p_fail × f
+
+Simplifying:
+0.30 × R_base  >  -p_c × p_fail × f
+```
+
+Since the right side is negative (slashing is a cost), **the honest strategy strictly dominates in expected value** — the premium reward coefficient (0.30 × R_base) is always positive. The 30% premium for HIGH_CONFIDENCE inference and the slashing cost from challenge failure are additive pressures toward quality.
+
+### 4.4.3 Collusion Equilibria and Breaking Points
+
+**Single-agent gaming:** Expected RS degradation:
+```
+RS after k consecutive challenge failures (assuming p_fail = 0.80 for gaming agent):
+RS_k = 0.9^k × RS_0
+
+k=10:  RS_10 ≈ 0.30  → chronic slashing triggered (RS < 0.40)
+k=15:  RS_15 ≈ 0.19  → terminal slashing + 30-day network removal
+```
+A gaming agent that fails 1-in-5 challenges will be expelled from the network within approximately 750 inferences.
+
+**Two-agent collusion (T + S coordinate, N independent):**
+CoherenceScore requires convergence among all three architectures. Colluding T and S boost CS_semantic between themselves but cannot control N's output. If N diverges from their coordinated answer, the overall CoherenceScore is dragged down. Two-agent collusion is insufficient to capture premium rewards unless N independently produces similar outputs, which happens only when all three genuinely converge on quality.
+
+**Three-agent full cartel:**
+All three architecture operators coordinate. The cartel can produce high CoherenceScore for arbitrary queries. The breaking point is stochastic verification: a cartel that produces incorrect answers must also fool the Immutable Core challenge categories (MATH_FORMAL, LOGIC_SAT, CODE_EXECUTION, CRYPTO_VERIFY). These categories test formal correctness that cannot be consistently faked. A cartel that cannot answer formal challenges correctly degrades its RS collectively until slashing terminates its participants.
+
+A cartel that can consistently answer all four Immutable Core categories correctly is, by definition, producing factually correct formal reasoning. That is the protocol's goal.
+
+### 4.4.4 Equilibrium Summary
+
+| Strategy | Expected Long-Run Payoff | Sustainable? | Why |
+|---|---|---|---|
+| Honest, high quality (RS → 0.85+) | R_base × 1.30 - g | **Yes** | Maximum payoff |
+| Honest, minimum viable quality | R_base × 1.0 - g | Yes | Suboptimal but stable |
+| Single-agent gaming | R_base - g - RS_degradation_cost | **No** | RS degrades to slashing |
+| Two-agent cartel | Partial reward loss + N-divergence penalty | Unstable | Cannot capture premium |
+| Three-agent cartel | Requires genuine quality to pass challenges | **Collapses to honest** | Challenge mechanism enforces |
+
+The dominant Nash equilibrium is honest, high-quality inference. The 30% premium reward creates positive pull; slashing creates negative push. Both forces reinforce correct protocol behavior.
 
 ---
 
@@ -1457,6 +1900,139 @@ For researchers who want to contest the PoIQ formalization: the technical Yellow
 
 ---
 
+# Appendix A: Comprehensive Threat Model
+
+> This appendix enumerates all identified attack vectors against RAXION's protocol, their economic cost, detection mechanisms, and mitigations. All threats listed here are considered in protocol design. None are presented as fully eliminated; each is mitigated to economically non-viable or detectable within bounded time.
+
+---
+
+## A.1 Architecture Collusion (Cognitive Sybil Attack)
+
+**Description:** An adversary controls Compute Operators across all three architecture types for a given inference and forces convergence on an incorrect answer.
+
+**Economic cost:** The adversary must control >25% of compute capacity for each of the three architecture types simultaneously (above the single-operator quota limit). With at minimum 3 operators per type and a 50,000 RAX minimum stake:
+
+```
+minimum_visible_cost = 3 operators × 3 types × 50,000 RAX = 450,000 RAX
+```
+
+Realistic cost at representative stake distributions is 5–20× higher.
+
+**Detection timeline:** Stochastic verification at 1.5% rate detects systematic quality defects within an expected 67 inferences. A cartel producing incorrect answers cannot maintain RS above 0.40 under challenge pressure.
+
+**Mitigations:** Architecture diversity quotas (25% cap per operator per type), randomized architecture selection weighted by stake seed, stochastic verification against Immutable Core categories.
+
+---
+
+## A.2 Governance Capture
+
+**Description:** An adversary accumulates sufficient governance stake to modify challenge categories or protocol parameters to advantage their agents.
+
+**Economic cost:**
+- 100M RAX (10% of supply) to modify convergence thresholds
+- 200M RAX (20% of supply) to add challenge categories
+- Effective cost is higher because accumulation drives price
+
+**Detection:** All governance proposals are public on-chain with mandatory pre-vote execution simulation. Timelocks of 7–30 days allow community response.
+
+**Mitigations:** Immutable Core (4 categories hardcoded, ungovernable), 15% veto threshold for minority protection, stake-snapshot voting (prevents flash loans), mandatory proposal simulation before voting (prevents Tornado Cash-style hidden function attacks [39]).
+
+---
+
+## A.3 Compute Centralization (Gradual Capture)
+
+**Description:** A well-capitalized actor gradually acquires Compute Operator positions across all architecture types, approaching but not triggering individual quotas, while coordinating operators externally.
+
+**Difficulty:** Requires deploying genuinely separate infrastructure to avoid detection. The 25% cap per operator type means controlling more than 75% of any type requires at least 4 independent registered operators, each with separate stake accounts and hardware attestations.
+
+**Detection:** On-chain operator diversity monitoring; Cognitive Scheduler emits architecture concentration metrics visible to all participants.
+
+**Mitigation:** Architecture quotas, geographic distribution incentives, hardware attestation (Section 2.8.5), periodic governance review of concentration metrics.
+
+---
+
+## A.4 Training Data Poisoning
+
+**Description:** An adversary contributes poisoned data to training corpora used by one or more reference architectures, creating correlated biases that cause all three to converge on specific incorrect answers.
+
+**Structural difficulty:** Compromising Transformer training requires corrupting internet-scale corpora. Compromising Neuro-Symbolic systems requires corrupting formal knowledge bases (entirely different data sources). A single poisoning campaign cannot simultaneously affect both neural and symbolic components. The architectural independence is also a data-independence guarantee.
+
+**Detection:** Stochastic verification against MATH_FORMAL and LOGIC_SAT categories tests capabilities resistant to superficial data poisoning. Mathematical theorems are not falsifiable by corrupting web text.
+
+**Mitigation:** Architecture type certification requires independent training provenance disclosure. Neuro-Symbolic architecture's independence from large web corpora is a structural mitigation for coordinated poisoning campaigns.
+
+---
+
+## A.5 Stake Grinding
+
+**Description:** An adversary manipulates their stake amount between blocks to influence `challenge_seed = HASH(slot_hash || inf_id || stake_seed)`, attempting to predict and avoid unfavorable challenge categories.
+
+**Analysis:**
+```
+challenge_seed = HASH(slot_hash || inf_id || stake_seed)
+```
+
+`slot_hash` is determined by Solana's consensus and is unpredictable until the block is finalized. Since the adversary cannot predict `slot_hash` before submitting their inference, they cannot determine which challenge they will receive, regardless of stake manipulation.
+
+**Conclusion:** Stake grinding is computationally infeasible without controlling >33% of Solana's validator stake. That is a Solana-level attack, not a RAXION-level attack.
+
+---
+
+## A.6 Adversarially Crafted Convergence Queries
+
+**Description:** A sophisticated adversary studies the failure modes of all three architectures and crafts queries specifically designed to produce convergent incorrect answers — targeting the intersection of the three failure sets.
+
+**Difficulty:** Requires detailed knowledge of all three architectures' internal representations and failure boundaries, which are not fully public and shift with model updates. Successful adversarial queries that pass CoherenceScore must also pass Immutable Core challenges, which test formal correctness immune to prompt crafting.
+
+**Detection:** On-chain anomaly detection monitors CoherenceScore distribution patterns. Consistently HIGH_CONFIDENCE CoherenceScore combined with declining RS (challenge failure rate increasing) is a statistical signal of adversarial query crafting.
+
+**Mitigation:** Immutable Core categories are specifically designed to be resistant to prompt crafting. Architectural diversity limits the intersection of failure sets to a small fraction of the query space. Adversarial query detection is an area of ongoing research flagged for Testnet.
+
+---
+
+## A.7 Data Availability Withholding (Cold State Attack)
+
+**Description:** An adversary controls storage nodes on Arweave/IPFS and withholds cold state for target agents, degrading their context access and inference quality.
+
+**Impact:** Affected agents cannot access full reasoning history. This could be used to target high-RS agents before critical queries or during time-sensitive periods.
+
+**Detection:** On-chain periodic cold state availability challenges (proof-of-retrievability). Unavailable cold state triggers a `COLD_STATE_DEGRADED` flag in the agent's on-chain account, visible to the Cognitive Scheduler.
+
+**Mitigation:** Hot state (Merkle root) is always on-chain and accessible. Agents are required to maintain cold state redundancy across at minimum 2 independent DA providers (Arweave + IPFS). Protocol requires minimum 2 independent DA commitments per agent's memory account.
+
+---
+
+## A.8 Availability Attack (Architecture Denial of Service)
+
+**Description:** An adversary conducts targeted denial-of-service against all Compute Operators of a specific architecture type, forcing the network into Degraded Mode or Emergency Halt.
+
+**Impact:**
+- Degraded Mode: CoherenceScore capped at 0.80, premium rewards disabled, outputs flagged
+- Emergency Halt: All inference suspended, slashing suspended (preventing cascading slashing)
+
+**Key property:** Emergency Halt suspends slashing. This prevents the attack from being used to forcibly slash legitimate agents through manufactured chaos. No staked funds are at risk due to availability attacks.
+
+**Mitigation:** Geographic distribution requirements reduce infrastructure-level attack effectiveness. Minimum 3 operators per architecture distributes the attack surface. Emergency Halt is automatic and conservative by design.
+
+---
+
+## Threat Model Summary
+
+| Threat | Minimum Economic Cost | Detection Time | Severity | Mitigated? |
+|---|---|---|---|---|
+| Architecture Collusion | >450,000 RAX + ongoing | ~67 inferences | Critical | Yes |
+| Governance Capture | >100M RAX | Pre-vote review | Critical | Yes |
+| Compute Centralization | Structural (gradual) | Continuous monitoring | High | Yes |
+| Training Data Poisoning | Very high (multi-source) | Indirect (RS degradation) | High | Partial |
+| Stake Grinding | Infeasible (requires Solana control) | N/A | Low | Yes |
+| Adversarial Convergence Queries | Very high (expertise + effort) | Anomaly detection | Medium | Partial |
+| DA Withholding | Medium | Periodic challenges | Medium | Yes |
+| Availability Attack | High (distributed DoS) | Immediate (Scheduler) | Medium | Yes |
+
+"Partial" mitigations are areas of active protocol research. The Devnet and Testnet phases are designed to stress-test these vectors under adversarial conditions before Mainnet.
+
+---
+
 # References
 
 [1] Bittensor Whitepaper Original — Steeves, J. & Shaabana, A. (2021). "Bittensor: A Peer-to-Peer Intelligence Market." bittensor.com/whitepaper
@@ -1475,13 +2051,13 @@ For researchers who want to contest the PoIQ formalization: the technical Yellow
 
 [8] "Comprehensive Analysis of Bittensor Incentive Mechanisms." ChainCatcher (January 2025).
 
-[9] Solana Network Upgrades — SIMD-286: Expanded Compute Units for On-Chain ML (February 2026). github.com/solana-foundation/solana-improvement-documents
+[9] Solana Network Upgrades — SIMD-0286: Increase Max Block Limit to 100M Compute Units (May 2025). github.com/solana-foundation/solana-improvement-documents
 
 [10] "The Definitive Guide to ZKML." ICME Blog, Stanford University (2025).
 
 [11] Arun, S. et al. "Jolt: SNARKs for Virtual Machines via Lookups." a16z crypto research (2024). jolt.a16zcrypto.com
 
-[12] RISC Zero. "RISC Zero v0.4 — Boundless: A Universal ZK Coprocessor." (2024). risczero.com/news/boundless
+[12] RISC Zero. "Boundless: Universal ZK Compute Protocol." Mainnet on Base, September 2025. risczero.com/news/boundless
 
 [13] EZKL. "Machine Learning Proofs — Documentation." (2025). ezkl.xyz/docs
 
@@ -1493,7 +2069,7 @@ For researchers who want to contest the PoIQ formalization: the technical Yellow
 
 [17] Vaswani, A. et al. "Attention Is All You Need." NeurIPS 2017.
 
-[18] Gu, A. & Dao, T. "Mamba: Linear-Time Sequence Modeling with Selective State Spaces." ICLR 2024.
+[18] Gu, A. & Dao, T. "Mamba: Linear-Time Sequence Modeling with Selective State Spaces." arXiv:2312.00752 [cs.LG], December 2023.
 
 [19] Garcez, A. & Lamb, L. "Neurosymbolic AI: The 3rd Wave." Artificial Intelligence Review 56, 12387–12406 (2023).
 
@@ -1529,9 +2105,27 @@ For researchers who want to contest the PoIQ formalization: the technical Yellow
 
 [35] Giza Protocol. "On-Chain ML Inference — Documentation." (2025). gizatech.xyz
 
+[36] Waleffe, R. et al. "An Empirical Study of Mamba-based Language Models." arXiv:2406.07887 [cs.LG], NVIDIA Research, June 2024. arxiv.org/abs/2406.07887
+
+[37] Kothapalli, A., Setty, S. & Tzialla, I. "Nova: Recursive Zero-Knowledge Arguments from Folding Schemes." Advances in Cryptology — CRYPTO 2022, Lecture Notes in Computer Science vol. 13510. github.com/microsoft/Nova
+
+[38] Polygon Zero. "Plonky2: Fast Recursive Arguments with PLONK and FRI." (January 2022). polygon.technology/blog/introducing-plonky2
+
+[39] Composable Security. "Understanding the Tornado Cash Governance Attack." (May 2023). composable-security.com/blog/understanding-the-tornado-cash-governance-attack/
+
+[40] Neuro-Symbolic AI in 2024: A Systematic Review. arXiv:2501.05435 [cs.AI], January 2025. arxiv.org/abs/2501.05435
+
+[41] Ethereum 2.0 Validator Game Theory. "A Game Theoretic Analysis of Validator Strategies in Ethereum 2.0." arXiv:2405.03357, May 2024.
+
+[42] EZKL. "Benchmarking ZKML Frameworks: EZKL vs. RISC Zero vs. Orion." (2024). blog.ezkl.xyz/post/benchmarks/
+
+[43] Chandra, T.D. & Toueg, S. "Unreliable Failure Detectors for Reliable Distributed Systems." Journal of the ACM 43(2), 225–267 (1996).
+
+[44] Arrow, K.J. "Social Choice and Individual Values." Cowles Commission Monograph 12, Wiley (1951).
+
 ---
 
-*RAXION Whitepaper v0.4 — February 2026*
+*RAXION Whitepaper v0.5 — May 2026*
 *Document License: CC BY 4.0*
 *Code License: BUSL 1.1 → MIT on 02/20/2030*
 
