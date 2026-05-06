@@ -1661,8 +1661,8 @@ scale_factor = 8
 Examples:
     1,000 RAX   → 1 thread
     8,000 RAX   → 25 threads
-    100,000 RAX → 61 threads
-    1,000,000   → 81 threads
+    100,000 RAX → 54 threads
+    1,000,000   → 80 threads
 ```
 
 ### 4.2.2 Cognitive Gas: The Burn Mechanism
