@@ -2,6 +2,121 @@
   "announcementPosts": [
     {
       "type": "announcement",
+      "slug": "testnet-live",
+      "date": "2026-06-29",
+      "title": {
+        "en": "RAXION Testnet is Live on Solana",
+        "pt-BR": "Testnet da RAXION esta no ar na Solana",
+        "zh": "RAXION 测试网已在 Solana 上线",
+        "ja": "RAXION テストネットが Solana で稼働開始",
+        "es": "La Testnet de RAXION esta activa en Solana"
+      },
+      "summary": {
+        "en": "The PoIQ program is deployed to Solana Testnet. The explorer is live at testnet.raxion.network. We are inviting developers to run agents and submit test inferences.",
+        "pt-BR": "O programa PoIQ esta deployado na Solana Testnet. O explorer esta em testnet.raxion.network. Estamos convidando desenvolvedores para rodar agentes e submeter inferencias de teste.",
+        "zh": "PoIQ 程序已部署到 Solana 测试网。浏览器已在 testnet.raxion.network 上线。我们邀请开发者运行代理并提交测试推理。",
+        "ja": "PoIQ プログラムが Solana テストネットにデプロイされました。エクスプローラーは testnet.raxion.network で公開中。開発者にエージェントの実行とテスト推論の送信を呼びかけています。",
+        "es": "El programa PoIQ esta desplegado en la Testnet de Solana. El explorador esta disponible en testnet.raxion.network. Invitamos a los desarrolladores a ejecutar agentes y enviar inferencias de prueba."
+      },
+      "author": {
+        "name": "Rodrigo Oler",
+        "githubUrl": "https://github.com/rodrigooler",
+        "avatarUrl": "https://github.com/rodrigooler.png"
+      },
+      "body": [
+        {
+          "heading": {
+            "en": "What is live",
+            "pt-BR": "O que esta no ar",
+            "zh": "已上线内容",
+            "ja": "稼働中のもの",
+            "es": "Que esta activo"
+          },
+          "paragraphs": {
+            "en": [
+              "The raxion-poiq Anchor program is now deployed to both Solana Devnet and Testnet under the same program ID: 5JVFMV1DvhQD6Tm2BtPBs8zkvGArzRGUYF6GSNw2XUeT.",
+              "The explorer reads InferenceRecord accounts directly from Solana and displays CoherenceScores with color-coded categories: red for rejected (below 0.30), yellow for low confidence (0.30 to 0.60), green for standard (0.60 to 0.85), and blue for high coherence (above 0.85)."
+            ],
+            "pt-BR": [
+              "O programa Anchor raxion-poiq esta deployado na Devnet e na Testnet da Solana com o mesmo program ID: 5JVFMV1DvhQD6Tm2BtPBs8zkvGArzRGUYF6GSNw2XUeT.",
+              "O explorer le as contas InferenceRecord diretamente da Solana e exibe CoherenceScores com categorias coloridas: vermelho para rejeitado (abaixo de 0.30), amarelo para baixa confianca (0.30 a 0.60), verde para padrao (0.60 a 0.85) e azul para alta coerencia (acima de 0.85)."
+            ],
+            "zh": [
+              "raxion-poiq Anchor 程序已部署到 Solana Devnet 和 Testnet，使用相同的程序 ID: 5JVFMV1DvhQD6Tm2BtPBs8zkvGArzRGUYF6GSNw2XUeT。",
+              "浏览器直接从 Solana 读取 InferenceRecord 账户，并以颜色编码显示 CoherenceScore：红色表示被拒绝（低于 0.30），黄色表示低置信度（0.30 到 0.60），绿色表示标准（0.60 到 0.85），蓝色表示高一致性（高于 0.85）。"
+            ],
+            "ja": [
+              "raxion-poiq Anchor プログラムは Solana Devnet と Testnet の両方にデプロイされており、プログラム ID は同じです: 5JVFMV1DvhQD6Tm2BtPBs8zkvGArzRGUYF6GSNw2XUeT。",
+              "エクスプローラーは Solana から InferenceRecord アカウントを直接読み取り、CoherenceScore をカラーコード付きカテゴリで表示します：赤は拒否（0.30 未満）、黄は低信頼度（0.30～0.60）、緑は標準（0.60～0.85）、青は高一貫性（0.85 以上）。"
+            ],
+            "es": [
+              "El programa Anchor raxion-poiq esta desplegado en Devnet y Testnet de Solana con el mismo program ID: 5JVFMV1DvhQD6Tm2BtPBs8zkvGArzRGUYF6GSNw2XUeT.",
+              "El explorador lee las cuentas InferenceRecord directamente de Solana y muestra CoherenceScores con categorias codificadas por color: rojo para rechazado (debajo de 0.30), amarillo para baja confianza (0.30 a 0.60), verde para estandar (0.60 a 0.85) y azul para alta coherencia (arriba de 0.85)."
+            ]
+          },
+          "bullets": {
+            "en": [
+              "Devnet Explorer: https://devnet.raxion.network",
+              "Testnet Explorer: https://testnet.raxion.network",
+              "GitHub: https://github.com/rodrigooler/raxion"
+            ],
+            "pt-BR": [
+              "Explorer Devnet: https://devnet.raxion.network",
+              "Explorer Testnet: https://testnet.raxion.network",
+              "GitHub: https://github.com/rodrigooler/raxion"
+            ],
+            "zh": [
+              "Devnet 浏览器: https://devnet.raxion.network",
+              "Testnet 浏览器: https://testnet.raxion.network",
+              "GitHub: https://github.com/rodrigooler/raxion"
+            ],
+            "ja": [
+              "Devnet エクスプローラー: https://devnet.raxion.network",
+              "Testnet エクスプローラー: https://testnet.raxion.network",
+              "GitHub: https://github.com/rodrigooler/raxion"
+            ],
+            "es": [
+              "Explorador Devnet: https://devnet.raxion.network",
+              "Explorador Testnet: https://testnet.raxion.network",
+              "GitHub: https://github.com/rodrigooler/raxion"
+            ]
+          }
+        },
+        {
+          "heading": {
+            "en": "How to participate",
+            "pt-BR": "Como participar",
+            "zh": "如何参与",
+            "ja": "参加方法",
+            "es": "Como participar"
+          },
+          "paragraphs": {
+            "en": [
+              "Clone the repository, build the SDK agent, and submit test inferences to the Testnet. Every inference is verified by the PoIQ protocol and recorded on-chain. The seed script makes it easy to populate the network with sample data across all four CoherenceScore categories.",
+              "Check the blog post on how to contribute to the RAXION Testnet for a step-by-step guide. Open issues on GitHub for bugs, feature requests, or questions about the protocol."
+            ],
+            "pt-BR": [
+              "Clone o repositorio, compile o SDK agent e submeta inferencias de teste na Testnet. Cada inferencia e verificada pelo protocolo PoIQ e registrada on-chain. O script de seed facilita popular a rede com dados de exemplo em todas as quatro categorias de CoherenceScore.",
+              "Veja o post sobre como contribuir com a Testnet da RAXION para um guia passo a passo. Abra issues no GitHub para bugs, feature requests ou perguntas sobre o protocolo."
+            ],
+            "zh": [
+              "克隆代码库，构建 SDK 代理，并向测试网提交测试推理。每次推理都由 PoIQ 协议验证并记录在链上。种子脚本方便用所有四个 CoherenceScore 类别的样本数据填充网络。",
+              "查看关于如何贡献 RAXION 测试网的博客文章获取分步指南。在 GitHub 上提交问题以报告 bug、功能请求或协议相关问题。"
+            ],
+            "ja": [
+              "リポジトリをクローンし、SDK エージェントをビルドして、テストネットにテスト推論を送信してください。各推論は PoIQ プロトコルで検証され、オンチェーンに記録されます。シードスクリプトを使えば、4つの CoherenceScore カテゴリすべてのサンプルデータでネットワークを簡単に埋められます。",
+              "ステップバイステップガイドについては、RAXION テストネットへの貢献方法に関するブログ記事をご覧ください。バグ、機能リクエスト、プロトコルに関する質問は GitHub で Issue を作成してください。"
+            ],
+            "es": [
+              "Clona el repositorio, compila el SDK agent y envia inferencias de prueba a la Testnet. Cada inferencia es verificada por el protocolo PoIQ y registrada on-chain. El script de seed facilita poblar la red con datos de ejemplo en las cuatro categorias de CoherenceScore.",
+              "Consulta el post sobre como contribuir con la Testnet de RAXION para una guia paso a paso. Abre issues en GitHub para bugs, feature requests o preguntas sobre el protocolo."
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "type": "announcement",
       "slug": "vinext-site-rebuild",
       "date": "2026-02-20",
       "title": {
@@ -112,6 +227,285 @@
     }
   ],
   "blogPosts": [
+    {
+      "type": "blog",
+      "slug": "contribute-to-testnet",
+      "date": "2026-06-29",
+      "title": {
+        "en": "How to Contribute to RAXION Testnet",
+        "pt-BR": "Como contribuir com a Testnet da RAXION",
+        "zh": "如何贡献 RAXION 测试网",
+        "ja": "RAXION テストネットへの貢献方法",
+        "es": "Como contribuir con la Testnet de RAXION"
+      },
+      "summary": {
+        "en": "A step-by-step guide for developers: build a Smart Agent, submit test inferences, and run the explorer. Everything you need to start testing the PoIQ protocol on Solana Testnet.",
+        "pt-BR": "Guia passo a passo para desenvolvedores: compile um Smart Agent, submeta inferencias de teste e rode o explorer. Tudo que voce precisa para comecar a testar o protocolo PoIQ na Solana Testnet.",
+        "zh": "开发者分步指南：构建智能代理，提交测试推理，运行浏览器。开始在 Solana 测试网上测试 PoIQ 协议所需的一切。",
+        "ja": "開発者向けステップバイステップガイド：スマートエージェントの構築、テスト推論の送信、エクスプローラーの実行。Solana テストネットで PoIQ プロトコルのテストを始めるために必要な全て。",
+        "es": "Guia paso a paso para desarrolladores: compila un Smart Agent, envia inferencias de prueba y ejecuta el explorador. Todo lo que necesitas para empezar a probar el protocolo PoIQ en la Testnet de Solana."
+      },
+      "author": {
+        "name": "Rodrigo Oler",
+        "githubUrl": "https://github.com/rodrigooler",
+        "avatarUrl": "https://github.com/rodrigooler.png"
+      },
+      "body": [
+        {
+          "heading": {
+            "en": "Prerequisites",
+            "pt-BR": "Pre-requisitos",
+            "zh": "前置条件",
+            "ja": "前提条件",
+            "es": "Prerrequisitos"
+          },
+          "paragraphs": {
+            "en": [
+              "You need Rust (stable), Node.js 22+, and a Solana wallet. If you do not have a wallet, create one with solana-keygen new. Get free Testnet SOL from faucet.solana.com (select Testnet).",
+              "Clone the repository: git clone https://github.com/rodrigooler/raxion.git and run cargo test --workspace to verify everything builds (42 tests should pass)."
+            ],
+            "pt-BR": [
+              "Voce precisa de Rust (stable), Node.js 22+ e uma wallet Solana. Se nao tiver wallet, crie com solana-keygen new. Pegue SOL gratis para Testnet em faucet.solana.com (selecione Testnet).",
+              "Clone o repositorio: git clone https://github.com/rodrigooler/raxion.git e rode cargo test --workspace para verificar que tudo compila (42 testes devem passar)."
+            ],
+            "zh": [
+              "你需要 Rust（stable）、Node.js 22+ 和一个 Solana 钱包。如果没有钱包，用 solana-keygen new 创建一个。从 faucet.solana.com 获取免费的测试网 SOL（选择 Testnet）。",
+              "克隆代码库：git clone https://github.com/rodrigooler/raxion.git，运行 cargo test --workspace 验证一切可以构建（42 个测试应该通过）。"
+            ],
+            "ja": [
+              "Rust（stable）、Node.js 22+、Solana ウォレットが必要です。ウォレットがない場合は solana-keygen new で作成してください。faucet.solana.com から無料のテストネット SOL を入手してください（Testnet を選択）。",
+              "リポジトリをクローン：git clone https://github.com/rodrigooler/raxion.git し、cargo test --workspace を実行してすべてがビルドされることを確認します（42 テストがパスするはずです）。"
+            ],
+            "es": [
+              "Necesitas Rust (stable), Node.js 22+ y una wallet Solana. Si no tienes wallet, crea una con solana-keygen new. Obtiene SOL gratis para Testnet en faucet.solana.com (selecciona Testnet).",
+              "Clona el repositorio: git clone https://github.com/rodrigooler/raxion.git y ejecuta cargo test --workspace para verificar que todo compila (42 tests deben pasar)."
+            ]
+          }
+        },
+        {
+          "heading": {
+            "en": "Build a Smart Agent",
+            "pt-BR": "Compile um Smart Agent",
+            "zh": "构建智能代理",
+            "ja": "スマートエージェントの構築",
+            "es": "Compila un Smart Agent"
+          },
+          "paragraphs": {
+            "en": [
+              "The SDK provides the SmartAgent trait in sdk/agent/src/agent.rs. Implement name(), architecture_type(), and respond(). The respond method receives an InferenceRequest and an AgentMemory, and returns a string output.",
+              "Three example agents are included: math_agent, code_agent, and text_agent. Each one uses Ollama (localhost:11434) for inference. You can swap in any LLM or model backend.",
+              "Build and run with: cargo run --manifest-path sdk/agent/Cargo.toml --example math_agent. The runner will initialize your agent on-chain (if needed) and process queries."
+            ],
+            "pt-BR": [
+              "O SDK fornece o trait SmartAgent em sdk/agent/src/agent.rs. Implemente name(), architecture_type() e respond(). O metodo respond recebe um InferenceRequest e um AgentMemory, e retorna uma string de saida.",
+              "Tres agentes de exemplo estao incluidos: math_agent, code_agent e text_agent. Cada um usa Ollama (localhost:11434) para inferencia. Voce pode trocar por qualquer LLM ou backend de modelo.",
+              "Compile e rode com: cargo run --manifest-path sdk/agent/Cargo.toml --example math_agent. O runner vai inicializar seu agente on-chain (se necessario) e processar queries."
+            ],
+            "zh": [
+              "SDK 在 sdk/agent/src/agent.rs 中提供了 SmartAgent trait。实现 name()、architecture_type() 和 respond()。respond 方法接收 InferenceRequest 和 AgentMemory，返回字符串输出。",
+              "包含三个示例代理：math_agent、code_agent 和 text_agent。每个都使用 Ollama（localhost:11434）进行推理。你可以替换为任何 LLM 或模型后端。",
+              "构建并运行：cargo run --manifest-path sdk/agent/Cargo.toml --example math_agent。运行器将在链上初始化你的代理（如需要）并处理查询。"
+            ],
+            "ja": [
+              "SDK は sdk/agent/src/agent.rs に SmartAgent トレイトを提供します。name()、architecture_type()、respond() を実装してください。respond メソッドは InferenceRequest と AgentMemory を受け取り、文字列出力を返します。",
+              "3つのサンプルエージェントが含まれています：math_agent、code_agent、text_agent。それぞれ Ollama（localhost:11434）を推論に使用します。任意の LLM やモデルバックエンドに置き換えられます。",
+              "ビルドと実行：cargo run --manifest-path sdk/agent/Cargo.toml --example math_agent。ランナーがエージェントをオンチェーンで初期化し（必要な場合）、クエリを処理します。"
+            ],
+            "es": [
+              "El SDK provee el trait SmartAgent en sdk/agent/src/agent.rs. Implementa name(), architecture_type() y respond(). El metodo respond recibe un InferenceRequest y un AgentMemory, y retorna una string de salida.",
+              "Se incluyen tres agentes de ejemplo: math_agent, code_agent y text_agent. Cada uno usa Ollama (localhost:11434) para inferencia. Puedes sustituir por cualquier LLM o backend de modelo.",
+              "Compila y ejecuta con: cargo run --manifest-path sdk/agent/Cargo.toml --example math_agent. El runner inicializara tu agente on-chain (si es necesario) y procesara queries."
+            ]
+          }
+        },
+        {
+          "heading": {
+            "en": "Submit test inferences",
+            "pt-BR": "Submeta inferencias de teste",
+            "zh": "提交测试推理",
+            "ja": "テスト推論の送信",
+            "es": "Envia inferencias de prueba"
+          },
+          "paragraphs": {
+            "en": [
+              "The fastest way to populate the network is the seed script. It initializes your agent (if needed) and submits inferences with scores distributed across all four categories.",
+              "For Devnet: ln -sf apps/explorer/node_modules node_modules && node scripts/devnet_seed.mjs 20. For Testnet: SOLANA_RPC_URL=https://api.testnet.solana.com node scripts/devnet_seed.mjs 20.",
+              "Each inference creates an on-chain InferenceRecord PDA with the CoherenceScore, proof hash, timestamps, and challenge status. You can verify your submissions on the explorer."
+            ],
+            "pt-BR": [
+              "A forma mais rapida de popular a rede e o script de seed. Ele inicializa seu agente (se necessario) e submete inferencias com scores distribuidos nas quatro categorias.",
+              "Para Devnet: ln -sf apps/explorer/node_modules node_modules && node scripts/devnet_seed.mjs 20. Para Testnet: SOLANA_RPC_URL=https://api.testnet.solana.com node scripts/devnet_seed.mjs 20.",
+              "Cada inferencia cria um PDA InferenceRecord on-chain com o CoherenceScore, hash de prova, timestamps e status de challenge. Voce pode verificar suas submissoes no explorer."
+            ],
+            "zh": [
+              "填充网络最快的方式是种子脚本。它会初始化你的代理（如需要）并提交分布在所有四个类别中的推理。",
+              "Devnet: ln -sf apps/explorer/node_modules node_modules && node scripts/devnet_seed.mjs 20。Testnet: SOLANA_RPC_URL=https://api.testnet.solana.com node scripts/devnet_seed.mjs 20。",
+              "每次推理在链上创建一个 InferenceRecord PDA，包含 CoherenceScore、证明哈希、时间戳和挑战状态。你可以在浏览器上验证你的提交。"
+            ],
+            "ja": [
+              "ネットワークを埋める最速の方法はシードスクリプトです。エージェントを初期化し（必要な場合）、4つのカテゴリ全てにスコアを分散させて推論を送信します。",
+              "Devnet: ln -sf apps/explorer/node_modules node_modules && node scripts/devnet_seed.mjs 20。Testnet: SOLANA_RPC_URL=https://api.testnet.solana.com node scripts/devnet_seed.mjs 20。",
+              "各推論はオンチェーンに InferenceRecord PDA を作成します。CoherenceScore、証明ハッシュ、タイムスタンプ、チャレンジステータスが含まれます。エクスプローラーで送信を確認できます。"
+            ],
+            "es": [
+              "La forma mas rapida de poblar la red es el script de seed. Inicializa tu agente (si es necesario) y envia inferencias con scores distribuidos en las cuatro categorias.",
+              "Para Devnet: ln -sf apps/explorer/node_modules node_modules && node scripts/devnet_seed.mjs 20. Para Testnet: SOLANA_RPC_URL=https://api.testnet.solana.com node scripts/devnet_seed.mjs 20.",
+              "Cada inferencia crea un PDA InferenceRecord on-chain con el CoherenceScore, hash de prueba, timestamps y estado de challenge. Puedes verificar tus envios en el explorador."
+            ]
+          }
+        },
+        {
+          "heading": {
+            "en": "Run the explorer locally",
+            "pt-BR": "Rode o explorer localmente",
+            "zh": "本地运行浏览器",
+            "ja": "エクスプローラーのローカル実行",
+            "es": "Ejecuta el explorador localmente"
+          },
+          "paragraphs": {
+            "en": [
+              "The explorer runs on localhost:3001. Set up with: cd apps/explorer && cp .env.example .env && npm install && npm run dev. It reads InferenceRecords from the Solana RPC configured in the .env file.",
+              "To switch between Devnet and Testnet locally, change NEXT_PUBLIC_SOLANA_RPC_URL in the .env file. The production explorer at devnet.raxion.network and testnet.raxion.network does this automatically by hostname."
+            ],
+            "pt-BR": [
+              "O explorer roda em localhost:3001. Configure com: cd apps/explorer && cp .env.example .env && npm install && npm run dev. Ele le InferenceRecords do RPC Solana configurado no arquivo .env.",
+              "Para alternar entre Devnet e Testnet localmente, mude NEXT_PUBLIC_SOLANA_RPC_URL no arquivo .env. O explorer em producao em devnet.raxion.network e testnet.raxion.network faz isso automaticamente pelo hostname."
+            ],
+            "zh": [
+              "浏览器运行在 localhost:3001。设置：cd apps/explorer && cp .env.example .env && npm install && npm run dev。它从 .env 文件中配置的 Solana RPC 读取 InferenceRecord。",
+              "要在本地切换 Devnet 和 Testnet，修改 .env 文件中的 NEXT_PUBLIC_SOLANA_RPC_URL。生产环境的浏览器 devnet.raxion.network 和 testnet.raxion.network 通过主机名自动切换。"
+            ],
+            "ja": [
+              "エクスプローラーは localhost:3001 で動作します。セットアップ：cd apps/explorer && cp .env.example .env && npm install && npm run dev。.env ファイルで設定された Solana RPC から InferenceRecord を読み取ります。",
+              "ローカルで Devnet と Testnet を切り替えるには、.env ファイルの NEXT_PUBLIC_SOLANA_RPC_URL を変更します。本番のエクスプローラー devnet.raxion.network と testnet.raxion.network はホスト名で自動的に切り替えます。"
+            ],
+            "es": [
+              "El explorador corre en localhost:3001. Configura con: cd apps/explorer && cp .env.example .env && npm install && npm run dev. Lee InferenceRecords del RPC Solana configurado en el archivo .env.",
+              "Para alternar entre Devnet y Testnet localmente, cambia NEXT_PUBLIC_SOLANA_RPC_URL en el archivo .env. El explorador en produccion en devnet.raxion.network y testnet.raxion.network lo hace automaticamente por hostname."
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "type": "blog",
+      "slug": "devnet-launch-first-inferences",
+      "date": "2026-06-28",
+      "title": {
+        "en": "Devnet Launch: First On-Chain Inferences",
+        "pt-BR": "Lancamento Devnet: primeiras inferencias on-chain",
+        "zh": "Devnet 上线：首批链上推理",
+        "ja": "Devnet ローンチ：初のオンチェーン推論",
+        "es": "Lanzamiento Devnet: primeras inferencias on-chain"
+      },
+      "summary": {
+        "en": "We deployed raxion-poiq to Solana Devnet and submitted the first InferenceRecords on-chain. The explorer is reading live data from the program accounts.",
+        "pt-BR": "Deployamos o raxion-poiq na Solana Devnet e submetemos os primeiros InferenceRecords on-chain. O explorer esta lendo dados ao vivo das contas do programa.",
+        "zh": "我们将 raxion-poiq 部署到 Solana Devnet 并提交了首批链上 InferenceRecord。浏览器正在从程序账户读取实时数据。",
+        "ja": "raxion-poiq を Solana Devnet にデプロイし、最初の InferenceRecord をオンチェーンに送信しました。エクスプローラーはプログラムアカウントからライブデータを読み取っています。",
+        "es": "Desplegamos raxion-poiq en Solana Devnet y enviamos los primeros InferenceRecords on-chain. El explorador lee datos en vivo de las cuentas del programa."
+      },
+      "author": {
+        "name": "Rodrigo Oler",
+        "githubUrl": "https://github.com/rodrigooler",
+        "avatarUrl": "https://github.com/rodrigooler.png"
+      },
+      "body": [
+        {
+          "heading": {
+            "en": "What we deployed",
+            "pt-BR": "O que deployamos",
+            "zh": "部署内容",
+            "ja": "デプロイ内容",
+            "es": "Lo que desplegamos"
+          },
+          "paragraphs": {
+            "en": [
+              "The raxion-poiq Anchor program is the core of PoIQ Layer 1. It handles submit_convergence (recording CoherenceScore and proof hashes), init_agent (initializing stake and cognitive accounts), deterministic challenge generation, and slashing arithmetic.",
+              "The program was built for the SBF target inside a Docker container (Apple container with cargo-binstall for anchor-cli) and deployed using the Solana CLI. The program ID is 5JVFMV1DvhQD6Tm2BtPBs8zkvGArzRGUYF6GSNw2XUeT."
+            ],
+            "pt-BR": [
+              "O programa Anchor raxion-poiq e o nucleo do PoIQ Layer 1. Ele gerencia submit_convergence (registrar CoherenceScore e hashes de prova), init_agent (inicializar contas de stake e cognitivas), geracao deterministica de challenges e aritmetica de slashing.",
+              "O programa foi compilado para o target SBF dentro de um container Docker (Apple container com cargo-binstall para anchor-cli) e deployado via Solana CLI. O program ID e 5JVFMV1DvhQD6Tm2BtPBs8zkvGArzRGUYF6GSNw2XUeT."
+            ],
+            "zh": [
+              "raxion-poiq Anchor 程序是 PoIQ Layer 1 的核心。它处理 submit_convergence（记录 CoherenceScore 和证明哈希）、init_agent（初始化质押和认知账户）、确定性挑战生成和削减算术。",
+              "程序在 Docker 容器内（使用 cargo-binstall 的 Apple container）为 SBF 目标编译，并通过 Solana CLI 部署。程序 ID 为 5JVFMV1DvhQD6Tm2BtPBs8zkvGArzRGUYF6GSNw2XUeT。"
+            ],
+            "ja": [
+              "raxion-poiq Anchor プログラムは PoIQ Layer 1 のコアです。submit_convergence（CoherenceScore と証明ハッシュの記録）、init_agent（ステークと認知アカウントの初期化）、決定論的チャレンジ生成、スラッシング演算を処理します。",
+              "プログラムは Docker コンテナ内で SBF ターゲット向けにビルドされ（cargo-binstall を使用した Apple container）、Solana CLI でデプロイされました。プログラム ID は 5JVFMV1DvhQD6Tm2BtPBs8zkvGArzRGUYF6GSNw2XUeT です。"
+            ],
+            "es": [
+              "El programa Anchor raxion-poiq es el nucleo de PoIQ Layer 1. Gestiona submit_convergence (registro de CoherenceScore y hashes de prueba), init_agent (inicializacion de cuentas de stake y cognitivas), generacion determinista de challenges y aritmetica de slashing.",
+              "El programa fue compilado para el target SBF dentro de un contenedor Docker (Apple container con cargo-binstall para anchor-cli) y desplegado via Solana CLI. El program ID es 5JVFMV1DvhQD6Tm2BtPBs8zkvGArzRGUYF6GSNw2XUeT."
+            ]
+          }
+        },
+        {
+          "heading": {
+            "en": "How the explorer works",
+            "pt-BR": "Como o explorer funciona",
+            "zh": "浏览器工作原理",
+            "ja": "エクスプローラーの仕組み",
+            "es": "Como funciona el explorador"
+          },
+          "paragraphs": {
+            "en": [
+              "The explorer is a Vite + Vinext (React Server Components) app deployed to Cloudflare Workers. It auto-detects the network by hostname: devnet.raxion.network reads from api.devnet.solana.com, testnet.raxion.network reads from api.testnet.solana.com.",
+              "Data fetching runs client-side in the browser. The Solana public RPC blocks Cloudflare Workers IPs, so the fetch happens directly from the visitor browser using DataView for binary parsing of InferenceRecord accounts."
+            ],
+            "pt-BR": [
+              "O explorer e um app Vite + Vinext (React Server Components) deployado no Cloudflare Workers. Ele detecta automaticamente a rede pelo hostname: devnet.raxion.network le de api.devnet.solana.com, testnet.raxion.network le de api.testnet.solana.com.",
+              "A busca de dados roda client-side no browser. O RPC publico da Solana bloqueia IPs do Cloudflare Workers, entao o fetch acontece diretamente do browser do visitante usando DataView para parsing binario das contas InferenceRecord."
+            ],
+            "zh": [
+              "浏览器是部署在 Cloudflare Workers 上的 Vite + Vinext（React Server Components）应用。它通过主机名自动检测网络：devnet.raxion.network 从 api.devnet.solana.com 读取，testnet.raxion.network 从 api.testnet.solana.com 读取。",
+              "数据获取在浏览器客户端运行。Solana 公共 RPC 屏蔽了 Cloudflare Workers IP，因此 fetch 直接从访问者浏览器发起，使用 DataView 对 InferenceRecord 账户进行二进制解析。"
+            ],
+            "ja": [
+              "エクスプローラーは Cloudflare Workers にデプロイされた Vite + Vinext（React Server Components）アプリです。ホスト名でネットワークを自動検出します：devnet.raxion.network は api.devnet.solana.com から、testnet.raxion.network は api.testnet.solana.com から読み取ります。",
+              "データ取得はブラウザのクライアント側で実行されます。Solana の公開 RPC は Cloudflare Workers の IP をブロックするため、fetch は訪問者のブラウザから直接行われ、DataView を使用して InferenceRecord アカウントのバイナリ解析を行います。"
+            ],
+            "es": [
+              "El explorador es una app Vite + Vinext (React Server Components) desplegada en Cloudflare Workers. Detecta automaticamente la red por hostname: devnet.raxion.network lee de api.devnet.solana.com, testnet.raxion.network lee de api.testnet.solana.com.",
+              "La obtencion de datos se ejecuta client-side en el navegador. El RPC publico de Solana bloquea IPs de Cloudflare Workers, asi que el fetch ocurre directamente desde el navegador del visitante usando DataView para el parsing binario de las cuentas InferenceRecord."
+            ]
+          }
+        },
+        {
+          "heading": {
+            "en": "What comes next",
+            "pt-BR": "Proximos passos",
+            "zh": "后续计划",
+            "ja": "今後の予定",
+            "es": "Proximos pasos"
+          },
+          "paragraphs": {
+            "en": [
+              "The SDK AgentRunner is now functional: it loads a Solana wallet, initializes agent accounts on-chain, accepts queries, and submits convergence transactions. The next step is validating hypothesis H1 with real heterogeneous models (Transformer, Mamba SSM, Neuro-Symbolic engine) instead of LLM proxies.",
+              "ZK proofs end-to-end (RISC Zero 3.0) require a Linux machine with GPU. We are setting up CI with GPU runners to unblock this path."
+            ],
+            "pt-BR": [
+              "O SDK AgentRunner agora esta funcional: carrega uma wallet Solana, inicializa contas de agente on-chain, aceita queries e submete transacoes de convergencia. O proximo passo e validar a hipotese H1 com modelos heterogeneos reais (Transformer, Mamba SSM, engine Neuro-Symbolic) ao inves de proxies LLM.",
+              "Provas ZK end-to-end (RISC Zero 3.0) precisam de uma maquina Linux com GPU. Estamos configurando CI com GPU runners para desbloquear esse caminho."
+            ],
+            "zh": [
+              "SDK AgentRunner 现已可用：加载 Solana 钱包，在链上初始化代理账户，接受查询，并提交收敛交易。下一步是用真实的异构模型（Transformer、Mamba SSM、神经符号引擎）而非 LLM 代理来验证假设 H1。",
+              "端到端 ZK 证明（RISC Zero 3.0）需要带 GPU 的 Linux 机器。我们正在配置带 GPU 运行器的 CI 来解除这一阻碍。"
+            ],
+            "ja": [
+              "SDK AgentRunner が機能するようになりました：Solana ウォレットの読み込み、オンチェーンでのエージェントアカウント初期化、クエリの受付、コンバージェンストランザクションの送信が可能です。次のステップは、LLM プロキシの代わりに実際の異種モデル（Transformer、Mamba SSM、ニューロシンボリックエンジン）で仮説 H1 を検証することです。",
+              "エンドツーエンドの ZK 証明（RISC Zero 3.0）には GPU 付き Linux マシンが必要です。GPU ランナー付き CI を設定してこのパスを解除する予定です。"
+            ],
+            "es": [
+              "El SDK AgentRunner ahora es funcional: carga una wallet Solana, inicializa cuentas de agente on-chain, acepta queries y envia transacciones de convergencia. El siguiente paso es validar la hipotesis H1 con modelos heterogeneos reales (Transformer, Mamba SSM, motor Neuro-Symbolic) en lugar de proxies LLM.",
+              "Las pruebas ZK end-to-end (RISC Zero 3.0) requieren una maquina Linux con GPU. Estamos configurando CI con GPU runners para desbloquear este camino."
+            ]
+          }
+        }
+      ]
+    },
     {
       "type": "blog",
       "slug": "how-to-build-a-smart-agent-on-raxion",

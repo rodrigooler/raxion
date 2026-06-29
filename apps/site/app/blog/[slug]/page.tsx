@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { findBlogPost, getStaticPostParams } from "../../content/posts";
+import { getSiteContent } from "../../content/site-dictionary";
 import { PostPage } from "../../components/post-pages";
 import { SiteFooter, SiteHeader } from "../../components/site-shell";
 import { routeHref } from "../../../lib/site";
