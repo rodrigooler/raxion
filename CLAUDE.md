@@ -16,17 +16,74 @@
 
 ## Current Phase
 
-**Phase 1 — Devnet (Q2 2026)**
+**Phase 2 — Testnet (Q4 2026)**
 
-Active work:
-- PoIQ v0.1 on-chain path and deterministic challenge flow
-- Runtime cognitive extensions and SDK stabilization
-- RISC Zero embedding commitment path validation
-- Devnet explorer hardening and deployment flow
+- Phase 0 (Q1 2026) ✅ — Whitepaper, Python PoC, RISC Zero basic integration
+- Phase 1 (Q2 2026) ✅ — Agave integration, PoIQ v0.1, Agent SDK v0.1, Devnet deploy
+- Phase 2 (Q4 2026) 🟡 — GPU proofs, all PoIQ layers, RaxLang v0.1
 
-**Q3 update (2026-02-27)**: Testnet-prep scaffolding is now in-progress in-repo
-(GPU/Jolt scaffold, 6 challenge categories, token/rollup scaffolds). Production/Testnet
-live execution still depends on infrastructure rollout.
+---
+
+## Live Environments (verified 2026-06-29)
+
+| Env | Explorer | RPC | Status |
+|---|---|---|---|
+| **Devnet** | https://devnet.raxion.network | `api.devnet.solana.com` | 15 InferenceRecords live |
+| **Testnet** | https://testnet.raxion.network | `api.testnet.solana.com` | 15 InferenceRecords live |
+
+- **Program ID** (both networks): `5JVFMV1DvhQD6Tm2BtPBs8zkvGArzRGUYF6GSNw2XUeT`
+- **Wallet**: `6LeyWdxSsnrJrqyXNBSd9PuH6c2mkETV6NawDs87vLK4`
+- **Cloudflare Worker**: `raxion-explorer` (single worker, hostname-based network detection)
+- **Docker image**: `raxion/anchor-devnet:0.1` (cargo-binstall, Apple container compatible)
+- **Workers.dev**: https://raxion-explorer.roodrigoprogrammer.workers.dev
+
+---
+
+## Operations Quick Reference
+
+### Deploy program to devnet/testnet
+```bash
+container run --rm --platform linux/amd64 \
+  -v "$(pwd)":/work -v "$HOME/.config/solana":/home/raxion/.config/solana \
+  -e HOME=/home/raxion -e CARGO_HOME=/work/.cargo-home -w /work \
+  raxion/anchor-devnet:0.1 bash -c "
+    solana config set --url <devnet|testnet> --keypair /home/raxion/.config/solana/id.json &&
+    cargo build-sbf --manifest-path programs/raxion-poiq/Cargo.toml &&
+    cp programs/raxion-poiq/target/deploy/raxion_poiq.so target/deploy/ &&
+    solana program deploy target/deploy/raxion_poiq.so --program-id target/deploy/raxion_poiq-keypair.json"
+```
+
+### Seed test inferences
+```bash
+ln -sf apps/explorer/node_modules node_modules
+node scripts/devnet_seed.mjs 15                                           # devnet
+SOLANA_RPC_URL=https://api.testnet.solana.com node scripts/devnet_seed.mjs 15  # testnet
+```
+
+### Deploy explorer to Cloudflare
+```bash
+cd apps/explorer
+CLOUDFLARE_API_TOKEN="<token>" npx vinext deploy --name raxion-explorer
+```
+
+### Run tests
+```bash
+cargo test --workspace                              # Rust workspace (42 tests)
+.venv/bin/pytest poc/tests/ -v                      # Python PoC (23 tests)
+cd apps/explorer && npm run build                   # Explorer build check
+```
+
+---
+
+## Known Limitations (devnet/testnet, 2026-06-29)
+
+- **SlotHashes sysvar** fails to deserialize (solana-program 1.18 vs Solana 2.x). Challenge seed uses Clock-based fallback (predictable). Fix when anchor-lang supports Solana 2.x.
+- **Anchor IDL build** fails with Rust 1.88 on native target. Deploy uses `cargo build-sbf` + `solana program deploy` directly.
+- **SDK agent runner** is a stub. No external agents can run yet.
+- **PoC architectures** are LLM proxies, not real heterogeneous models.
+- **Solana public RPC** blocks Cloudflare Workers IPs. Explorer uses client-side fetch (browser → RPC directly).
+
+---
 
 ## Commit Convention
 
@@ -249,3 +306,26 @@ Use this test fixture for CoherenceScore validation:
 | PoC Python work | poc/ directory | AGENTS.md (Phase table) |
 | Tokenomics | Whitepaper Chapter 4 | Parameters section above |
 | Roadmap / scope | Whitepaper Chapter 5 | Phase table in AGENTS.md |
+| Deploy / infra | This file (Operations section) | ops/docker/, scripts/ |
+| Explorer | apps/explorer/ | This file (Live Environments) |
+
+---
+
+## Infrastructure Identifiers
+
+```
+# Solana
+Program ID:     5JVFMV1DvhQD6Tm2BtPBs8zkvGArzRGUYF6GSNw2XUeT
+Wallet:         6LeyWdxSsnrJrqyXNBSd9PuH6c2mkETV6NawDs87vLK4
+Keypair:        ~/.config/solana/id.json
+
+# Cloudflare
+Account ID:     0fdeec112211a86b30959041506f9593
+Zone ID:        17a26b101fe05b226a0fdd565a19c0c5
+Worker:         raxion-explorer
+Domains:        devnet.raxion.network, testnet.raxion.network
+
+# Docker
+Image:          raxion/anchor-devnet:0.1
+Dockerfile:     ops/docker/anchor-devnet/Dockerfile
+```
