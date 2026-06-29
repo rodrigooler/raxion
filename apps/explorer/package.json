@@ -30,8 +30,11 @@
     "react-server-dom-webpack": "19.2.4",
     "typescript": "6.0.2",
     "vinext": "0.0.39",
-    "vite": "8.0.3",
+    "vite": "^8.1.0",
     "wrangler": "^4.105.0"
   },
-  "type": "module"
+  "type": "module",
+  "overrides": {
+    "uuid": "^11.1.1"
+  }
 }
