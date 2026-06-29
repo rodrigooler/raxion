@@ -22,6 +22,7 @@
     "react-dom": "19.2.4"
   },
   "devDependencies": {
+    "@cloudflare/vite-plugin": "^1.42.3",
     "@types/node": "25.5.2",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
@@ -29,7 +30,8 @@
     "react-server-dom-webpack": "19.2.4",
     "typescript": "6.0.2",
     "vinext": "0.0.39",
-    "vite": "8.0.3"
+    "vite": "8.0.3",
+    "wrangler": "^4.105.0"
   },
   "type": "module"
 }
