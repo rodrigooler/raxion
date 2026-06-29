@@ -1,4 +1,10 @@
-import { fetchInferences, summarize, type Category } from "../lib/poiq";
+"use client";
+
+import { useEffect, useState } from "react";
+import { fetchInferences, summarize, type Category, type InferenceRow } from "../lib/poiq";
+
+const PROGRAM_ID = "5JVFMV1DvhQD6Tm2BtPBs8zkvGArzRGUYF6GSNw2XUeT";
+const RPC_URL = "https://api.devnet.solana.com";
 
 function scoreColor(score: number) {
   if (score < 0.3) return "var(--critical)";
@@ -8,16 +14,13 @@ function scoreColor(score: number) {
 }
 
 function categoryStyle(category: Category) {
-  switch (category) {
-    case "REJECTED":
-      return { color: "var(--critical)", borderColor: "var(--critical)" };
-    case "LOW_CONFIDENCE":
-      return { color: "var(--warn)", borderColor: "var(--warn)" };
-    case "STANDARD":
-      return { color: "var(--ok)", borderColor: "var(--ok)" };
-    case "HIGH_COHERENCE":
-      return { color: "var(--strong)", borderColor: "var(--strong)" };
-  }
+  const map: Record<Category, { color: string; borderColor: string }> = {
+    REJECTED: { color: "var(--critical)", borderColor: "var(--critical)" },
+    LOW_CONFIDENCE: { color: "var(--warn)", borderColor: "var(--warn)" },
+    STANDARD: { color: "var(--ok)", borderColor: "var(--ok)" },
+    HIGH_COHERENCE: { color: "var(--strong)", borderColor: "var(--strong)" },
+  };
+  return map[category];
 }
 
 function formatTimestamp(unixSeconds: bigint) {
@@ -31,24 +34,24 @@ function shortHash(value: string) {
   return `${value.slice(0, 10)}...${value.slice(-8)}`;
 }
 
-export const dynamic = "force-dynamic";
+export default function ExplorerPage() {
+  const [rows, setRows] = useState<InferenceRow[]>([]);
+  const [loadError, setLoadError] = useState("");
+  const [loading, setLoading] = useState(true);
 
-export default async function ExplorerPage() {
-  let rows = [] as Awaited<ReturnType<typeof fetchInferences>>;
-  let loadError = "";
-
-  try {
-    rows = await fetchInferences(20);
-  } catch (error) {
-    loadError = error instanceof Error ? error.message : "Unknown RPC error";
-  }
+  useEffect(() => {
+    fetchInferences(20, PROGRAM_ID, RPC_URL)
+      .then(setRows)
+      .catch((e) => setLoadError(e instanceof Error ? e.message : "Unknown RPC error"))
+      .finally(() => setLoading(false));
+  }, []);
 
   const stats = summarize(rows);
-  const programId = process.env.NEXT_PUBLIC_POIQ_PROGRAM_ID ?? "(missing NEXT_PUBLIC_POIQ_PROGRAM_ID)";
-  const rpcUrl = process.env.NEXT_PUBLIC_SOLANA_RPC_URL ?? "https://api.devnet.solana.com";
-  let content: React.ReactNode;
 
-  if (loadError) {
+  let content: React.ReactNode;
+  if (loading) {
+    content = <div className="small">Loading from Solana devnet...</div>;
+  } else if (loadError) {
     content = (
       <div className="small" style={{ color: "var(--critical)" }}>
         Failed to load devnet records: {loadError}
@@ -125,7 +128,7 @@ export default async function ExplorerPage() {
           </div>
           <h1 style={{ margin: "8px 0 4px", fontSize: 42, lineHeight: 1.05 }}>Live Inferences</h1>
           <p className="small" style={{ margin: 0 }}>
-            Program: {programId} | RPC: {rpcUrl}
+            Program: {PROGRAM_ID} | RPC: {RPC_URL}
           </p>
         </div>
         <div className="card" style={{ minWidth: 260 }}>

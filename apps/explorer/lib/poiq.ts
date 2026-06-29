@@ -1,4 +1,3 @@
-import { createHash } from "node:crypto";
 import { Connection, PublicKey } from "@solana/web3.js";
 
 export type Category = "REJECTED" | "LOW_CONFIDENCE" | "STANDARD" | "HIGH_COHERENCE";
@@ -18,10 +17,11 @@ export type InferenceRow = {
 };
 
 const DEFAULT_RPC = "https://api.devnet.solana.com";
-const INFERENCE_RECORD_DISCRIMINATOR = createHash("sha256")
-  .update("account:InferenceRecord")
-  .digest()
-  .subarray(0, 8);
+const DEFAULT_PROGRAM_ID = "5JVFMV1DvhQD6Tm2BtPBs8zkvGArzRGUYF6GSNw2XUeT";
+// ponytail: pre-computed sha256("account:InferenceRecord")[0..8] — avoids node:crypto in browser
+const INFERENCE_RECORD_DISCRIMINATOR = new Uint8Array([
+  0xf0, 0x89, 0x46, 0x9a, 0xf3, 0x0e, 0xc9, 0x42,
+]);
 
 const CATEGORY_MAP: Record<number, Category> = {
   0: "REJECTED",
@@ -109,15 +109,15 @@ function parseInferenceRecord(data: Buffer, pubkey: string): InferenceRow | null
   };
 }
 
-export async function fetchInferences(limit = 20): Promise<InferenceRow[]> {
-  const rpcUrl = process.env.NEXT_PUBLIC_SOLANA_RPC_URL ?? DEFAULT_RPC;
-  const programId = process.env.NEXT_PUBLIC_POIQ_PROGRAM_ID;
-  if (!programId) {
-    throw new Error("NEXT_PUBLIC_POIQ_PROGRAM_ID is required");
+export async function fetchInferences(limit = 20, programId?: string, rpcUrl?: string): Promise<InferenceRow[]> {
+  const rpc = rpcUrl ?? DEFAULT_RPC;
+  const pid = programId ?? DEFAULT_PROGRAM_ID;
+  if (!pid) {
+    throw new Error("programId is required");
   }
 
-  const connection = new Connection(rpcUrl, "confirmed");
-  const program = new PublicKey(programId);
+  const connection = new Connection(rpc, "confirmed");
+  const program = new PublicKey(pid);
 
   const accounts = await connection.getProgramAccounts(program, {
     commitment: "confirmed",
