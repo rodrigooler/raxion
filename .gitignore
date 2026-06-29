@@ -69,3 +69,4 @@ poc/benchmarks/*.json
 poc/benchmarks/*.csv
 poc/benchmarks/devnet_results/
 apps/explorer/.wrangler/
+.serena/
