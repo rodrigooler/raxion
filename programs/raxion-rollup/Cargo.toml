@@ -11,11 +11,9 @@ crate-type = ["cdylib", "lib"]
 
 [features]
 default = []
-no-entrypoint = []
-no-idl = []
-no-log-ix-name = []
 cpi = ["no-entrypoint"]
+no-entrypoint = []
 idl-build = ["anchor-lang/idl-build"]
 
 [dependencies]
-anchor-lang = "0.30"
+anchor-lang = "1.1"

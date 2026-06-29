@@ -19,7 +19,7 @@ pub mod raxion_token {
     pub fn initialize_genesis(ctx: Context<InitializeGenesis>) -> Result<()> {
         token::mint_to(
             CpiContext::new(
-                ctx.accounts.token_program.to_account_info(),
+                ctx.accounts.token_program.key(),
                 MintTo {
                     mint: ctx.accounts.mint.to_account_info(),
                     to: ctx.accounts.treasury_account.to_account_info(),
@@ -31,7 +31,7 @@ pub mod raxion_token {
 
         token::set_authority(
             CpiContext::new(
-                ctx.accounts.token_program.to_account_info(),
+                ctx.accounts.token_program.key(),
                 SetAuthority {
                     account_or_mint: ctx.accounts.mint.to_account_info(),
                     current_authority: ctx.accounts.mint_authority.to_account_info(),

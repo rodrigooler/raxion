@@ -9,6 +9,7 @@ pub const N_CHALLENGE_CATEGORIES: u8 = 6;
 
 /// All 6 challenge categories.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, AnchorSerialize, AnchorDeserialize)]
+#[borsh(use_discriminant = true)]
 #[repr(u8)]
 pub enum ChallengeCategory {
     /// Formal mathematical proof/refutation.

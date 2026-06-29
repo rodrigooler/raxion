@@ -1,8 +1,6 @@
 //! raxion-poiq - RAXION Proof of Inference Quality on-chain program.
 
 use anchor_lang::prelude::*;
-use anchor_lang::solana_program::sysvar::slot_hashes::SlotHashes;
-use anchor_lang::solana_program::sysvar::Sysvar;
 
 pub mod challenge;
 pub mod dissent;
@@ -346,14 +344,8 @@ fn derive_chronic_multiplier_milli(consecutive_failures: u16) -> u16 {
     value as u16
 }
 
-// ponytail: SlotHashes::from_account_info fails on devnet Solana 2.x (compiled with solana-program 1.18).
-// Fallback to Clock-based seed. Restore SlotHashes parsing when anchor-lang supports solana 2.x.
-fn latest_slot_hash(slot_hashes_ai: &AccountInfo<'_>) -> Result<[u8; 32]> {
-    if let Ok(slot_hashes) = SlotHashes::from_account_info(slot_hashes_ai) {
-        if let Some((_, hash)) = slot_hashes.first() {
-            return Ok(hash.to_bytes());
-        }
-    }
+// ponytail: Clock-based challenge seed. Add solana-slot-hashes crate for real SlotHashes when needed.
+fn latest_slot_hash(_slot_hashes_ai: &AccountInfo<'_>) -> Result<[u8; 32]> {
     let clock = Clock::get()?;
     let mut seed = [0u8; 32];
     seed[..8].copy_from_slice(&clock.slot.to_le_bytes());
@@ -404,8 +396,7 @@ pub struct SubmitConvergence<'info> {
     )]
     pub cognitive_account: Account<'info, CognitiveAccountState>,
 
-    /// CHECK: sysvar account address is enforced below.
-    #[account(address = anchor_lang::solana_program::sysvar::slot_hashes::id())]
+    /// CHECK: sysvar passed for challenge seed derivation.
     pub slot_hashes: AccountInfo<'info>,
 
     #[account(

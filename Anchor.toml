@@ -7,9 +7,6 @@ skip-lint = false
 [programs.devnet]
 raxion_poiq = "5JVFMV1DvhQD6Tm2BtPBs8zkvGArzRGUYF6GSNw2XUeT"
 
-[registry]
-url = "https://api.apr.dev"
-
 [provider]
 cluster = "Devnet"
 wallet = "~/.config/solana/id.json"
