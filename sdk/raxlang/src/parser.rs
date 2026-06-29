@@ -13,11 +13,16 @@ pub fn parse(source: &str) -> Result<Program, ParseError> {
     let mut declarations = Vec::new();
     let trimmed = source.trim();
 
-    if trimmed.contains("agent ") {
+    if trimmed.lines().any(|l| l.trim().starts_with("agent ")) {
         declarations.push(Declaration::Agent(parse_agent(trimmed)?));
     }
-    if let Some(func) = parse_fn(trimmed)? {
-        declarations.push(Declaration::Fn(func));
+
+    // ponytail: find all top-level `fn` declarations (skip fn inside agent block)
+    let fn_source = strip_agent_block(trimmed);
+    for chunk in fn_source.split("\nfn ").skip(1) {
+        if let Some(func) = parse_fn(&format!("fn {}", chunk.trim()))? {
+            declarations.push(Declaration::Fn(func));
+        }
     }
 
     if declarations.is_empty() {
@@ -26,11 +31,38 @@ pub fn parse(source: &str) -> Result<Program, ParseError> {
     Ok(Program { declarations })
 }
 
+fn strip_agent_block(src: &str) -> String {
+    let Some(start) = src.lines().position(|l| l.trim().starts_with("agent ")) else {
+        return src.to_string();
+    };
+    let lines: Vec<&str> = src.lines().collect();
+    let agent_line = lines[start];
+    if let Some(block_start) = src.find(agent_line) {
+        if let Some(content) = block_after(src, "agent ") {
+            let end = block_start + agent_line.len() + content.len() + 2;
+            let before = &src[..block_start];
+            let after = if end < src.len() { &src[end..] } else { "" };
+            return format!("{}{}", before, after);
+        }
+    }
+    src.to_string()
+}
+
 fn parse_agent(src: &str) -> Result<AgentDecl, ParseError> {
-    let name = src
-        .split("agent")
-        .nth(1)
-        .and_then(|s| s.trim().split_whitespace().next())
+    let agent_pos = src
+        .lines()
+        .find_map(|line| {
+            let trimmed = line.trim();
+            if trimmed.starts_with("agent ") && trimmed.contains('{') {
+                Some(trimmed)
+            } else {
+                None
+            }
+        })
+        .ok_or(ParseError::Missing("agent declaration"))?;
+    let name = agent_pos
+        .strip_prefix("agent ")
+        .and_then(|s| s.split_whitespace().next())
         .ok_or(ParseError::Missing("agent name"))?
         .to_string();
 
@@ -174,6 +206,18 @@ fn between<'a>(src: &'a str, start: &str, end: &str) -> Option<&'a str> {
 fn block_after<'a>(src: &'a str, marker: &str) -> Option<&'a str> {
     let marker_pos = src.find(marker)?;
     let open_pos = src[marker_pos..].find('{')? + marker_pos;
-    let close_pos = src[open_pos..].rfind('}')? + open_pos;
-    Some(&src[open_pos + 1..close_pos])
+    let mut depth = 0;
+    for (i, c) in src[open_pos..].char_indices() {
+        match c {
+            '{' => depth += 1,
+            '}' => {
+                depth -= 1;
+                if depth == 0 {
+                    return Some(&src[open_pos + 1..open_pos + i]);
+                }
+            }
+            _ => {}
+        }
+    }
+    None
 }
