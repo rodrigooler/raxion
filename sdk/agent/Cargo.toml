@@ -11,7 +11,10 @@ log = "0.4"
 reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
-tokio = { version = "1", features = ["rt-multi-thread", "macros", "signal", "time"] }
+sha2 = "0.10"
+solana-client = "2.1"
+solana-sdk = { version = "2.1", features = ["borsh"] }
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "signal", "time", "io-util"] }
 thiserror = "1.0"
 
 [dev-dependencies]
