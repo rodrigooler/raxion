@@ -1,0 +1,65 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  rust-workspace:
+    name: Rust workspace (check + test)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo check --workspace
+      - run: cargo test --workspace
+
+  anchor-programs:
+    name: Anchor programs (check + test)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: |
+            programs/raxion-poiq -> programs/raxion-poiq/target
+            programs/raxion-rollup -> programs/raxion-rollup/target
+            programs/raxion-token -> programs/raxion-token/target
+      - run: cargo test --manifest-path programs/raxion-poiq/Cargo.toml
+      - run: cargo check --manifest-path programs/raxion-rollup/Cargo.toml
+      - run: cargo check --manifest-path programs/raxion-token/Cargo.toml
+
+  python-tests:
+    name: Python PoC tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - uses: actions/cache@v4
+        id: venv
+        with:
+          path: .venv
+          key: py311-${{ hashFiles('poc/requirements-dev.txt', 'poc/requirements.txt') }}
+      - if: steps.venv.outputs.cache-hit != 'true'
+        run: |
+          python -m venv .venv
+          .venv/bin/pip install --upgrade pip
+          .venv/bin/pip install --prefer-binary -r poc/requirements-dev.txt
+      - run: .venv/bin/pytest poc/tests/ -v
+      - run: .venv/bin/python scripts/cross_validate_coherence.py
+
+  explorer:
+    name: Explorer build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: cd apps/explorer && npm ci 2>/dev/null || npm install
+      - run: cd apps/explorer && npm run build

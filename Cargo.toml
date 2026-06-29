@@ -1,0 +1,18 @@
+[workspace]
+resolver = "2"
+members = [
+    "runtime/cognitive",
+    "proofs/risc0-types",
+    "sdk/agent",
+    "sdk/raxlang",
+]
+# ponytail: proofs excluded — need risc0 zkVM toolchain to build
+exclude = [
+    "proofs/risc0-guest",
+    "proofs/risc0-host",
+]
+
+[profile.release]
+overflow-checks = true
+lto = "fat"
+codegen-units = 1
