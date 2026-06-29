@@ -4,7 +4,12 @@ import { useEffect, useState } from "react";
 import { fetchInferences, summarize, type Category, type InferenceRow } from "../lib/poiq";
 
 const PROGRAM_ID = "5JVFMV1DvhQD6Tm2BtPBs8zkvGArzRGUYF6GSNw2XUeT";
-const RPC_URL = "https://api.devnet.solana.com";
+
+function getNetwork(): { rpc: string; label: string } {
+  const host = typeof window !== "undefined" ? window.location.hostname : "";
+  if (host.startsWith("testnet")) return { rpc: "https://api.testnet.solana.com", label: "Testnet" };
+  return { rpc: "https://api.devnet.solana.com", label: "Devnet" };
+}
 
 function scoreColor(score: number) {
   if (score < 0.3) return "var(--critical)";
@@ -38,23 +43,24 @@ export default function ExplorerPage() {
   const [rows, setRows] = useState<InferenceRow[]>([]);
   const [loadError, setLoadError] = useState("");
   const [loading, setLoading] = useState(true);
+  const net = getNetwork();
 
   useEffect(() => {
-    fetchInferences(20, PROGRAM_ID, RPC_URL)
+    fetchInferences(20, PROGRAM_ID, net.rpc)
       .then(setRows)
       .catch((e) => setLoadError(e instanceof Error ? e.message : "Unknown RPC error"))
       .finally(() => setLoading(false));
-  }, []);
+  }, [net.rpc]);
 
   const stats = summarize(rows);
 
   let content: React.ReactNode;
   if (loading) {
-    content = <div className="small">Loading from Solana devnet...</div>;
+    content = <div className="small">Loading from Solana {net.label}...</div>;
   } else if (loadError) {
     content = (
       <div className="small" style={{ color: "var(--critical)" }}>
-        Failed to load devnet records: {loadError}
+        Failed to load {net.label} records: {loadError}
       </div>
     );
   } else if (rows.length === 0) {
@@ -124,16 +130,16 @@ export default function ExplorerPage() {
       <div style={{ display: "flex", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
         <div>
           <div className="small" style={{ textTransform: "uppercase", letterSpacing: "0.12em" }}>
-            RAXION Devnet Explorer
+            RAXION {net.label} Explorer
           </div>
           <h1 style={{ margin: "8px 0 4px", fontSize: 42, lineHeight: 1.05 }}>Live Inferences</h1>
           <p className="small" style={{ margin: 0 }}>
-            Program: {PROGRAM_ID} | RPC: {RPC_URL}
+            Program: {PROGRAM_ID} | RPC: {net.rpc}
           </p>
         </div>
         <div className="card" style={{ minWidth: 260 }}>
           <div className="small">Status</div>
-          <div style={{ marginTop: 6, fontWeight: 700 }}>Phase 1 - Devnet</div>
+          <div style={{ marginTop: 6, fontWeight: 700 }}>Phase {net.label === "Testnet" ? "2" : "1"} - {net.label}</div>
           <div className="small" style={{ marginTop: 6 }}>
             Scores are read from on-chain InferenceRecord accounts.
           </div>
