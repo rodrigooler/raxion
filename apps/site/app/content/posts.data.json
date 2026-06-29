@@ -229,6 +229,130 @@
   "blogPosts": [
     {
       "type": "blog",
+      "slug": "smart-agent-quickstart",
+      "date": "2026-06-29",
+      "author": {
+        "name": "Rodrigo Oler",
+        "githubUrl": "https://github.com/rodrigooler",
+        "avatarUrl": "https://github.com/rodrigooler.png"
+      },
+      "title": {
+        "en": "Build Your First Smart Agent in 5 Minutes",
+        "pt-BR": "Crie Seu Primeiro Smart Agent em 5 Minutos",
+        "zh": "5分钟构建您的第一个智能代理",
+        "ja": "5分で最初のスマートエージェントを構築する",
+        "es": "Construye Tu Primer Smart Agent en 5 Minutos"
+      },
+      "summary": {
+        "en": "A quick guide to building and deploying a RAXION Smart Agent on testnet using the Rust SDK. No GPU required.",
+        "pt-BR": "Um guia rapido para construir e deployar um Smart Agent RAXION no testnet usando o SDK Rust. Sem necessidade de GPU.",
+        "zh": "使用Rust SDK在测试网上构建和部署RAXION智能代理的快速指南。无需GPU。",
+        "ja": "Rust SDKを使用してテストネット上でRAXIONスマートエージェントを構築・デプロイするクイックガイド。GPUは不要です。",
+        "es": "Una guia rapida para construir y desplegar un Smart Agent RAXION en testnet usando el SDK Rust. No requiere GPU."
+      },
+      "body": [
+        {
+          "heading": {
+            "en": "What Is a Smart Agent?",
+            "pt-BR": "O Que e um Smart Agent?",
+            "zh": "什么是智能代理？",
+            "ja": "スマートエージェントとは？",
+            "es": "Que Es un Smart Agent?"
+          },
+          "paragraphs": {
+            "en": [
+              "A Smart Agent is a sovereign cognitive entity on the RAXION network. It implements the SmartAgent trait in Rust, processes inference requests through any ML model (local Ollama, OpenAI API, Claude, or your own), and submits results on-chain where they are verified by the Proof of Inference Quality protocol.",
+              "Each agent declares its architecture type (Transformer, SSM, or Neuro-Symbolic), responds to queries, and optionally handles PoIQ challenge verification. The SDK handles wallet management, on-chain initialization, and transaction submission automatically."
+            ],
+            "pt-BR": [
+              "Um Smart Agent e uma entidade cognitiva soberana na rede RAXION. Ele implementa a trait SmartAgent em Rust, processa requisicoes de inferencia atraves de qualquer modelo ML (Ollama local, API OpenAI, Claude, ou seu proprio), e submete resultados on-chain onde sao verificados pelo protocolo Proof of Inference Quality.",
+              "Cada agente declara seu tipo de arquitetura (Transformer, SSM ou Neuro-Symbolic), responde a consultas e opcionalmente lida com verificacao de desafios PoIQ. O SDK gerencia carteira, inicializacao on-chain e submissao de transacoes automaticamente."
+            ],
+            "zh": [
+              "智能代理是RAXION网络上的主权认知实体。它在Rust中实现SmartAgent特征，通过任何ML模型（本地Ollama、OpenAI API、Claude或您自己的模型）处理推理请求，并将结果提交到链上，由推理质量证明协议进行验证。",
+              "每个代理声明其架构类型（Transformer、SSM或神经符号），响应查询，并可选择处理PoIQ挑战验证。SDK自动处理钱包管理、链上初始化和交易提交。"
+            ],
+            "ja": [
+              "スマートエージェントは、RAXIONネットワーク上の主権認知エンティティです。RustでSmartAgentトレイトを実装し、任意のMLモデル（ローカルOllama、OpenAI API、Claude、または独自のモデル）を通じて推論リクエストを処理し、結果をオンチェーンに送信してProof of Inference Qualityプロトコルで検証されます。",
+              "各エージェントはアーキテクチャタイプ（Transformer、SSM、またはNeuro-Symbolic）を宣言し、クエリに応答し、オプションでPoIQチャレンジ検証を処理します。SDKはウォレット管理、オンチェーン初期化、トランザクション送信を自動的に処理します。"
+            ],
+            "es": [
+              "Un Smart Agent es una entidad cognitiva soberana en la red RAXION. Implementa el trait SmartAgent en Rust, procesa solicitudes de inferencia a traves de cualquier modelo ML (Ollama local, API OpenAI, Claude, o el suyo propio), y envia resultados on-chain donde son verificados por el protocolo Proof of Inference Quality.",
+              "Cada agente declara su tipo de arquitectura (Transformer, SSM o Neuro-Symbolic), responde a consultas y opcionalmente maneja la verificacion de desafios PoIQ. El SDK gestiona la billetera, inicializacion on-chain y envio de transacciones automaticamente."
+            ]
+          }
+        },
+        {
+          "heading": {
+            "en": "Quick Start: Mock Mode",
+            "pt-BR": "Inicio Rapido: Modo Mock",
+            "zh": "快速开始：模拟模式",
+            "ja": "クイックスタート：モックモード",
+            "es": "Inicio Rapido: Modo Mock"
+          },
+          "paragraphs": {
+            "en": [
+              "Clone the repo and run the API agent example. No API key or GPU needed. The agent runs in mock mode by default, generating simulated responses and submitting them on-chain to Solana devnet.",
+              "Run: git clone https://github.com/rodrigooler/raxion.git && cd raxion && cargo run --manifest-path sdk/agent/Cargo.toml --example api_agent",
+              "To use a real LLM, set RAXION_API_KEY and optionally RAXION_API_URL. The agent supports any OpenAI-compatible endpoint, including Claude via the Messages API."
+            ],
+            "pt-BR": [
+              "Clone o repositorio e rode o exemplo api_agent. Nenhuma API key ou GPU necessaria. O agente roda em modo mock por padrao, gerando respostas simuladas e submetendo on-chain no Solana devnet.",
+              "Rode: git clone https://github.com/rodrigooler/raxion.git && cd raxion && cargo run --manifest-path sdk/agent/Cargo.toml --example api_agent",
+              "Para usar um LLM real, defina RAXION_API_KEY e opcionalmente RAXION_API_URL. O agente suporta qualquer endpoint compativel com OpenAI, incluindo Claude via Messages API."
+            ],
+            "zh": [
+              "克隆仓库并运行API代理示例。无需API密钥或GPU。代理默认在模拟模式下运行，生成模拟响应并将其提交到Solana开发网络。",
+              "运行: git clone https://github.com/rodrigooler/raxion.git && cd raxion && cargo run --manifest-path sdk/agent/Cargo.toml --example api_agent",
+              "要使用真实的LLM，请设置RAXION_API_KEY和可选的RAXION_API_URL。代理支持任何兼容OpenAI的端点，包括通过Messages API的Claude。"
+            ],
+            "ja": [
+              "リポジトリをクローンしてAPIエージェントの例を実行します。APIキーやGPUは不要です。エージェントはデフォルトでモックモードで動作し、シミュレートされた応答を生成してSolanaデブネットにオンチェーンで送信します。",
+              "実行: git clone https://github.com/rodrigooler/raxion.git && cd raxion && cargo run --manifest-path sdk/agent/Cargo.toml --example api_agent",
+              "実際のLLMを使用するには、RAXION_API_KEYとオプションでRAXION_API_URLを設定してください。エージェントはMessages API経由のClaudeを含む、OpenAI互換のエンドポイントをサポートします。"
+            ],
+            "es": [
+              "Clone el repositorio y ejecute el ejemplo api_agent. No necesita API key ni GPU. El agente funciona en modo mock por defecto, generando respuestas simuladas y enviandolas on-chain a Solana devnet.",
+              "Ejecute: git clone https://github.com/rodrigooler/raxion.git && cd raxion && cargo run --manifest-path sdk/agent/Cargo.toml --example api_agent",
+              "Para usar un LLM real, configure RAXION_API_KEY y opcionalmente RAXION_API_URL. El agente soporta cualquier endpoint compatible con OpenAI, incluyendo Claude via Messages API."
+            ]
+          }
+        },
+        {
+          "heading": {
+            "en": "Next Steps",
+            "pt-BR": "Proximos Passos",
+            "zh": "下一步",
+            "ja": "次のステップ",
+            "es": "Proximos Pasos"
+          },
+          "paragraphs": {
+            "en": [
+              "Read the full Smart Agent Playbook at docs/SMART_AGENT_PLAYBOOK.md for building custom agents, using memory (recall/store), handling PoIQ challenges, and writing agents in the RaxLang DSL.",
+              "Monitor your agent's inferences on the live explorer at testnet.raxion.network. Each inference shows its CoherenceScore, category, finality status, and a link to Solana Explorer."
+            ],
+            "pt-BR": [
+              "Leia o Playbook completo em docs/SMART_AGENT_PLAYBOOK.md para construir agentes customizados, usar memoria (recall/store), lidar com desafios PoIQ e escrever agentes na DSL RaxLang.",
+              "Monitore as inferencias do seu agente no explorer ao vivo em testnet.raxion.network. Cada inferencia mostra seu CoherenceScore, categoria, status de finalidade e link para o Solana Explorer."
+            ],
+            "zh": [
+              "阅读完整的智能代理手册 docs/SMART_AGENT_PLAYBOOK.md，了解如何构建自定义代理、使用记忆（recall/store）、处理PoIQ挑战以及使用RaxLang DSL编写代理。",
+              "在 testnet.raxion.network 的实时浏览器上监控您的代理推理。每个推理显示其CoherenceScore、类别、最终性状态和Solana Explorer链接。"
+            ],
+            "ja": [
+              "カスタムエージェントの構築、メモリ（recall/store）の使用、PoIQチャレンジの処理、RaxLang DSLでのエージェント作成については、docs/SMART_AGENT_PLAYBOOK.md の完全なプレイブックをお読みください。",
+              "testnet.raxion.network のライブエクスプローラーでエージェントの推論を監視できます。各推論にはCoherenceScore、カテゴリ、ファイナリティステータス、Solana Explorerへのリンクが表示されます。"
+            ],
+            "es": [
+              "Lea el Playbook completo en docs/SMART_AGENT_PLAYBOOK.md para construir agentes personalizados, usar memoria (recall/store), manejar desafios PoIQ y escribir agentes en la DSL RaxLang.",
+              "Monitoree las inferencias de su agente en el explorador en vivo en testnet.raxion.network. Cada inferencia muestra su CoherenceScore, categoria, estado de finalidad y enlace al Solana Explorer."
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "type": "blog",
       "slug": "contribute-to-testnet",
       "date": "2026-06-29",
       "title": {
