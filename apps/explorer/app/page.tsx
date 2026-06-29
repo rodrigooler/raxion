@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { fetchInferences, summarize, type Category, type InferenceRow } from "../lib/poiq";
+import { fetchRecentEvents, summarizeEvents, type PoiqEvent } from "../lib/events";
 
 const PROGRAM_ID = "5JVFMV1DvhQD6Tm2BtPBs8zkvGArzRGUYF6GSNw2XUeT";
 const REFRESH_MS = 30_000;
@@ -69,8 +70,106 @@ function DistributionChart({ categories }: { categories: Record<Category, number
   );
 }
 
+const EVENT_COLORS: Record<PoiqEvent["type"], string> = {
+  convergence: "var(--ok)",
+  slash: "var(--critical)",
+  challenge: "var(--warn)",
+  dissent: "var(--strong)",
+};
+
+const EVENT_LABELS: Record<PoiqEvent["type"], string> = {
+  convergence: "CONVERGENCE",
+  slash: "SLASH",
+  challenge: "CHALLENGE",
+  dissent: "DISSENT",
+};
+
+function EventsSection({ events, loading }: { events: PoiqEvent[]; loading: boolean }) {
+  const stats = summarizeEvents(events);
+
+  return (
+    <section style={{ marginTop: 16 }}>
+      <section className="grid" style={{ marginBottom: 16 }}>
+        <div className="card">
+          <div className="small">Events</div>
+          <div style={{ fontSize: 30, marginTop: 8 }}>{stats.total}</div>
+        </div>
+        <div className="card">
+          <div className="small">Slashes</div>
+          <div style={{ fontSize: 30, marginTop: 8, color: stats.slashes > 0 ? "var(--critical)" : "var(--ink)" }}>
+            {stats.slashes}
+          </div>
+        </div>
+        <div className="card">
+          <div className="small">Challenges</div>
+          <div style={{ fontSize: 30, marginTop: 8 }}>{stats.challenges}</div>
+        </div>
+        <div className="card">
+          <div className="small">Challenge Pass Rate</div>
+          <div style={{ fontSize: 30, marginTop: 8 }}>{stats.challengePassRate.toFixed(0)}%</div>
+        </div>
+      </section>
+
+      <div className="card">
+        <h2 style={{ margin: "0 0 10px", fontSize: 20 }}>Recent Events</h2>
+        {loading ? (
+          <div className="small">Loading events...</div>
+        ) : events.length === 0 ? (
+          <div className="small">No events found in recent transactions.</div>
+        ) : (
+          <div style={{ overflowX: "auto" }}>
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Type</th>
+                  <th>Agent</th>
+                  <th>Inference</th>
+                  <th>Details</th>
+                  <th>Slot</th>
+                  <th>TX</th>
+                </tr>
+              </thead>
+              <tbody>
+                {events.map((ev, i) => (
+                  <tr key={`${ev.txSig}-${i}`}>
+                    <td>
+                      <span className="badge" style={{ color: EVENT_COLORS[ev.type], borderColor: EVENT_COLORS[ev.type] }}>
+                        {EVENT_LABELS[ev.type]}
+                      </span>
+                    </td>
+                    <td>{shortHash(ev.agent)}</td>
+                    <td>#{ev.inferenceId.toString()}</td>
+                    <td className="small">
+                      {ev.type === "convergence" && `score=${(ev.data.coherenceScore as number).toFixed(3)} ${ev.data.challenged ? "challenged" : ""}`}
+                      {ev.type === "slash" && `amount=${ev.data.slashAmount} trigger=${ev.data.trigger}`}
+                      {ev.type === "challenge" && `passed=${ev.data.passed}`}
+                      {ev.type === "dissent" && `arch=${ev.data.dissentingArch} conf=${(ev.data.internalConfidence as number).toFixed(3)}`}
+                    </td>
+                    <td>{ev.slot}</td>
+                    <td>
+                      <a
+                        className="small"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href={`https://explorer.solana.com/tx/${ev.txSig}?cluster=devnet`}
+                      >
+                        {shortHash(ev.txSig)}
+                      </a>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
+
 export default function ExplorerPage() {
   const [rows, setRows] = useState<InferenceRow[]>([]);
+  const [events, setEvents] = useState<PoiqEvent[]>([]);
   const [loadError, setLoadError] = useState("");
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<Category | "ALL">("ALL");
@@ -78,8 +177,11 @@ export default function ExplorerPage() {
   const net = getNetwork();
 
   const load = useCallback(() => {
-    fetchInferences(50, PROGRAM_ID, net.rpc)
-      .then((r) => { setRows(r); setLoadError(""); setLastRefresh(new Date()); })
+    Promise.all([
+      fetchInferences(50, PROGRAM_ID, net.rpc),
+      fetchRecentEvents(PROGRAM_ID, net.rpc, 20),
+    ])
+      .then(([r, e]) => { setRows(r); setEvents(e); setLoadError(""); setLastRefresh(new Date()); })
       .catch((e) => setLoadError(e instanceof Error ? e.message : "Unknown RPC error"))
       .finally(() => setLoading(false));
   }, [net.rpc]);
@@ -236,6 +338,8 @@ export default function ExplorerPage() {
 
         {content}
       </section>
+
+      <EventsSection events={events} loading={loading} />
     </main>
   );
 }
