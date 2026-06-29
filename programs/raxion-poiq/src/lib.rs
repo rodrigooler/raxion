@@ -241,6 +241,22 @@ pub mod raxion_poiq {
         Ok(())
     }
 
+    /// Initialize agent accounts for devnet testing.
+    pub fn init_agent(ctx: Context<InitAgent>, stake_amount: u64) -> Result<()> {
+        let clock = Clock::get()?;
+        let stake = &mut ctx.accounts.agent_stake;
+        stake.agent = ctx.accounts.agent.key();
+        stake.stake_amount = stake_amount;
+        stake.bump = ctx.bumps.agent_stake;
+
+        let cognitive = &mut ctx.accounts.cognitive_account;
+        cognitive.agent = ctx.accounts.agent.key();
+        cognitive.consecutive_failures = 0;
+        cognitive.staked_at_slot = clock.slot;
+        cognitive.bump = ctx.bumps.cognitive_account;
+        Ok(())
+    }
+
     /// Submit a high-confidence dissent entry when score is below standard threshold
     /// but above rejection threshold.
     pub fn submit_dissent(
@@ -330,13 +346,19 @@ fn derive_chronic_multiplier_milli(consecutive_failures: u16) -> u16 {
     value as u16
 }
 
+// ponytail: SlotHashes::from_account_info fails on devnet Solana 2.x (compiled with solana-program 1.18).
+// Fallback to Clock-based seed. Restore SlotHashes parsing when anchor-lang supports solana 2.x.
 fn latest_slot_hash(slot_hashes_ai: &AccountInfo<'_>) -> Result<[u8; 32]> {
-    let slot_hashes = SlotHashes::from_account_info(slot_hashes_ai)
-        .map_err(|_| error!(PoiqError::InvalidSlotHashesSysvar))?;
-    let (_, hash) = slot_hashes
-        .first()
-        .ok_or_else(|| error!(PoiqError::MissingSlotHash))?;
-    Ok(hash.to_bytes())
+    if let Ok(slot_hashes) = SlotHashes::from_account_info(slot_hashes_ai) {
+        if let Some((_, hash)) = slot_hashes.first() {
+            return Ok(hash.to_bytes());
+        }
+    }
+    let clock = Clock::get()?;
+    let mut seed = [0u8; 32];
+    seed[..8].copy_from_slice(&clock.slot.to_le_bytes());
+    seed[8..16].copy_from_slice(&clock.unix_timestamp.to_le_bytes());
+    Ok(seed)
 }
 
 fn categorize_score(coherence_score: f32) -> u8 {
@@ -349,6 +371,17 @@ fn categorize_score(coherence_score: f32) -> u8 {
     } else {
         3
     }
+}
+
+#[derive(Accounts)]
+pub struct InitAgent<'info> {
+    #[account(mut)]
+    pub agent: Signer<'info>,
+    #[account(init, payer = agent, space = 8 + AgentStakeAccount::LEN, seeds = [b"stake", agent.key().as_ref()], bump)]
+    pub agent_stake: Account<'info, AgentStakeAccount>,
+    #[account(init, payer = agent, space = 8 + CognitiveAccountState::LEN, seeds = [b"cognitive", agent.key().as_ref()], bump)]
+    pub cognitive_account: Account<'info, CognitiveAccountState>,
+    pub system_program: Program<'info, System>,
 }
 
 #[derive(Accounts)]
