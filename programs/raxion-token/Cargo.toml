@@ -1,5 +1,3 @@
-[workspace]
-
 [package]
 name = "raxion-token"
 version = "0.1.0"

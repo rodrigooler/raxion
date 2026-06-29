@@ -1,5 +1,3 @@
-[workspace]
-
 [package]
 name = "raxion-rollup"
 version = "0.1.0"

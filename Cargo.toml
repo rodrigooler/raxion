@@ -2,6 +2,9 @@
 resolver = "2"
 members = [
     "runtime/cognitive",
+    "programs/raxion-poiq",
+    "programs/raxion-rollup",
+    "programs/raxion-token",
     "proofs/risc0-types",
     "sdk/agent",
     "sdk/raxlang",

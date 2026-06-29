@@ -1,5 +1,3 @@
-[workspace]
-
 [package]
 name = "raxion-poiq"
 version = "0.1.0"
