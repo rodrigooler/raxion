@@ -298,6 +298,102 @@ pub mod raxion_poiq {
 
         Ok(())
     }
+
+    /// Resolve a challenged inference. Called by the resolver (any signer for devnet).
+    /// Upheld = agent failed the challenge. Rejected = agent passed.
+    pub fn resolve_challenge(
+        ctx: Context<ResolveChallenge>,
+        inference_id: u64,
+        upheld: bool,
+    ) -> Result<()> {
+        let record = &mut ctx.accounts.inference_record;
+        require!(record.challenged, PoiqError::NotChallenged);
+        require!(
+            record.challenge_passed.is_none(),
+            PoiqError::AlreadyResponded
+        );
+
+        let clock = Clock::get()?;
+        let cognitive = &mut ctx.accounts.cognitive_account;
+
+        if upheld {
+            record.challenge_passed = Some(false);
+            record.is_final = false;
+            cognitive.consecutive_failures = cognitive.consecutive_failures.saturating_add(1);
+            let chronic_multiplier_milli =
+                derive_chronic_multiplier_milli(cognitive.consecutive_failures);
+            let slash = compute_challenge_slash(
+                ctx.accounts.agent_stake.stake_amount,
+                chronic_multiplier_milli,
+            );
+            emit!(SlashTriggered {
+                agent: record.agent,
+                slash_amount: slash,
+                trigger: 2,
+                inference_id,
+            });
+        } else {
+            record.challenge_passed = Some(true);
+            cognitive.consecutive_failures = 0;
+            record.is_final = record.coherence_score >= COHERENCE_THRESHOLD_STANDARD;
+        }
+
+        emit!(ChallengeResolved {
+            agent: record.agent,
+            inference_id,
+            upheld,
+            slot: clock.slot,
+        });
+
+        Ok(())
+    }
+
+    /// Expire a challenge where the agent did not respond within the deadline (450 slots).
+    pub fn expire_challenge(
+        ctx: Context<ExpireChallenge>,
+        inference_id: u64,
+    ) -> Result<()> {
+        let record = &mut ctx.accounts.inference_record;
+        require!(record.challenged, PoiqError::NotChallenged);
+        require!(
+            record.challenge_passed.is_none(),
+            PoiqError::AlreadyResponded
+        );
+
+        let clock = Clock::get()?;
+        require!(
+            dissent::is_expired(record.slot, clock.slot),
+            PoiqError::ChallengeNotExpired
+        );
+
+        record.challenge_passed = Some(false);
+        record.is_final = false;
+
+        let cognitive = &mut ctx.accounts.cognitive_account;
+        cognitive.consecutive_failures = cognitive.consecutive_failures.saturating_add(1);
+        let chronic_multiplier_milli =
+            derive_chronic_multiplier_milli(cognitive.consecutive_failures);
+        let slash = compute_challenge_slash(
+            ctx.accounts.agent_stake.stake_amount,
+            chronic_multiplier_milli,
+        );
+
+        emit!(SlashTriggered {
+            agent: record.agent,
+            slash_amount: slash,
+            trigger: 2,
+            inference_id,
+        });
+
+        emit!(ChallengeResolved {
+            agent: record.agent,
+            inference_id,
+            upheld: true,
+            slot: clock.slot,
+        });
+
+        Ok(())
+    }
 }
 
 /// Trigger 1 slash with integer-safe arithmetic.
@@ -465,6 +561,61 @@ pub struct SubmitDissent<'info> {
     pub system_program: Program<'info, System>,
 }
 
+#[derive(Accounts)]
+#[instruction(inference_id: u64)]
+pub struct ResolveChallenge<'info> {
+    #[account(mut)]
+    pub resolver: Signer<'info>,
+
+    #[account(
+        seeds = [b"stake", inference_record.agent.as_ref()],
+        bump = agent_stake.bump,
+    )]
+    pub agent_stake: Account<'info, AgentStakeAccount>,
+
+    #[account(
+        mut,
+        seeds = [b"cognitive", inference_record.agent.as_ref()],
+        bump = cognitive_account.bump,
+    )]
+    pub cognitive_account: Account<'info, CognitiveAccountState>,
+
+    #[account(
+        mut,
+        seeds = [b"inference", inference_record.agent.as_ref(), &inference_id.to_le_bytes()],
+        bump = inference_record.bump,
+    )]
+    pub inference_record: Account<'info, InferenceRecord>,
+}
+
+#[derive(Accounts)]
+#[instruction(inference_id: u64)]
+pub struct ExpireChallenge<'info> {
+    #[account(mut)]
+    pub caller: Signer<'info>,
+
+    #[account(
+        seeds = [b"stake", inference_record.agent.as_ref()],
+        bump = agent_stake.bump,
+    )]
+    pub agent_stake: Account<'info, AgentStakeAccount>,
+
+    #[account(
+        mut,
+        seeds = [b"cognitive", inference_record.agent.as_ref()],
+        bump = cognitive_account.bump,
+    )]
+    pub cognitive_account: Account<'info, CognitiveAccountState>,
+
+    #[account(
+        mut,
+        seeds = [b"inference", inference_record.agent.as_ref(), &inference_id.to_le_bytes()],
+        bump = inference_record.bump,
+        constraint = inference_record.challenged @ PoiqError::NotChallenged,
+    )]
+    pub inference_record: Account<'info, InferenceRecord>,
+}
+
 #[event]
 pub struct ConvergenceSubmitted {
     pub agent: Pubkey,
@@ -500,6 +651,14 @@ pub struct DissentSubmitted {
     pub internal_confidence: f32,
     pub dissenting_arch: u8,
     pub timestamp: i64,
+}
+
+#[event]
+pub struct ChallengeResolved {
+    pub agent: Pubkey,
+    pub inference_id: u64,
+    pub upheld: bool,
+    pub slot: u64,
 }
 
 #[error_code]
@@ -542,6 +701,9 @@ pub enum PoiqError {
 
     #[msg("Dissenting architecture index must be 0..=2")]
     InvalidDissentingArchitecture,
+
+    #[msg("Challenge deadline has not expired yet")]
+    ChallengeNotExpired,
 }
 
 #[cfg(test)]
