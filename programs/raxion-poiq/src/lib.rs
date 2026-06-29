@@ -1,4 +1,12 @@
 //! raxion-poiq - RAXION Proof of Inference Quality on-chain program.
+//!
+//! Security model:
+//! - All PDAs derived with deterministic seeds (no arbitrary injection)
+//! - Slashing is event-only (no token transfers in devnet/testnet)
+//! - resolve_challenge has open access (devnet) -- gate behind authority for mainnet
+//! - SlotHashes fallback to Clock -- restore when anchor-lang supports solana-slot-hashes
+//! - All init accounts use space = 8 + Struct::LEN (Anchor handles rent-exemption)
+//! - Emergency pause via ProtocolState PDA gates submit_convergence
 
 use anchor_lang::prelude::*;
 
@@ -122,6 +130,19 @@ impl AgentProfile {
     pub const LEN: usize = 32 + 32 + 1 + 1 + 8 + 8 + 4 + 2 + 8 + 1 + 1;
 }
 
+#[account]
+#[derive(Default)]
+pub struct ProtocolState {
+    pub paused: bool,
+    pub authority: Pubkey,
+    pub paused_at: i64,
+    pub bump: u8,
+}
+
+impl ProtocolState {
+    pub const LEN: usize = 1 + 32 + 8 + 1;
+}
+
 #[program]
 pub mod raxion_poiq {
     use super::*;
@@ -137,6 +158,10 @@ pub mod raxion_poiq {
         output_hash_t: [u8; 32],
         output_hash_s: [u8; 32],
     ) -> Result<()> {
+        require!(
+            !ctx.accounts.protocol_state.paused,
+            PoiqError::ProtocolPaused
+        );
         require!(
             (0.0..=1.0).contains(&coherence_score),
             PoiqError::InvalidCoherenceScore
@@ -414,6 +439,40 @@ pub mod raxion_poiq {
 
         Ok(())
     }
+
+    /// Initialize protocol state PDA. Called once.
+    pub fn init_protocol_state(ctx: Context<InitProtocolState>) -> Result<()> {
+        let state = &mut ctx.accounts.protocol_state;
+        state.paused = false;
+        state.authority = ctx.accounts.authority.key();
+        state.paused_at = 0;
+        state.bump = ctx.bumps.protocol_state;
+        Ok(())
+    }
+
+    /// Pause the protocol. Only authority can call.
+    pub fn pause_protocol(ctx: Context<ManageProtocol>) -> Result<()> {
+        let state = &mut ctx.accounts.protocol_state;
+        require!(
+            state.authority == ctx.accounts.authority.key(),
+            PoiqError::UnauthorizedAgent
+        );
+        state.paused = true;
+        state.paused_at = Clock::get()?.unix_timestamp;
+        Ok(())
+    }
+
+    /// Unpause the protocol. Only authority can call.
+    pub fn unpause_protocol(ctx: Context<ManageProtocol>) -> Result<()> {
+        let state = &mut ctx.accounts.protocol_state;
+        require!(
+            state.authority == ctx.accounts.authority.key(),
+            PoiqError::UnauthorizedAgent
+        );
+        state.paused = false;
+        state.paused_at = 0;
+        Ok(())
+    }
 }
 
 /// Trigger 1 slash with integer-safe arithmetic.
@@ -514,6 +573,12 @@ pub struct SubmitConvergence<'info> {
 
     /// CHECK: sysvar passed for challenge seed derivation.
     pub slot_hashes: AccountInfo<'info>,
+
+    #[account(
+        seeds = [b"protocol_state"],
+        bump = protocol_state.bump,
+    )]
+    pub protocol_state: Account<'info, ProtocolState>,
 
     #[account(
         init,
@@ -636,6 +701,22 @@ pub struct ExpireChallenge<'info> {
     pub inference_record: Account<'info, InferenceRecord>,
 }
 
+#[derive(Accounts)]
+pub struct InitProtocolState<'info> {
+    #[account(mut)]
+    pub authority: Signer<'info>,
+    #[account(init, payer = authority, space = 8 + ProtocolState::LEN, seeds = [b"protocol_state"], bump)]
+    pub protocol_state: Account<'info, ProtocolState>,
+    pub system_program: Program<'info, System>,
+}
+
+#[derive(Accounts)]
+pub struct ManageProtocol<'info> {
+    pub authority: Signer<'info>,
+    #[account(mut, seeds = [b"protocol_state"], bump = protocol_state.bump)]
+    pub protocol_state: Account<'info, ProtocolState>,
+}
+
 #[event]
 pub struct ConvergenceSubmitted {
     pub agent: Pubkey,
@@ -724,6 +805,9 @@ pub enum PoiqError {
 
     #[msg("Challenge deadline has not expired yet")]
     ChallengeNotExpired,
+
+    #[msg("Protocol is paused")]
+    ProtocolPaused,
 }
 
 #[cfg(test)]
