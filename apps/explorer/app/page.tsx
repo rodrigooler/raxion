@@ -1,9 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { fetchInferences, summarize, type Category, type InferenceRow } from "../lib/poiq";
 
 const PROGRAM_ID = "5JVFMV1DvhQD6Tm2BtPBs8zkvGArzRGUYF6GSNw2XUeT";
+const REFRESH_MS = 30_000;
+const CATEGORIES: (Category | "ALL")[] = ["ALL", "REJECTED", "LOW_CONFIDENCE", "STANDARD", "HIGH_COHERENCE"];
+const CAT_COLOR: Record<Category, string> = {
+  REJECTED: "var(--critical)",
+  LOW_CONFIDENCE: "var(--warn)",
+  STANDARD: "var(--ok)",
+  HIGH_COHERENCE: "var(--strong)",
+};
 
 function getNetwork(): { rpc: string; label: string } {
   const host = typeof window !== "undefined" ? window.location.hostname : "";
@@ -19,13 +27,7 @@ function scoreColor(score: number) {
 }
 
 function categoryStyle(category: Category) {
-  const map: Record<Category, { color: string; borderColor: string }> = {
-    REJECTED: { color: "var(--critical)", borderColor: "var(--critical)" },
-    LOW_CONFIDENCE: { color: "var(--warn)", borderColor: "var(--warn)" },
-    STANDARD: { color: "var(--ok)", borderColor: "var(--ok)" },
-    HIGH_COHERENCE: { color: "var(--strong)", borderColor: "var(--strong)" },
-  };
-  return map[category];
+  return { color: CAT_COLOR[category], borderColor: CAT_COLOR[category] };
 }
 
 function formatTimestamp(unixSeconds: bigint) {
@@ -39,20 +41,57 @@ function shortHash(value: string) {
   return `${value.slice(0, 10)}...${value.slice(-8)}`;
 }
 
+function DistributionChart({ categories }: { categories: Record<Category, number> }) {
+  const max = Math.max(1, ...Object.values(categories));
+  const entries: [Category, number][] = [
+    ["REJECTED", categories.REJECTED],
+    ["LOW_CONFIDENCE", categories.LOW_CONFIDENCE],
+    ["STANDARD", categories.STANDARD],
+    ["HIGH_COHERENCE", categories.HIGH_COHERENCE],
+  ];
+  return (
+    <div style={{ display: "flex", gap: 6, alignItems: "flex-end", height: 48, marginTop: 8 }}>
+      {entries.map(([cat, count]) => (
+        <div key={cat} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
+          <div
+            style={{
+              width: "100%",
+              height: `${Math.max(4, (count / max) * 40)}px`,
+              backgroundColor: CAT_COLOR[cat],
+              borderRadius: 3,
+              opacity: count === 0 ? 0.2 : 1,
+            }}
+          />
+          <span className="small" style={{ fontSize: 10 }}>{count}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export default function ExplorerPage() {
   const [rows, setRows] = useState<InferenceRow[]>([]);
   const [loadError, setLoadError] = useState("");
   const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState<Category | "ALL">("ALL");
+  const [lastRefresh, setLastRefresh] = useState<Date | null>(null);
   const net = getNetwork();
 
-  useEffect(() => {
-    fetchInferences(20, PROGRAM_ID, net.rpc)
-      .then(setRows)
+  const load = useCallback(() => {
+    fetchInferences(50, PROGRAM_ID, net.rpc)
+      .then((r) => { setRows(r); setLoadError(""); setLastRefresh(new Date()); })
       .catch((e) => setLoadError(e instanceof Error ? e.message : "Unknown RPC error"))
       .finally(() => setLoading(false));
   }, [net.rpc]);
 
+  useEffect(() => {
+    load();
+    const id = setInterval(load, REFRESH_MS);
+    return () => clearInterval(id);
+  }, [load]);
+
   const stats = summarize(rows);
+  const filtered = filter === "ALL" ? rows : rows.filter((r) => r.category === filter);
 
   let content: React.ReactNode;
   if (loading) {
@@ -63,8 +102,8 @@ export default function ExplorerPage() {
         Failed to load {net.label} records: {loadError}
       </div>
     );
-  } else if (rows.length === 0) {
-    content = <div className="small">No records found for current program id on devnet.</div>;
+  } else if (filtered.length === 0) {
+    content = <div className="small">{filter === "ALL" ? "No records found." : `No ${filter} records.`}</div>;
   } else {
     content = (
       <div style={{ overflowX: "auto" }}>
@@ -81,7 +120,7 @@ export default function ExplorerPage() {
             </tr>
           </thead>
           <tbody>
-            {rows.map((row) => (
+            {filtered.map((row) => (
               <tr key={row.pubkey}>
                 <td>#{row.inferenceId.toString()}</td>
                 <td>{shortHash(row.agent)}</td>
@@ -135,13 +174,14 @@ export default function ExplorerPage() {
           <h1 style={{ margin: "8px 0 4px", fontSize: 42, lineHeight: 1.05 }}>Live Inferences</h1>
           <p className="small" style={{ margin: 0 }}>
             Program: {PROGRAM_ID} | RPC: {net.rpc}
+            {lastRefresh && <> | Refreshed: {lastRefresh.toLocaleTimeString()}</>}
           </p>
         </div>
         <div className="card" style={{ minWidth: 260 }}>
           <div className="small">Status</div>
           <div style={{ marginTop: 6, fontWeight: 700 }}>Phase {net.label === "Testnet" ? "2" : "1"} - {net.label}</div>
           <div className="small" style={{ marginTop: 6 }}>
-            Scores are read from on-chain InferenceRecord accounts.
+            Auto-refresh every 30s.
           </div>
         </div>
       </div>
@@ -160,17 +200,38 @@ export default function ExplorerPage() {
           <div style={{ fontSize: 30, marginTop: 8 }}>{stats.challengeRate.toFixed(1)}%</div>
         </div>
         <div className="card">
-          <div className="small">Category Split</div>
-          <div className="small" style={{ marginTop: 8 }}>
-            R:{stats.categories.REJECTED} L:{stats.categories.LOW_CONFIDENCE} S:{stats.categories.STANDARD} H:{stats.categories.HIGH_COHERENCE}
-          </div>
+          <div className="small">Distribution</div>
+          <DistributionChart categories={stats.categories} />
         </div>
       </section>
 
       <section className="card" style={{ marginTop: 16 }}>
-        <div style={{ display: "flex", justifyContent: "space-between", gap: 8, alignItems: "center", marginBottom: 10 }}>
-          <h2 style={{ margin: 0, fontSize: 20 }}>Recent 20 Inferences</h2>
-          <div className="small">Color mapping: red &lt;0.30, yellow 0.30-0.60, green 0.60-0.85, blue &gt;0.85</div>
+        <div style={{ display: "flex", justifyContent: "space-between", gap: 8, alignItems: "center", marginBottom: 10, flexWrap: "wrap" }}>
+          <h2 style={{ margin: 0, fontSize: 20 }}>
+            Inferences {filter !== "ALL" && <span className="small">({filter})</span>}
+          </h2>
+          <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+            {CATEGORIES.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setFilter(cat)}
+                style={{
+                  background: filter === cat ? (cat === "ALL" ? "var(--line)" : CAT_COLOR[cat as Category]) : "transparent",
+                  color: filter === cat ? (cat === "ALL" ? "var(--ink)" : "#000") : "var(--muted)",
+                  border: `1px solid ${cat === "ALL" ? "var(--line)" : CAT_COLOR[cat as Category]}`,
+                  borderRadius: 999,
+                  padding: "3px 10px",
+                  fontSize: 11,
+                  fontFamily: "inherit",
+                  fontWeight: 700,
+                  cursor: "pointer",
+                  opacity: filter === cat ? 1 : 0.6,
+                }}
+              >
+                {cat === "ALL" ? "ALL" : cat.replace("_", " ")}
+              </button>
+            ))}
+          </div>
         </div>
 
         {content}
