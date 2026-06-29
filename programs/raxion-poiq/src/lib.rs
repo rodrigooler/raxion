@@ -102,6 +102,26 @@ impl DissentRecord {
     pub const LEN: usize = 32 + 1 + 4 + 4 + 1 + 8 + 1;
 }
 
+#[account]
+#[derive(Default)]
+pub struct AgentProfile {
+    pub agent: Pubkey,
+    pub name: [u8; 32],
+    pub domain: u8,
+    pub architecture_type: u8,
+    pub price_per_inference: u64,
+    pub inference_count: u64,
+    pub avg_coherence_score: u32,
+    pub challenge_pass_rate: u16,
+    pub registered_at: i64,
+    pub active: bool,
+    pub bump: u8,
+}
+
+impl AgentProfile {
+    pub const LEN: usize = 32 + 32 + 1 + 1 + 8 + 8 + 4 + 2 + 8 + 1 + 1;
+}
+
 #[program]
 pub mod raxion_poiq {
     use super::*;
