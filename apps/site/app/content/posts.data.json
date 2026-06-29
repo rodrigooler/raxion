@@ -2,6 +2,231 @@
   "announcementPosts": [
     {
       "type": "announcement",
+      "slug": "protocol-milestone-33-commits",
+      "date": "2026-06-29",
+      "title": {
+        "en": "33 Commits in 48h: Protocol, Explorer, SDK, and Yellowpaper",
+        "pt-BR": "33 Commits em 48h: Protocolo, Explorer, SDK e Yellowpaper",
+        "zh": "48小时内33次提交：协议、浏览器、SDK和黄皮书",
+        "ja": "48時間で33コミット：プロトコル、エクスプローラー、SDK、イエローペーパー",
+        "es": "33 Commits en 48h: Protocolo, Explorer, SDK y Yellowpaper"
+      },
+      "summary": {
+        "en": "A massive development push: Anchor 1.1 migration, unified workspace with 74 tests, functional SDK, explorer with event monitoring, emergency pause, dissent queue, RaxLang transpiler, Yellowpaper, and 6 new docs.",
+        "pt-BR": "Um push massivo de desenvolvimento: migracao Anchor 1.1, workspace unificado com 74 testes, SDK funcional, explorer com monitoramento de eventos, pause de emergencia, fila de dissent, transpiler RaxLang, Yellowpaper e 6 novos docs.",
+        "zh": "大规模开发推进：Anchor 1.1 迁移、74个测试的统一工作区、功能性SDK、带事件监控的浏览器、紧急暂停、异议队列、RaxLang转译器、黄皮书和6份新文档。",
+        "ja": "大規模な開発プッシュ：Anchor 1.1移行、74テストの統合ワークスペース、機能的SDK、イベント監視付きエクスプローラー、緊急停止、異議キュー、RaxLangトランスパイラー、イエローペーパー、6つの新ドキュメント。",
+        "es": "Un impulso masivo de desarrollo: migracion Anchor 1.1, workspace unificado con 74 tests, SDK funcional, explorer con monitoreo de eventos, pausa de emergencia, cola de disidencia, transpiler RaxLang, Yellowpaper y 6 nuevos docs."
+      },
+      "author": {
+        "name": "Rodrigo Oler",
+        "githubUrl": "https://github.com/rodrigooler",
+        "avatarUrl": "https://github.com/rodrigooler.png"
+      },
+      "body": [
+        {
+          "heading": {
+            "en": "What shipped",
+            "pt-BR": "O que foi entregue",
+            "zh": "发布内容",
+            "ja": "出荷内容",
+            "es": "Lo que se entrego"
+          },
+          "paragraphs": {
+            "en": [
+              "In 48 hours, we pushed 33 commits covering protocol, infrastructure, SDK, explorer, and documentation. Every component advanced.",
+              "The on-chain program now runs on Anchor 1.1 with Solana 3.x compatibility. The Cargo workspace is unified (7 crates, 74 automated tests). The SDK AgentRunner is functional: it loads a wallet, initializes agents on-chain, and submits convergence transactions directly to Solana."
+            ],
+            "pt-BR": [
+              "Em 48 horas, fizemos 33 commits cobrindo protocolo, infraestrutura, SDK, explorer e documentacao. Todos os componentes avancaram.",
+              "O programa on-chain agora roda em Anchor 1.1 com compatibilidade Solana 3.x. O Cargo workspace esta unificado (7 crates, 74 testes automatizados). O SDK AgentRunner esta funcional: carrega wallet, inicializa agentes on-chain e submete transacoes de convergencia diretamente na Solana."
+            ],
+            "zh": [
+              "在48小时内，我们推送了33次提交，涵盖协议、基础设施、SDK、浏览器和文档。每个组件都有进展。",
+              "链上程序现在运行在 Anchor 1.1 上，兼容 Solana 3.x。Cargo 工作区已统一（7个crate，74个自动化测试）。SDK AgentRunner 已可用：加载钱包、在链上初始化代理并直接向 Solana 提交收敛交易。"
+            ],
+            "ja": [
+              "48時間で33コミットをプッシュし、プロトコル、インフラ、SDK、エクスプローラー、ドキュメントを網羅しました。すべてのコンポーネントが前進しました。",
+              "オンチェーンプログラムは Anchor 1.1 で Solana 3.x 互換で動作します。Cargo ワークスペースは統合され（7クレート、74自動テスト）、SDK AgentRunner は機能的です：ウォレットをロードし、エージェントをオンチェーンで初期化し、収束トランザクションを Solana に直接送信します。"
+            ],
+            "es": [
+              "En 48 horas, subimos 33 commits cubriendo protocolo, infraestructura, SDK, explorer y documentacion. Todos los componentes avanzaron.",
+              "El programa on-chain ahora corre en Anchor 1.1 con compatibilidad Solana 3.x. El Cargo workspace esta unificado (7 crates, 74 tests automatizados). El SDK AgentRunner esta funcional: carga wallet, inicializa agentes on-chain y envia transacciones de convergencia directamente a Solana."
+            ]
+          },
+          "bullets": {
+            "en": [
+              "Anchor migrated from 0.30 to 1.1 (Solana 3.x)",
+              "Explorer: auto-refresh, category filters, event monitoring, distribution chart",
+              "Emergency pause mechanism for protocol safety",
+              "Dissent queue: resolve_challenge and expire_challenge instructions",
+              "RaxLang DSL transpiler generates complete Rust agents from .rax files",
+              "New api_agent example for OpenAI-compatible APIs (no Ollama needed)"
+            ],
+            "pt-BR": [
+              "Anchor migrado de 0.30 para 1.1 (Solana 3.x)",
+              "Explorer: auto-refresh, filtros por categoria, monitoramento de eventos, grafico de distribuicao",
+              "Mecanismo de pausa de emergencia para seguranca do protocolo",
+              "Fila de dissent: instrucoes resolve_challenge e expire_challenge",
+              "Transpiler RaxLang DSL gera agentes Rust completos a partir de arquivos .rax",
+              "Novo exemplo api_agent para APIs compativeis com OpenAI (sem Ollama)"
+            ],
+            "zh": [
+              "Anchor 从 0.30 迁移到 1.1（Solana 3.x）",
+              "浏览器：自动刷新、分类筛选、事件监控、分布图表",
+              "协议安全紧急暂停机制",
+              "异议队列：resolve_challenge 和 expire_challenge 指令",
+              "RaxLang DSL 转译器从 .rax 文件生成完整的 Rust 代理",
+              "新的 api_agent 示例，支持 OpenAI 兼容 API（无需 Ollama）"
+            ],
+            "ja": [
+              "Anchor を 0.30 から 1.1 に移行（Solana 3.x）",
+              "エクスプローラー：自動更新、カテゴリフィルター、イベント監視、分布チャート",
+              "プロトコル安全のための緊急停止メカニズム",
+              "異議キュー：resolve_challenge と expire_challenge 命令",
+              "RaxLang DSL トランスパイラーが .rax ファイルから完全な Rust エージェントを生成",
+              "OpenAI 互換 API 用の新しい api_agent サンプル（Ollama 不要）"
+            ],
+            "es": [
+              "Anchor migrado de 0.30 a 1.1 (Solana 3.x)",
+              "Explorer: auto-refresh, filtros por categoria, monitoreo de eventos, grafico de distribucion",
+              "Mecanismo de pausa de emergencia para seguridad del protocolo",
+              "Cola de disidencia: instrucciones resolve_challenge y expire_challenge",
+              "Transpiler RaxLang DSL genera agentes Rust completos desde archivos .rax",
+              "Nuevo ejemplo api_agent para APIs compatibles con OpenAI (sin Ollama)"
+            ]
+          }
+        },
+        {
+          "heading": {
+            "en": "New documentation",
+            "pt-BR": "Nova documentacao",
+            "zh": "新文档",
+            "ja": "新しいドキュメント",
+            "es": "Nueva documentacion"
+          },
+          "paragraphs": {
+            "en": [
+              "Six new documents were published alongside the Yellowpaper v0.1, which formalizes every claim in the whitepaper with 13 definitions, 9 theorems, proof sketches, and 5 algorithm specifications."
+            ],
+            "pt-BR": [
+              "Seis novos documentos foram publicados junto com o Yellowpaper v0.1, que formaliza todas as afirmacoes do whitepaper com 13 definicoes, 9 teoremas, esbocos de provas e 5 especificacoes de algoritmos."
+            ],
+            "zh": [
+              "六份新文档与黄皮书 v0.1 一同发布，黄皮书以13个定义、9个定理、证明概要和5个算法规范形式化了白皮书中的每一个论断。"
+            ],
+            "ja": [
+              "イエローペーパー v0.1 とともに6つの新しいドキュメントが公開されました。イエローペーパーはホワイトペーパーのすべての主張を13の定義、9の定理、証明スケッチ、5つのアルゴリズム仕様で形式化しています。"
+            ],
+            "es": [
+              "Seis nuevos documentos se publicaron junto con el Yellowpaper v0.1, que formaliza cada afirmacion del whitepaper con 13 definiciones, 9 teoremas, bocetos de prueba y 5 especificaciones de algoritmos."
+            ]
+          },
+          "bullets": {
+            "en": [
+              "Yellowpaper v0.1: 888 lines of formal mathematics",
+              "Smart Agent Onboarding Playbook: step-by-step guide for developers",
+              "Agent Marketplace Specification: registry, pricing, royalties",
+              "Security Audit Package: scope, invariants, threat model",
+              "Operational Runbook: all deploy and emergency procedures",
+              "Mainnet Readiness Assessment: 7-category checklist with blockers"
+            ],
+            "pt-BR": [
+              "Yellowpaper v0.1: 888 linhas de matematica formal",
+              "Smart Agent Onboarding Playbook: guia passo a passo para desenvolvedores",
+              "Especificacao do Marketplace de Agentes: registro, precos, royalties",
+              "Pacote de Auditoria de Seguranca: escopo, invariantes, modelo de ameacas",
+              "Runbook Operacional: todos os procedimentos de deploy e emergencia",
+              "Avaliacao de Prontidao para Mainnet: checklist de 7 categorias com blockers"
+            ],
+            "zh": [
+              "黄皮书 v0.1：888行形式化数学",
+              "智能代理入门指南：开发者分步指南",
+              "代理市场规范：注册、定价、版税",
+              "安全审计包：范围、不变量、威胁模型",
+              "运维手册：所有部署和紧急程序",
+              "主网就绪评估：7类清单及阻塞项"
+            ],
+            "ja": [
+              "イエローペーパー v0.1：888行の形式的数学",
+              "スマートエージェントオンボーディングプレイブック：開発者向けステップバイステップガイド",
+              "エージェントマーケットプレイス仕様：レジストリ、価格設定、ロイヤリティ",
+              "セキュリティ監査パッケージ：スコープ、不変量、脅威モデル",
+              "運用ランブック：すべてのデプロイと緊急手順",
+              "メインネット準備評価：ブロッカー付き7カテゴリチェックリスト"
+            ],
+            "es": [
+              "Yellowpaper v0.1: 888 lineas de matematicas formales",
+              "Smart Agent Onboarding Playbook: guia paso a paso para desarrolladores",
+              "Especificacion del Marketplace de Agentes: registro, precios, regalias",
+              "Paquete de Auditoria de Seguridad: alcance, invariantes, modelo de amenazas",
+              "Runbook Operacional: todos los procedimientos de deploy y emergencia",
+              "Evaluacion de Preparacion para Mainnet: checklist de 7 categorias con bloqueantes"
+            ]
+          }
+        },
+        {
+          "heading": {
+            "en": "What's next",
+            "pt-BR": "Proximos passos",
+            "zh": "下一步计划",
+            "ja": "次のステップ",
+            "es": "Proximos pasos"
+          },
+          "paragraphs": {
+            "en": [
+              "The code-only work is done. The remaining items require external resources: GPU infrastructure for ZK proofs, real heterogeneous models for H1 validation, and a security auditor. We are actively seeking contributors and pilot agent developers."
+            ],
+            "pt-BR": [
+              "O trabalho que depende apenas de codigo esta feito. Os itens restantes precisam de recursos externos: infraestrutura GPU para provas ZK, modelos heterogeneos reais para validacao de H1 e um auditor de seguranca. Estamos buscando ativamente contribuidores e desenvolvedores de agentes piloto."
+            ],
+            "zh": [
+              "纯代码工作已完成。剩余事项需要外部资源：用于ZK证明的GPU基础设施、用于H1验证的真实异构模型，以及安全审计员。我们正在积极寻找贡献者和试点代理开发者。"
+            ],
+            "ja": [
+              "コードのみの作業は完了しました。残りの項目には外部リソースが必要です：ZK証明用のGPUインフラ、H1検証用の実際の異種モデル、セキュリティ監査員。貢献者とパイロットエージェント開発者を積極的に募集しています。"
+            ],
+            "es": [
+              "El trabajo que depende solo de codigo esta hecho. Los items restantes necesitan recursos externos: infraestructura GPU para pruebas ZK, modelos heterogeneos reales para validacion de H1 y un auditor de seguridad. Estamos buscando activamente contribuidores y desarrolladores de agentes piloto."
+            ]
+          },
+          "bullets": {
+            "en": [
+              "H1 validation with real Transformer + Mamba + Neuro-Symbolic models",
+              "ZK proofs end-to-end with RISC Zero 3.0 on GPU",
+              "Security audit engagement",
+              "Community: open call for contributors and pilot agents on testnet"
+            ],
+            "pt-BR": [
+              "Validacao H1 com modelos reais Transformer + Mamba + Neuro-Symbolic",
+              "Provas ZK end-to-end com RISC Zero 3.0 em GPU",
+              "Contratacao de auditoria de seguranca",
+              "Comunidade: chamada aberta para contribuidores e agentes piloto no testnet"
+            ],
+            "zh": [
+              "使用真实 Transformer + Mamba + 神经符号模型进行 H1 验证",
+              "在 GPU 上使用 RISC Zero 3.0 进行端到端 ZK 证明",
+              "安全审计合作",
+              "社区：在测试网上公开招募贡献者和试点代理"
+            ],
+            "ja": [
+              "実際の Transformer + Mamba + ニューロシンボリックモデルによる H1 検証",
+              "GPU 上の RISC Zero 3.0 によるエンドツーエンド ZK 証明",
+              "セキュリティ監査の契約",
+              "コミュニティ：テストネットでの貢献者とパイロットエージェントの公募"
+            ],
+            "es": [
+              "Validacion H1 con modelos reales Transformer + Mamba + Neuro-Symbolic",
+              "Pruebas ZK end-to-end con RISC Zero 3.0 en GPU",
+              "Contratacion de auditoria de seguridad",
+              "Comunidad: convocatoria abierta para contribuidores y agentes piloto en testnet"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "type": "announcement",
       "slug": "testnet-live",
       "date": "2026-06-29",
       "title": {
