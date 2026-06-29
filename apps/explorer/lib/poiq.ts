@@ -1,3 +1,4 @@
+import { Buffer } from "buffer";
 import { Connection, PublicKey } from "@solana/web3.js";
 
 export type Category = "REJECTED" | "LOW_CONFIDENCE" | "STANDARD" | "HIGH_COHERENCE";
