@@ -92,11 +92,16 @@ async function main() {
     console.log("Agent already initialized.");
   }
 
-  // Submit inferences
+  // Submit inferences — spread across all 4 categories
+  const buckets = [
+    () => Math.round((0.05 + Math.random() * 0.20) * 1000) / 1000,  // REJECTED <0.30
+    () => Math.round((0.30 + Math.random() * 0.29) * 1000) / 1000,  // LOW_CONFIDENCE 0.30-0.59
+    () => Math.round((0.60 + Math.random() * 0.24) * 1000) / 1000,  // STANDARD 0.60-0.84
+    () => Math.round((0.85 + Math.random() * 0.14) * 1000) / 1000,  // HIGH_COHERENCE 0.85-0.99
+  ];
   const scores = [];
   for (let i = 0; i < COUNT; i++) {
-    const score = Math.round((0.3 + Math.random() * 0.65) * 1000) / 1000;
-    scores.push(score);
+    scores.push(buckets[i % 4]());
   }
 
   for (let i = 0; i < COUNT; i++) {
